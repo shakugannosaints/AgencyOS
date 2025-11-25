@@ -4,6 +4,12 @@
 
 ![f5e06bba3cdaddc99c085924dbd1bb52.png](https://s2.loli.net/2025/11/25/cZPuOqojgaSVLvG.png)
 
+## 页面发布
+
+https://agencyos.icemoe.moe/#/
+
+如果你想自己部署，见快速开始一节。
+
 ## ✨ 核心能力
 
 1. **战役仪表板**：展示分部状态、下一次任务、混沌池与异常体统计（`/` 仪表盘）。
