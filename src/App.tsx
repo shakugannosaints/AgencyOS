@@ -7,7 +7,6 @@ import { MissionsPage } from '@/modules/missions/pages/missions-page'
 import { AnomaliesPage } from '@/modules/anomalies/pages/anomalies-page'
 import { ReportsPage } from '@/modules/reports/pages/reports-page'
 
-
 export default function App() {
   return (
     <AppProviders>
