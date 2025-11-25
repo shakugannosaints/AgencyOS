@@ -15,11 +15,12 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     return null
   }
 
-  const [agents, missions, anomalies, logs] = await Promise.all([
+  const [agents, missions, anomalies, logs, tracks] = await Promise.all([
     db.agents.toArray(),
     db.missions.toArray(),
     db.anomalies.toArray(),
     db.logs?.toArray() ?? [],
+    db.tracks?.toArray() ?? [],
   ])
 
   return {
@@ -28,11 +29,12 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     missions,
     anomalies,
     logs,
+    tracks,
   }
 }
 
 export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
-  await db.transaction('rw', [db.campaigns, db.agents, db.missions, db.anomalies, db.logs], async () => {
+  await db.transaction('rw', [db.campaigns, db.agents, db.missions, db.anomalies, db.logs ?? 'logs', db.tracks ?? 'tracks'], async () => {
     await db.campaigns.clear()
     await db.campaigns.put(snapshot.campaign)
 
@@ -57,6 +59,13 @@ export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
         await db.logs.bulkPut(snapshot.logs)
       }
     }
+
+    if (db.tracks) {
+      await db.tracks.clear()
+      if (snapshot.tracks?.length) {
+        await db.tracks.bulkPut(snapshot.tracks)
+      }
+    }
   })
 }
 
@@ -72,6 +81,7 @@ interface SnapshotLike {
   missions?: unknown
   anomalies?: unknown
   logs?: unknown
+  tracks?: unknown
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
@@ -89,6 +99,7 @@ const normalizeSnapshot = (candidate: SnapshotLike): AgencySnapshot => {
     missions: candidate.missions as unknown as AgencySnapshot['missions'],
     anomalies: candidate.anomalies as unknown as AgencySnapshot['anomalies'],
     logs: Array.isArray(candidate.logs) ? (candidate.logs as unknown as AgencySnapshot['logs']) : [],
+    tracks: Array.isArray(candidate.tracks) ? (candidate.tracks as unknown as AgencySnapshot['tracks']) : [],
   }
 }
 

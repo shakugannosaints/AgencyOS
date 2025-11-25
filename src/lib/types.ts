@@ -1,3 +1,15 @@
+export interface TrackItemSnapshot {
+  id: ID
+  label: string
+  checked: boolean
+}
+
+export interface CustomTrackSnapshot {
+  id: ID
+  name: string
+  color: string
+  items: TrackItemSnapshot[]
+}
 export type ID = string
 
 export type CampaignStatus = 'active' | 'paused' | 'ended'
@@ -59,6 +71,9 @@ export interface AgentSummary {
   reprimands: number
   status: AgentStatus
   claims?: AgentClaimRecord[]
+  // 当前任务内新增的嘉奖/申诫增量，用于计算本次任务的 MVP / 观察期
+  awardsDelta?: number
+  reprimandsDelta?: number
 }
 
 export interface MissionSummary {
@@ -98,4 +113,5 @@ export interface AgencySnapshot {
   missions: MissionSummary[]
   anomalies: AnomalySummary[]
   logs: MissionLogEntry[]
+  tracks?: CustomTrackSnapshot[]
 }

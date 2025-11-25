@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { loadAgencySnapshot, saveAgencySnapshot } from '@/services/db/repository'
 import { selectAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
+import { useTracksStore } from '@/stores/tracks-store'
 
 export function useCampaignPersistence() {
   useEffect(() => {
@@ -9,7 +10,8 @@ export function useCampaignPersistence() {
     }
 
     let ready = false
-    let unsub: (() => void) | undefined
+  let unsubCampaign: (() => void) | undefined
+  let unsubTracks: (() => void) | undefined
     let pendingSnapshot: ReturnType<typeof selectAgencySnapshot> | null = null
     let saving = false
 
@@ -50,13 +52,22 @@ export function useCampaignPersistence() {
 
     void bootstrap()
 
-    unsub = useCampaignStore.subscribe((state) => {
+    // 订阅战役主 store 的变化
+    unsubCampaign = useCampaignStore.subscribe((state) => {
       if (!ready) return
       void persist(selectAgencySnapshot(state))
     })
 
+    // 订阅轨道 store 的变化：轨道变化时也触发一次快照持久化
+    unsubTracks = useTracksStore.subscribe(() => {
+      if (!ready) return
+      const campaignState = useCampaignStore.getState()
+      void persist(selectAgencySnapshot(campaignState))
+    })
+
     return () => {
-      unsub?.()
+      unsubCampaign?.()
+      unsubTracks?.()
     }
   }, [])
 }

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import type { AgentSummary, AgencySnapshot, AnomalySummary, Campaign, MissionLogEntry, MissionSummary } from '@/lib/types'
+import type { AgentSummary, AgencySnapshot, AnomalySummary, Campaign, CustomTrackSnapshot, MissionLogEntry, MissionSummary } from '@/lib/types'
+import { useTracksStore } from '@/stores/tracks-store'
 import { mockAgents, mockAnomalies, mockCampaign, mockMissions } from '@/lib/mock-data'
 
 interface AgencyStoreState {
@@ -23,6 +24,7 @@ interface AgencyStoreActions {
   deleteAnomaly: (id: string) => void
   adjustMissionChaos: (missionId: string, delta: number, note: string) => void
   adjustMissionLooseEnds: (missionId: string, delta: number, note: string) => void
+  settleAgentDeltas: () => void
   appendMissionLog: (missionId: string, detail: string) => void
   hydrate: (snapshot: AgencySnapshot) => void
 }
@@ -136,14 +138,46 @@ export const useCampaignStore = create<AgencyStore>((set) => ({
         },
       ],
     })),
+    settleAgentDeltas: () =>
+      set((state) => ({
+        agents: state.agents.map((agent) => ({
+          ...agent,
+          awards: agent.awards + (agent.awardsDelta ?? 0),
+          reprimands: agent.reprimands + (agent.reprimandsDelta ?? 0),
+          awardsDelta: 0,
+          reprimandsDelta: 0,
+        })),
+      })),
   hydrate: (snapshot) =>
-    set(() => ({
-      campaign: snapshot.campaign,
-      agents: snapshot.agents,
-      missions: snapshot.missions,
-      anomalies: snapshot.anomalies,
-      logs: snapshot.logs,
-    })),
+    set(() => {
+      // 先恢复主战役数据
+      const nextState = {
+        campaign: snapshot.campaign,
+        agents: snapshot.agents,
+        missions: snapshot.missions,
+        anomalies: snapshot.anomalies,
+        logs: snapshot.logs,
+      }
+
+      // 再单独恢复轨道（如果 snapshot 中存在）
+      if (snapshot.tracks) {
+        const tracksForStore: CustomTrackSnapshot[] = snapshot.tracks
+        useTracksStore.setState({
+          tracks: tracksForStore.map((track) => ({
+            id: track.id,
+            name: track.name,
+            color: track.color,
+            items: track.items.map((item) => ({
+              id: item.id,
+              label: item.label,
+              checked: item.checked,
+            })),
+          })),
+        })
+      }
+
+      return nextState
+    }),
 }))
 
 export const selectAgencySnapshot = (state: AgencyStoreState): AgencySnapshot => ({
@@ -152,6 +186,7 @@ export const selectAgencySnapshot = (state: AgencyStoreState): AgencySnapshot =>
   missions: state.missions,
   anomalies: state.anomalies,
   logs: state.logs,
+  tracks: useTracksStore.getState().tracks,
 })
 
 export const getAgencySnapshot = () => selectAgencySnapshot(useCampaignStore.getState())

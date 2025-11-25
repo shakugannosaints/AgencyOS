@@ -40,7 +40,9 @@ export const mockAgents: AgentSummary[] = [
     }),
     awards: 15,
     reprimands: 2,
-    status: 'active',
+  status: 'active',
+  awardsDelta: 0,
+  reprimandsDelta: 0,
     claims: [
       {
         id: 'claim-ax-01',
@@ -72,6 +74,8 @@ export const mockAgents: AgentSummary[] = [
     awards: 7,
     reprimands: 4,
     status: 'resting',
+    awardsDelta: 0,
+    reprimandsDelta: 0,
   },
 ]
 

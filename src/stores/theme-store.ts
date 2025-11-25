@@ -1,23 +1,18 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-export type ThemeMode = 'night' | 'day'
+export type ThemeMode = 'night' | 'day' | 'win98'
 
 interface ThemeState {
   mode: ThemeMode
   setMode: (mode: ThemeMode) => void
-  toggleMode: () => void
 }
 
 export const useThemeStore = create<ThemeState>()(
   persist(
-    (set, get) => ({
+  (set) => ({
       mode: 'night',
       setMode: (mode) => set({ mode }),
-      toggleMode: () => {
-        const next = get().mode === 'night' ? 'day' : 'night'
-        set({ mode: next })
-      },
     }),
     {
       name: 'agency-theme-mode',

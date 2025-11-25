@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText } from 'lucide-react'
+import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit } from 'lucide-react'
 import { CommandStrip } from '@/components/ui/command-strip'
 import { cn } from '@/lib/utils'
 import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
@@ -10,11 +10,12 @@ import { createSnapshotEnvelope, parseSnapshotFile } from '@/services/db/reposit
 import { useThemeStore } from '@/stores/theme-store'
 
 const navItems = [
-  { label: '仪表板', path: '/', icon: LayoutDashboard, hotkey: 'F1' },
-  { label: '特工档案', path: '/agents', icon: Users, hotkey: 'F2' },
-  { label: '任务控制', path: '/missions', icon: BriefcaseBusiness, hotkey: 'F3' },
-  { label: '异常体库', path: '/anomalies', icon: Atom, hotkey: 'F4' },
-  { label: '任务报告', path: '/reports', icon: ScrollText, hotkey: 'F5' },
+  { label: '仪表板', path: '/', icon: LayoutDashboard },
+  { label: '特工档案', path: '/agents', icon: Users },
+  { label: '任务控制', path: '/missions', icon: BriefcaseBusiness },
+  { label: '异常体库', path: '/anomalies', icon: Atom },
+  { label: '任务报告', path: '/reports', icon: ScrollText },
+  { label: '自定义轨道', path: '/tracks', icon: Orbit },
 ]
 
 export function AppShell() {
@@ -36,7 +37,8 @@ export function AppShell() {
     styleText: '',
   })
   const themeMode = useThemeStore((state) => state.mode)
-  const toggleTheme = useThemeStore((state) => state.toggleMode)
+  const setThemeMode = useThemeStore((state) => state.setMode)
+  const isWin98 = themeMode === 'win98'
 
   useEffect(() => {
     if (typeof document === 'undefined') return
@@ -114,7 +116,12 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-agency-ink/95 px-4 py-6 text-agency-cyan">
       <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr]">
-        <aside className="space-y-6 rounded-3xl border border-agency-border/80 bg-agency-panel/80 p-4 shadow-panel">
+        <aside
+          className={cn(
+            'space-y-6 border border-agency-border bg-agency-panel/80 p-4',
+            isWin98 ? 'rounded-none' : 'rounded-3xl shadow-panel',
+          )}
+        >
           <header className="space-y-2">
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs uppercase tracking-[0.4em] text-red-500">Agency OS</p>
@@ -207,7 +214,8 @@ export function AppShell() {
                   <item.icon className="h-4 w-4" />
                   {item.label}
                 </span>
-                <span className="text-[0.65rem] text-agency-muted">{item.hotkey}</span>
+                {/* 浏览器环境下快捷键不可用，隐藏原有提示 */}
+                <span className="text-[0.65rem] text-agency-muted" />
               </NavLink>
             ))}
           </div>
@@ -215,9 +223,8 @@ export function AppShell() {
           <div className="space-y-2 text-[0.65rem] text-agency-muted">
             <p className="uppercase tracking-[0.5em]">混沌警戒</p>
             <div className="rounded-2xl border border-agency-magenta/40 bg-gradient-to-r from-agency-magenta/20 to-transparent p-3 font-mono">
-              <p>当前：{chaosValue} / 10</p>
+              <p>当前：{chaosValue}</p>
               <p>散逸端：{looseEndsValue}</p>
-              <p>建议：{chaosValue >= 7 ? '触发重度效应' : '记录轻度扭曲'}</p>
             </div>
           </div>
         </aside>
@@ -228,7 +235,12 @@ export function AppShell() {
             <CommandStrip label="NEXT BRIEFING" value={activeMission?.code ?? '—'} />
             <CommandStrip label="WEATHER" value={`散逸端×${looseEndsValue}`} />
           </div>
-          <div className="rounded-3xl border border-agency-border/60 bg-agency-ink/40 p-4 text-[0.65rem] uppercase tracking-[0.4em] text-agency-muted">
+          <div
+            className={cn(
+              'border border-agency-border/60 bg-agency-ink/40 p-4 text-[0.65rem] uppercase tracking-[0.4em] text-agency-muted',
+              isWin98 ? 'rounded-none' : 'rounded-3xl',
+            )}
+          >
             <div className="flex flex-wrap items-center gap-2">
               <span>数据快照</span>
               <div className="flex flex-wrap gap-2 text-xs normal-case">
@@ -248,18 +260,25 @@ export function AppShell() {
                   {importing ? '导入中…' : '导入内容'}
                 </button>
                 <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={handleImportChange} />
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="rounded-xl border border-agency-border px-3 py-1 font-mono text-agency-muted hover:border-agency-cyan hover:text-agency-cyan"
+                <select
+                  value={themeMode}
+                  onChange={(e) => setThemeMode(e.target.value as typeof themeMode)}
+                  className="rounded-xl border border-agency-border bg-agency-panel/60 px-3 py-1 font-mono text-xs text-agency-muted hover:border-agency-cyan hover:text-agency-cyan focus:outline-none"
                 >
-                  {themeMode === 'night' ? '切换至白天模式' : '切换至夜间模式'}
-                </button>
+                  <option value="night">夜间模式</option>
+                  <option value="day">白天模式</option>
+                  <option value="win98">Win98 模式</option>
+                </select>
               </div>
             </div>
             {importMessage ? <p className="mt-2 text-[0.65rem] normal-case text-agency-amber">{importMessage}</p> : null}
           </div>
-          <div className="rounded-3xl border border-agency-border/80 bg-agency-panel/70 p-6 shadow-panel backdrop-blur">
+          <div
+            className={cn(
+              'border border-agency-border/80 bg-agency-panel/70 p-6 backdrop-blur',
+              isWin98 ? 'rounded-none' : 'rounded-3xl shadow-panel',
+            )}
+          >
             <Outlet />
           </div>
         </main>

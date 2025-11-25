@@ -13,7 +13,7 @@ export function DashboardPage() {
   const agents = useCampaignStore((state) => state.agents)
   const navigate = useNavigate()
 
-  const activeMission = missions.find((mission) => mission.status === 'active') ?? missions[0]
+  const activeMission = missions.find((mission) => mission.status === 'active') ?? null
   const pendingMission = missions.find((mission) => mission.status === 'planning' || mission.status === 'debrief') ?? missions[1] ?? missions[0]
 
   const { mvpLabel, watchlistLabel } = useMemo(() => {
@@ -22,23 +22,27 @@ export function DashboardPage() {
       return { mvpLabel: '—', watchlistLabel: '—' }
     }
 
-    const allAwardsZero = inService.every((a) => a.awards === 0)
-    const allReprimandsZero = inService.every((a) => a.reprimands === 0)
+    // 本次任务内的增量用于评选 MVP / 观察期；若未设置则视为 0
+    const getAwards = (a: (typeof inService)[number]) => a.awardsDelta ?? 0
+    const getReprimands = (a: (typeof inService)[number]) => a.reprimandsDelta ?? 0
 
-  // 观察期：先处理“全 0”与一般规则
-  let watchCandidates = inService
+    const allAwardsZero = inService.every((a) => getAwards(a) === 0)
+    const allReprimandsZero = inService.every((a) => getReprimands(a) === 0)
+
+    // 观察期：先处理“全 0”与一般规则（基于本次任务的申诫增量）
+    let watchCandidates = inService
     if (allReprimandsZero) {
       // 所有人申诫为 0 → 全员观察期
       watchCandidates = inService
     } else {
       // 申诫最多；若平局 → 嘉奖最少；再平局 → 全员平局者观察期
-      const maxReprimands = Math.max(...inService.map((a) => a.reprimands))
-      const reprimandLeaders = inService.filter((a) => a.reprimands === maxReprimands)
+      const maxReprimands = Math.max(...inService.map((a) => getReprimands(a)))
+      const reprimandLeaders = inService.filter((a) => getReprimands(a) === maxReprimands)
       if (reprimandLeaders.length === 1) {
         watchCandidates = reprimandLeaders
       } else {
-        const minAwardsAmongLeaders = Math.min(...reprimandLeaders.map((a) => a.awards))
-        watchCandidates = reprimandLeaders.filter((a) => a.awards === minAwardsAmongLeaders)
+        const minAwardsAmongLeaders = Math.min(...reprimandLeaders.map((a) => getAwards(a)))
+        watchCandidates = reprimandLeaders.filter((a) => getAwards(a) === minAwardsAmongLeaders)
       }
     }
 
@@ -49,13 +53,13 @@ export function DashboardPage() {
 
     let mvpCandidates: typeof inService = []
     if (!allAwardsZero && remainingForMvp.length) {
-      const maxAwards = Math.max(...remainingForMvp.map((a) => a.awards))
-      const awardLeaders = remainingForMvp.filter((a) => a.awards === maxAwards)
+      const maxAwards = Math.max(...remainingForMvp.map((a) => getAwards(a)))
+      const awardLeaders = remainingForMvp.filter((a) => getAwards(a) === maxAwards)
       if (awardLeaders.length === 1) {
         mvpCandidates = awardLeaders
       } else {
-        const minReprimandsAmongLeaders = Math.min(...awardLeaders.map((a) => a.reprimands))
-        mvpCandidates = awardLeaders.filter((a) => a.reprimands === minReprimandsAmongLeaders)
+        const minReprimandsAmongLeaders = Math.min(...awardLeaders.map((a) => getReprimands(a)))
+        mvpCandidates = awardLeaders.filter((a) => getReprimands(a) === minReprimandsAmongLeaders)
       }
     }
 
@@ -75,8 +79,20 @@ export function DashboardPage() {
       <section className="grid gap-4 md:grid-cols-4">
         <StatCard label="混沌池" value={`${activeMission?.chaos ?? 0}`} hint="领域中3以内免费，并且三倍效果" icon={<ActivitySquare />} intent="warning" />
         <StatCard label="散逸端" value={activeMission?.looseEnds ?? 0} hint="注意天气" icon={<AlertTriangle />} intent="critical" />
-        <StatCard label="嘉奖榜" value={mvpLabel} hint="嘉奖最多；并列时申诫最少者优先" icon={<Trophy />} />
-        <StatCard label="观察期" value={watchlistLabel} hint="申诫最多；并列时嘉奖最少者优先" icon={<ShieldAlert />} intent="warning" />
+        <StatCard
+          label="MVP"
+          value={mvpLabel}
+          hint="嘉奖最多；并列时申诫最少者优先"
+          icon={<Trophy className="text-red-500" />}
+          className="text-red-500 [&>div>div:last-child>p:nth-child(2)]:text-red-500"
+        />
+        <StatCard
+          label="观察期"
+          value={watchlistLabel}
+          hint="申诫最多；并列时嘉奖最少者优先"
+          icon={<ShieldAlert className="text-blue-500" />}
+          className="text-blue-500 [&>div>div:last-child>p:nth-child(2)]:text-blue-500"
+        />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">

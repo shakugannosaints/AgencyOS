@@ -51,6 +51,7 @@ export function AgentsPage() {
   const createAgent = useCampaignStore((state) => state.createAgent)
   const updateAgent = useCampaignStore((state) => state.updateAgent)
   const deleteAgent = useCampaignStore((state) => state.deleteAgent)
+  const settleAgentDeltas = useCampaignStore((state) => state.settleAgentDeltas)
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null)
   const [claimDraft, setClaimDraft] = useState({
     itemName: '',
@@ -64,7 +65,11 @@ export function AgentsPage() {
 
   const onSubmit = (values: AgentFormValues) => {
     if (editingAgentId) {
-      updateAgent(editingAgentId, values)
+      const agent = agents.find((item) => item.id === editingAgentId)
+      if (!agent) return
+      // 保留现有的非表单字段（例如申领物记录 claims），只用表单值覆盖基础信息
+      const { id: _id, claims, awardsDelta, reprimandsDelta, ...rest } = agent
+      updateAgent(editingAgentId, { ...rest, ...values, claims, awardsDelta, reprimandsDelta })
       setEditingAgentId(null)
     } else {
       createAgent(values)
@@ -76,7 +81,7 @@ export function AgentsPage() {
     const agent = agents.find((item) => item.id === agentId)
     if (!agent) return
     setEditingAgentId(agentId)
-    const { id: _id, ...rest } = agent
+    const { id: _id, awardsDelta, reprimandsDelta, ...rest } = agent
     form.reset({ ...rest })
     setClaimDraft({ itemName: '', category: '', reason: '' })
   }
@@ -135,11 +140,28 @@ export function AgentsPage() {
     upsertClaims(next)
   }
 
+  const handleSettleDeltas = () => {
+    if (window.confirm('确认将本次任务的嘉奖/申诫增量结算入总和？此操作会清空所有特工的本任务增量。')) {
+      settleAgentDeltas()
+    }
+  }
+
   return (
     <div className="space-y-4">
       <header>
-        <p className="text-xs uppercase tracking-[0.4em] text-agency-muted">人力资源档案</p>
-        <h1 className="text-2xl font-semibold text-white">特工列表</h1>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs uppercase tracking-[0.4em] text-agency-muted">人力资源档案</p>
+            <h1 className="text-2xl font-semibold text-white">特工列表</h1>
+          </div>
+          <button
+            type="button"
+            onClick={handleSettleDeltas}
+            className="rounded-2xl border border-agency-cyan/60 px-4 py-2 text-[0.7rem] uppercase tracking-[0.3em] text-agency-cyan hover:border-agency-cyan"
+          >
+            结算本任务嘉奖/申诫
+          </button>
+        </div>
       </header>
       <Panel>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-3">
@@ -305,6 +327,7 @@ export function AgentsPage() {
               <th className="px-4 py-3 text-left">QA 素质</th>
               <th className="px-4 py-3 text-left">嘉奖</th>
               <th className="px-4 py-3 text-left">申诫</th>
+              <th className="px-4 py-3 text-left">本任务增量</th>
               <th className="px-4 py-3 text-left">状态</th>
               <th className="px-4 py-3 text-left">操作</th>
             </tr>
@@ -330,6 +353,38 @@ export function AgentsPage() {
                 </td>
                 <td className="px-4 py-3 text-agency-amber">+{agent.awards}</td>
                 <td className="px-4 py-3 text-agency-magenta">-{agent.reprimands}</td>
+                <td className="px-4 py-3 text-xs text-agency-muted">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[0.65rem]">嘉奖+</span>
+                      <input
+                        type="number"
+                        className="w-16 rounded border border-agency-border bg-agency-ink/60 px-2 py-1 text-[0.75rem] font-mono text-agency-cyan"
+                        value={agent.awardsDelta ?? 0}
+                        onChange={(e) => {
+                          const delta = Number.isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
+                          const { id: _id, ...rest } = agent
+                          updateAgent(agent.id, { ...rest, awardsDelta: delta })
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[0.65rem]">申诫+</span>
+                      <input
+                        type="number"
+                        className="w-16 rounded border border-agency-border bg-agency-ink/60 px-2 py-1 text-[0.75rem] font-mono text-agency-cyan"
+                        value={agent.reprimandsDelta ?? 0}
+                        onChange={(e) => {
+                          const delta = Number.isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
+                          const { id: _id, ...rest } = agent
+                          updateAgent(agent.id, { ...rest, reprimandsDelta: delta })
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+                </td>
                 <td className="px-4 py-3 uppercase tracking-[0.3em] text-xs text-agency-muted">{agent.status}</td>
                 <td className="px-4 py-3">
                   <button

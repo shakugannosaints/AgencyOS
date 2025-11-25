@@ -35,9 +35,27 @@
   --agency-glow-bottom: 255 255 255;
 }
 
+:root[data-theme='win98'] {
+  --agency-ink: 192 192 192;       /* 桌面灰 */
+  --agency-panel: 236 233 216;     /* 窗口背景 */
+  --agency-border: 128 128 128;    /* 深灰边框 */
+  --agency-cyan: 0 0 0;            /* 主文字黑色 */
+  --agency-magenta: 0 0 128;       /* 深蓝强调 */
+  --agency-amber: 128 0 0;         /* 深红警告 */
+  --agency-muted: 80 80 80;        /* 深灰说明文字 */
+  --agency-glow-top: 192 192 192;  /* 关闭霓虹，仅保留灰 */
+  --agency-glow-bottom: 192 192 192;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
 :root[data-theme='day'] .text-white,
 [data-theme='day'] .text-white {
   color: #241a1a !important;
+}
+
+:root[data-theme='win98'] .text-white,
+[data-theme='win98'] .text-white {
+  color: #000000 !important;
 }
 
 body {
