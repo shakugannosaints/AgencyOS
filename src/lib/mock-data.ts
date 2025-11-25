@@ -41,6 +41,16 @@ export const mockAgents: AgentSummary[] = [
     awards: 15,
     reprimands: 2,
     status: 'active',
+    claims: [
+      {
+        id: 'claim-ax-01',
+        itemName: '一次性收容装备包',
+        category: '收容装备',
+        reason: '执行 MSN-017 任务时需要额外防护与收容工具',
+        claimedAt: new Date().toISOString(),
+        status: 'approved',
+      },
+    ],
   },
   {
     id: 'agent-lotus',

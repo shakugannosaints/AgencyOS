@@ -39,6 +39,15 @@ export interface Campaign {
   updatedAt: string
 }
 
+export interface AgentClaimRecord {
+  id: ID
+  itemName: string
+  category: string
+  reason: string
+  claimedAt: string
+  status: 'pending' | 'approved' | 'rejected'
+}
+
 export interface AgentSummary {
   id: ID
   codename: string
@@ -49,6 +58,7 @@ export interface AgentSummary {
   awards: number
   reprimands: number
   status: AgentStatus
+  claims?: AgentClaimRecord[]
 }
 
 export interface MissionSummary {

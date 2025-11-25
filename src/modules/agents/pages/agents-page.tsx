@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { QA_CATEGORIES } from '@/lib/types'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const agentSchema = z.object({
   codename: z.string().min(2, '请输入代号'),
@@ -52,6 +52,11 @@ export function AgentsPage() {
   const updateAgent = useCampaignStore((state) => state.updateAgent)
   const deleteAgent = useCampaignStore((state) => state.deleteAgent)
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null)
+  const [claimDraft, setClaimDraft] = useState({
+    itemName: '',
+    category: '',
+    reason: '',
+  })
   const form = useForm<AgentFormValues>({
     resolver: zodResolver(agentSchema),
     defaultValues: createEmptyAgentForm(),
@@ -73,11 +78,13 @@ export function AgentsPage() {
     setEditingAgentId(agentId)
     const { id: _id, ...rest } = agent
     form.reset({ ...rest })
+    setClaimDraft({ itemName: '', category: '', reason: '' })
   }
 
   const cancelEdit = () => {
     setEditingAgentId(null)
     form.reset(createEmptyAgentForm())
+    setClaimDraft({ itemName: '', category: '', reason: '' })
   }
 
   const handleDelete = (agentId: string) => {
@@ -89,6 +96,43 @@ export function AgentsPage() {
         cancelEdit()
       }
     }
+  }
+
+  const currentClaims = useMemo(() => {
+    if (!editingAgentId) return []
+    const agent = agents.find((item) => item.id === editingAgentId)
+    return agent?.claims ?? []
+  }, [agents, editingAgentId])
+
+  const upsertClaims = (nextClaims: { id: string; itemName: string; category: string; reason: string; claimedAt: string; status: 'pending' | 'approved' | 'rejected' }[]) => {
+    if (!editingAgentId) return
+    const agent = agents.find((item) => item.id === editingAgentId)
+    if (!agent) return
+    const { id: _id, ...rest } = agent
+    updateAgent(editingAgentId, { ...rest, claims: nextClaims })
+  }
+
+  const handleAddClaim = () => {
+    if (!editingAgentId) return
+    if (!claimDraft.itemName.trim()) return
+    const next = [
+      ...currentClaims,
+      {
+        id: Math.random().toString(36).slice(2, 10),
+        itemName: claimDraft.itemName.trim(),
+        category: claimDraft.category.trim() || '一般物资',
+        reason: claimDraft.reason.trim() || '未填写理由',
+        claimedAt: new Date().toISOString(),
+        status: 'pending' as const,
+      },
+    ]
+    upsertClaims(next)
+    setClaimDraft({ itemName: '', category: '', reason: '' })
+  }
+
+  const handleDeleteClaim = (claimId: string) => {
+    const next = currentClaims.filter((item) => item.id !== claimId)
+    upsertClaims(next)
   }
 
   return (
@@ -157,6 +201,87 @@ export function AgentsPage() {
               <option value="pending">待入职</option>
             </select>
           </label>
+          {editingAgentId ? (
+            <div className="md:col-span-3 space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
+              <div className="flex items-center justify-between">
+                <span>申领物记录</span>
+                <span className="text-[0.65rem] text-agency-muted normal-case">当前特工共 {currentClaims.length} 条</span>
+              </div>
+              <div className="grid gap-3 md:grid-cols-[2fr_1.5fr_3fr_auto] items-start">
+                <label className="space-y-1">
+                  <span className="text-[0.65rem] tracking-[0.3em]">物品名称</span>
+                  <input
+                    className="w-full rounded-xl border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan"
+                    value={claimDraft.itemName}
+                    onChange={(e) => setClaimDraft((prev) => ({ ...prev, itemName: e.target.value }))}
+                    placeholder="例如：一次性收容装备包"
+                  />
+                </label>
+                <label className="space-y-1">
+                  <span className="text-[0.65rem] tracking-[0.3em]">类别</span>
+                  <input
+                    className="w-full rounded-xl border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan"
+                    value={claimDraft.category}
+                    onChange={(e) => setClaimDraft((prev) => ({ ...prev, category: e.target.value }))}
+                    placeholder="收容装备 / 后勤物资"
+                  />
+                </label>
+                <label className="space-y-1">
+                  <span className="text-[0.65rem] tracking-[0.3em]">理由</span>
+                  <input
+                    className="w-full rounded-xl border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan"
+                    value={claimDraft.reason}
+                    onChange={(e) => setClaimDraft((prev) => ({ ...prev, reason: e.target.value }))}
+                    placeholder="简要写明任务与用途"
+                  />
+                </label>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={handleAddClaim}
+                    className="w-full rounded-2xl border border-agency-cyan/60 px-3 py-2 text-[0.7rem] uppercase tracking-[0.3em] text-agency-cyan hover:border-agency-cyan disabled:border-agency-border disabled:text-agency-border"
+                    disabled={!claimDraft.itemName.trim()}
+                  >
+                    添加申领物
+                  </button>
+                </div>
+              </div>
+              {currentClaims.length ? (
+                <div className="mt-2 space-y-2 rounded-2xl border border-agency-border/80 bg-agency-ink/60 p-3">
+                  <p className="text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted">历史记录</p>
+                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    {currentClaims.map((claim) => (
+                      <div
+                        key={claim.id}
+                        className="flex items-start justify-between gap-3 rounded-xl border border-agency-border/60 bg-agency-ink/80 px-3 py-2 text-[0.75rem] text-agency-muted"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-agency-cyan">{claim.itemName}</span>
+                            <span className="rounded-full border border-agency-border px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.3em]">
+                              {claim.category || '未分类'}
+                            </span>
+                            <span className="text-[0.6rem] uppercase tracking-[0.3em] text-agency-muted">
+                              {new Date(claim.claimedAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <p className="text-[0.7rem] leading-relaxed">理由：{claim.reason}</p>
+                          <p className="text-[0.65rem] uppercase tracking-[0.3em] text-agency-amber">状态：{claim.status}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteClaim(claim.id)}
+                          className="mt-1 rounded-xl border border-agency-border px-2 py-1 text-[0.6rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-magenta hover:text-agency-magenta"
+                        >
+                          移除
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div className="flex items-center gap-3 self-end">
             {editingAgentId ? (
               <button type="button" onClick={cancelEdit} className="rounded-2xl border border-agency-border px-4 py-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
