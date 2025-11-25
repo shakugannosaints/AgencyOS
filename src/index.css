@@ -11,7 +11,7 @@
   --agency-cyan: 7 240 255;
   --agency-magenta: 255 15 154;
   --agency-amber: 245 181 76;
-  --agency-muted: 92 95 122;
+  --agency-muted: 140 147 176;
   --agency-glow-top: 7 240 255;
   --agency-glow-bottom: 255 15 154;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
@@ -30,7 +30,7 @@
   --agency-cyan: 215 38 61;
   --agency-magenta: 140 28 48;
   --agency-amber: 210 120 60;
-  --agency-muted: 120 95 105;
+  --agency-muted: 130 110 120;
   --agency-glow-top: 215 38 61;
   --agency-glow-bottom: 255 255 255;
 }

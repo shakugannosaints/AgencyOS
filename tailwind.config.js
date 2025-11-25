@@ -24,8 +24,8 @@ export default {
         },
       },
       boxShadow: {
-        panel: '0 0 0 1px rgba(7, 240, 255, 0.2), 0 20px 45px rgba(0, 0, 0, 0.45)',
-      },
+    panel: '0 0 0 1px rgba(7, 240, 255, 0.16), 0 10px 30px rgba(0, 0, 0, 0.26)',
+    },
       keyframes: {
         emergency: {
           '0%, 100%': { filter: 'hue-rotate(0deg) saturate(1)' },
