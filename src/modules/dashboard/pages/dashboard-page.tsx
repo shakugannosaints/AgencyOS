@@ -2,7 +2,7 @@ import { Panel } from '@/components/ui/panel'
 import { StatCard } from '@/components/ui/stat-card'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
-import { ActivitySquare, AlertTriangle, Trophy } from 'lucide-react'
+import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,21 +16,48 @@ export function DashboardPage() {
   const activeMission = missions.find((mission) => mission.status === 'active') ?? missions[0]
   const pendingMission = missions.find((mission) => mission.status === 'planning' || mission.status === 'debrief') ?? missions[1] ?? missions[0]
 
-  const mvpAgentCodename = useMemo(() => {
+  const { mvpLabel, watchlistLabel } = useMemo(() => {
     const inService = agents.filter((agent) => agent.status === 'active')
-    if (!inService.length) return '—'
-    const top = inService.reduce((best, current) =>
-      current.awards > best.awards ? current : best,
-    inService[0])
-    return top.codename
+    if (!inService.length) {
+      return { mvpLabel: '—', watchlistLabel: '—' }
+    }
+
+    // MVP：嘉奖最多；若并列，则选申诫最少；若仍并列，则全部并列 MVP
+    const maxAwards = Math.max(...inService.map((a) => a.awards))
+    const awardLeaders = inService.filter((a) => a.awards === maxAwards)
+
+    let mvpCandidates = awardLeaders
+    if (awardLeaders.length > 1) {
+      const minReprimandsAmongLeaders = Math.min(...awardLeaders.map((a) => a.reprimands))
+      mvpCandidates = awardLeaders.filter((a) => a.reprimands === minReprimandsAmongLeaders)
+    }
+    const mvpLabel = maxAwards > 0 && mvpCandidates.length
+      ? mvpCandidates.map((a) => a.codename).join(' · ')
+      : '—'
+
+    // 观察期：申诫最多；若并列，则选嘉奖最少；若仍并列，则全部并列观察期
+    const maxReprimands = Math.max(...inService.map((a) => a.reprimands))
+    const reprimandLeaders = inService.filter((a) => a.reprimands === maxReprimands)
+
+    let watchCandidates = reprimandLeaders
+    if (reprimandLeaders.length > 1) {
+      const minAwardsAmongLeaders = Math.min(...reprimandLeaders.map((a) => a.awards))
+      watchCandidates = reprimandLeaders.filter((a) => a.awards === minAwardsAmongLeaders)
+    }
+    const watchlistLabel = maxReprimands > 0 && watchCandidates.length
+      ? watchCandidates.map((a) => a.codename).join(' · ')
+      : '—'
+
+    return { mvpLabel, watchlistLabel }
   }, [agents])
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 md:grid-cols-4">
         <StatCard label="混沌池" value={`${activeMission?.chaos ?? 0}`} hint="领域中3以内免费，并且三倍效果" icon={<ActivitySquare />} intent="warning" />
         <StatCard label="散逸端" value={activeMission?.looseEnds ?? 0} hint="注意天气" icon={<AlertTriangle />} intent="critical" />
-        <StatCard label="嘉奖榜" value={mvpAgentCodename} hint="在职特工中嘉奖最多" icon={<Trophy />} />
+        <StatCard label="嘉奖榜" value={mvpLabel} hint="嘉奖最多；并列时申诫最少者优先" icon={<Trophy />} />
+        <StatCard label="观察期" value={watchlistLabel} hint="申诫最多；并列时嘉奖最少者优先" icon={<ShieldAlert />} intent="warning" />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
