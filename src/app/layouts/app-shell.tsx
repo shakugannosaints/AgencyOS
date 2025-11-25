@@ -24,7 +24,7 @@ export function AppShell() {
   const updateCampaign = useCampaignStore((state) => state.updateCampaign)
   const activeMission = missions.find((mission) => mission.status === 'active') ?? missions[0]
   const chaosValue = activeMission?.chaos ?? 0
-  const looseEndsValue = activeMission?.looseEnds ?? 0
+  const looseEndsValue = missions.reduce((sum, mission) => sum + (mission.looseEnds ?? 0), 0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [importMessage, setImportMessage] = useState<string | null>(null)
   const [importing, setImporting] = useState(false)
