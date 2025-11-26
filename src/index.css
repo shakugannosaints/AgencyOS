@@ -87,6 +87,19 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+:root[data-theme='fluent'] {
+  --agency-ink: 243 243 243;       /* Mica Alt background */
+  --agency-panel: 255 255 255;     /* White surface */
+  --agency-border: 229 229 229;    /* Subtle border */
+  --agency-cyan: 0 120 212;        /* Windows Blue */
+  --agency-magenta: 194 57 179;    /* Windows Magenta */
+  --agency-amber: 202 80 16;       /* Windows Orange */
+  --agency-muted: 97 97 97;        /* Secondary text */
+  --agency-glow-top: 243 243 243;
+  --agency-glow-bottom: 243 243 243;
+  font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+}
+
 :root[data-theme='day'] .text-white,
 [data-theme='day'] .text-white {
   color: #241a1a !important;
@@ -95,8 +108,10 @@
 :root[data-theme='win98'] .text-white,
 [data-theme='win98'] .text-white,
 :root[data-theme='retro'] .text-white,
-[data-theme='retro'] .text-white {
-  color: #000000 !important;
+[data-theme='retro'] .text-white,
+:root[data-theme='fluent'] .text-white,
+[data-theme='fluent'] .text-white {
+  color: #1a1a1a !important;
 }
 
 /* Win98 Specific Overrides */
@@ -198,4 +213,93 @@ body {
     background-color: rgb(var(--agency-magenta) / 1);
     color: rgb(var(--agency-ink) / 1);
   }
+}
+
+/* Fluent Design Specific Overrides */
+:root[data-theme='fluent'] body {
+  background: #f3f3f3;
+  background-image: radial-gradient(circle at 50% 0%, #ffffff 0%, #f3f3f3 100%);
+}
+
+/* Mica/Acrylic Panels */
+:root[data-theme='fluent'] .bg-agency-ink\/40,
+:root[data-theme='fluent'] .bg-agency-ink\/60,
+:root[data-theme='fluent'] .bg-agency-ink\/80,
+:root[data-theme='fluent'] .bg-agency-panel {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border-radius: 8px !important;
+}
+
+/* Inputs */
+:root[data-theme='fluent'] input,
+:root[data-theme='fluent'] select,
+:root[data-theme='fluent'] textarea {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
+  border-radius: 4px !important;
+  color: #1a1a1a !important;
+  transition: all 0.2s ease;
+}
+
+:root[data-theme='fluent'] input:focus,
+:root[data-theme='fluent'] select:focus,
+:root[data-theme='fluent'] textarea:focus {
+  background-color: #ffffff !important;
+  border-bottom-color: rgb(var(--agency-cyan)) !important;
+  border-bottom-width: 2px !important;
+  outline: none !important;
+}
+
+/* Buttons */
+:root[data-theme='fluent'] button {
+  border-radius: 4px !important;
+  transition: all 0.1s ease;
+}
+
+:root[data-theme='fluent'] button:not(.ghost):not([type='submit']) {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #1a1a1a !important;
+}
+
+:root[data-theme='fluent'] button:not(.ghost):not([type='submit']):hover {
+  background-color: #f9f9f9 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Primary Buttons (Submit/Action) */
+:root[data-theme='fluent'] button[type='submit'],
+:root[data-theme='fluent'] button.bg-agency-cyan {
+  background-color: rgb(var(--agency-cyan)) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme='fluent'] button[type='submit']:hover {
+  opacity: 0.9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Typography */
+:root[data-theme='fluent'] h1,
+:root[data-theme='fluent'] h2,
+:root[data-theme='fluent'] h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+:root[data-theme='fluent'] .text-agency-muted {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Selection */
+:root[data-theme='fluent'] ::selection {
+  background-color: rgb(var(--agency-cyan));
+  color: #ffffff;
 }

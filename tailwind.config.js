@@ -45,6 +45,7 @@ export default {
   plugins: [
     function({ addVariant }) {
       addVariant('win98', '[data-theme="win98"] &')
+      addVariant('fluent', '[data-theme="fluent"] &')
     }
   ],
 }

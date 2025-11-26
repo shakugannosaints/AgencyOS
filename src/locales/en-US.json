@@ -241,10 +241,11 @@
     "description": "Configure AgencyOS appearance and behavior.",
     "theme": {
       "title": "Interface Theme",
-      "night": "Night Mode",
-      "day": "Day Mode",
+      "night": "Cyber",
+      "day": "Agency",
       "win98": "Win98",
-      "retro": "Retro"
+      "retro": "Retro",
+      "fluent": "Modern"
     },
     "language": {
       "title": "Language"

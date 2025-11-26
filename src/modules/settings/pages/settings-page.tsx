@@ -1,5 +1,5 @@
 import { useState, useRef, type ChangeEvent } from 'react'
-import { Github, Download, Upload, Monitor, Moon, Sun, Laptop, Languages } from 'lucide-react'
+import { Github, Download, Upload, Monitor, Moon, Sun, Laptop, Languages, Layout } from 'lucide-react'
 import { useThemeStore } from '@/stores/theme-store'
 import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
@@ -167,6 +167,19 @@ export function SettingsPage() {
           >
             <Monitor className="h-6 w-6" />
             <span className="text-sm font-medium">{t('settings.theme.retro')}</span>
+          </button>
+          <button
+            onClick={() => setThemeMode('fluent')}
+            className={cn(
+              "flex flex-col items-center justify-center gap-3 border p-4 transition-all hover:border-agency-cyan hover:bg-agency-cyan/5",
+              themeMode === 'fluent' 
+                ? "border-agency-cyan bg-agency-cyan/10 text-agency-cyan" 
+                : "border-agency-border text-agency-muted",
+              isWin98 ? "rounded-none" : "rounded-xl"
+            )}
+          >
+            <Layout className="h-6 w-6" />
+            <span className="text-sm font-medium">{t('settings.theme.fluent')}</span>
           </button>
         </div>
       </section>

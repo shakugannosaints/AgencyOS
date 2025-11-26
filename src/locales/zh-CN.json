@@ -241,10 +241,11 @@
     "description": "配置 AgencyOS 的外观与行为。",
     "theme": {
       "title": "界面主题",
-      "night": "夜间模式",
-      "day": "日间模式",
+      "night": "赛博",
+      "day": "机构",
       "win98": "Win98",
-      "retro": "复古"
+      "retro": "复古",
+      "fluent": "现代"
     },
     "language": {
       "title": "语言设置"
