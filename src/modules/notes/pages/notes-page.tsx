@@ -71,13 +71,6 @@ export function NotesPage() {
         />
       </div>
 
-      {/* Example usage of notes */}
-      <ul>
-        {notes.map((note) => (
-          <li key={note.id}>{note.title}</li>
-        ))}
-      </ul>
-
       {/* Example save button */}
       <button
         onClick={() => handleSaveNotes(notes)}
