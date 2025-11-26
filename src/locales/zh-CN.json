@@ -83,6 +83,7 @@
       "arcRole": "职能",
       "awards": "嘉奖",
       "reprimands": "申诫",
+      "missionDelta": "本任务嘉奖/申诫",
       "status": "状态",
       "cancel": "取消编辑",
       "submit": "录入特工",

@@ -156,7 +156,7 @@ export function AgentsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <header>
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -173,7 +173,7 @@ export function AgentsPage() {
         </div>
       </header>
       <Panel>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-3">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-4">
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.codename')}
             <input
@@ -218,7 +218,7 @@ export function AgentsPage() {
             />
             <FormFieldError error={form.formState.errors.arcRole} />
           </label>
-          <div className="space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted md:col-span-3">
+          <div className="space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted md:col-span-4">
             <p>{t('agents.form.qaLabel')}</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {QA_CATEGORIES.map((category) => (
@@ -358,7 +358,7 @@ export function AgentsPage() {
               <th className="px-3 py-2 text-left">{t('agents.form.arcAnomaly')}/{t('agents.form.arcReality')}/{t('agents.form.arcRole')}</th>
               <th className="px-3 py-2 text-left">{t('agents.form.qaLabel')}</th>
               <th className="px-3 py-2 text-left">{t('agents.form.awards')}/{t('agents.form.reprimands')}</th>
-              <th className="px-3 py-2 text-left">Δ</th>
+              <th className="px-3 py-2 text-left">{t('agents.form.missionDelta')}</th>
               <th className="px-3 py-2 text-left">{t('agents.form.status')}</th>
               <th className="px-3 py-2 text-left"></th>
             </tr>

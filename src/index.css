@@ -193,6 +193,7 @@ body {
   html {
     background-color: rgb(var(--agency-ink) / 1);
     color: rgb(var(--agency-cyan) / 1);
+    overflow-y: scroll;
   }
 
   body {

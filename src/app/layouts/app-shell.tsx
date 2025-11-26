@@ -279,7 +279,7 @@ export function AppShell() {
           </div>
         </aside>
 
-        <main className="space-y-6">
+        <main className="min-w-0 space-y-6">
           <div className="grid gap-3 md:grid-cols-3">
             <CommandStrip label={t('app.common.session')} value={campaign.divisionCode} />
             <CommandStrip label={t('app.common.nextBriefing')} value={activeMission?.code ?? '—'} />
