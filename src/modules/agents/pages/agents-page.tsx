@@ -186,7 +186,7 @@ export function AgentsPage() {
             <FormFieldError error={form.formState.errors.codename} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
-            {t('agents.form.arcAnomaly')}
+            {t('agents.form.arcAnomalyf')}
             <input
               className={cn(
                 "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
@@ -197,7 +197,7 @@ export function AgentsPage() {
             <FormFieldError error={form.formState.errors.arcAnomaly} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
-            {t('agents.form.arcReality')}
+            {t('agents.form.arcRealityf')}
             <input
               className={cn(
                 "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
@@ -208,7 +208,7 @@ export function AgentsPage() {
             <FormFieldError error={form.formState.errors.arcReality} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
-            {t('agents.form.arcRole')}
+            {t('agents.form.arcRolef')}
             <input
               className={cn(
                 "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
@@ -218,7 +218,7 @@ export function AgentsPage() {
             />
             <FormFieldError error={form.formState.errors.arcRole} />
           </label>
-          <div className="space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted md:col-span-4">
+          <div className="space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted md:col-span-3">
             <p>{t('agents.form.qaLabel')}</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {QA_CATEGORIES.map((category) => (
@@ -350,7 +350,7 @@ export function AgentsPage() {
           </div>
         </form>
       </Panel>
-      <Panel className="overflow-x-auto p-0">
+      <Panel className="overflow-x-auto p-0 lg:col-span-2">
         <table className="min-w-full divide-y divide-agency-border/60 text-sm">
           <thead className="bg-agency-ink/60 text-xs uppercase tracking-[0.2em] text-agency-muted">
             <tr>
