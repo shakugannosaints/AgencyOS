@@ -33,7 +33,7 @@ export function DashboardPage() {
   return (
     <div className="space-y-6">
       <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label={t('dashboard.chaosPool')} value={``} hint={t('dashboard.chaosHint')} icon={<ActivitySquare />} intent="warning" />
+        <StatCard label={t('dashboard.chaosPool')} value={activeMission?.chaos ?? 0} hint={t('dashboard.chaosHint')} icon={<ActivitySquare />} intent="warning" />
         <StatCard label={t('dashboard.looseEnds')} value={activeMission?.looseEnds ?? 0} hint={t('dashboard.weatherHint')} icon={<AlertTriangle />} intent="critical" />
         <StatCard
           label={t('dashboard.mvp')}
