@@ -1,4 +1,6 @@
 import { Panel } from '@/components/ui/panel'
+import { FormFieldError } from '@/components/ui/form-field'
+import { useToast } from '@/components/ui/toast'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -6,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { QA_CATEGORIES } from '@/lib/types'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
 
 const agentSchema = z.object({
   codename: z.string().min(2, '请输入代号'),
@@ -49,6 +52,7 @@ const createEmptyAgentForm = (): AgentFormValues => ({
 
 export function AgentsPage() {
   const { t } = useTranslation()
+  const { showToast } = useToast()
   const agents = useCampaignStore((state) => state.agents)
   const createAgent = useCampaignStore((state) => state.createAgent)
   const updateAgent = useCampaignStore((state) => state.updateAgent)
@@ -73,8 +77,10 @@ export function AgentsPage() {
       const { id: _id, claims, awardsDelta, reprimandsDelta, ...rest } = agent
       updateAgent(editingAgentId, { ...rest, ...values, claims, awardsDelta, reprimandsDelta })
       setEditingAgentId(null)
+      showToast('success', t('agents.toast.updated', { name: values.codename }))
     } else {
       createAgent(values)
+      showToast('success', t('agents.toast.created', { name: values.codename }))
     }
     form.reset(createEmptyAgentForm())
   }
@@ -99,6 +105,7 @@ export function AgentsPage() {
     if (!target) return
     if (window.confirm(t('agents.deleteConfirm', { name: target.codename }))) {
       deleteAgent(agentId)
+      showToast('success', t('agents.toast.deleted', { name: target.codename }))
       if (editingAgentId === agentId) {
         cancelEdit()
       }
@@ -170,21 +177,46 @@ export function AgentsPage() {
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.codename')}
             <input
-              className="w-full border border-agency-border bg-agency-ink/60 px-3 py-2 font-mono text-sm text-agency-cyan rounded-xl win98:rounded-none"
+              className={cn(
+                "w-full border bg-agency-ink/60 px-3 py-2 font-mono text-sm text-agency-cyan rounded-xl win98:rounded-none",
+                form.formState.errors.codename ? "border-agency-magenta" : "border-agency-border"
+              )}
               {...form.register('codename')}
             />
+            <FormFieldError error={form.formState.errors.codename} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcAnomaly')}
-            <input className="w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('arcAnomaly')} />
+            <input
+              className={cn(
+                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
+                form.formState.errors.arcAnomaly ? "border-agency-magenta" : "border-agency-border"
+              )}
+              {...form.register('arcAnomaly')}
+            />
+            <FormFieldError error={form.formState.errors.arcAnomaly} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcReality')}
-            <input className="w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('arcReality')} />
+            <input
+              className={cn(
+                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
+                form.formState.errors.arcReality ? "border-agency-magenta" : "border-agency-border"
+              )}
+              {...form.register('arcReality')}
+            />
+            <FormFieldError error={form.formState.errors.arcReality} />
           </label>
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcRole')}
-            <input className="w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('arcRole')} />
+            <input
+              className={cn(
+                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
+                form.formState.errors.arcRole ? "border-agency-magenta" : "border-agency-border"
+              )}
+              {...form.register('arcRole')}
+            />
+            <FormFieldError error={form.formState.errors.arcRole} />
           </label>
           <div className="space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted md:col-span-3">
             <p>{t('agents.form.qaLabel')}</p>
@@ -341,13 +373,13 @@ export function AgentsPage() {
                 <td className="px-4 py-3">{agent.arcAnomaly}</td>
                 <td className="px-4 py-3">{agent.arcReality}</td>
                 <td className="px-4 py-3">{agent.arcRole}</td>
-                <td className="px-4 py-3">
-                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <td className="px-4 py-3 min-w-[400px]">
+                  <div className="grid gap-2 grid-cols-3">
                     {QA_CATEGORIES.map((category) => (
-                      <div key={category.key} className="border border-agency-border/60 bg-agency-ink/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted rounded-xl win98:rounded-none">
-                        <div className="flex items-center justify-between font-medium">
-                          <span>{t(`agents.stats.${category.key}`)}</span>
-                          <span className="font-mono text-agency-cyan">{agent.qa[category.key].current} / {agent.qa[category.key].max}</span>
+                      <div key={category.key} className="border border-agency-border/60 bg-agency-ink/40 px-2 py-1.5 text-[0.55rem] uppercase tracking-[0.15em] text-agency-muted rounded-xl win98:rounded-none">
+                        <div className="text-center font-medium">
+                          <div>{t(`agents.stats.${category.key}`)}</div>
+                          <div className="font-mono text-agency-cyan text-[0.7rem] mt-0.5">{agent.qa[category.key].current} / {agent.qa[category.key].max}</div>
                         </div>
                       </div>
                     ))}
@@ -358,7 +390,7 @@ export function AgentsPage() {
                 <td className="px-4 py-3 text-xs text-agency-muted">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[0.65rem]">{t('agents.form.awards')}+</span>
+                      <span className="text-[0.65rem] w-20 text-right">{t('agents.form.awards')}+</span>
                       <input
                         type="number"
                         className="w-16 border border-agency-border bg-agency-ink/60 px-2 py-1 text-[0.75rem] font-mono text-agency-cyan rounded win98:rounded-none"
@@ -372,7 +404,7 @@ export function AgentsPage() {
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[0.65rem]">{t('agents.form.reprimands')}+</span>
+                      <span className="text-[0.65rem] w-20 text-right">{t('agents.form.reprimands')}+</span>
                       <input
                         type="number"
                         className="w-16 border border-agency-border bg-agency-ink/60 px-2 py-1 text-[0.75rem] font-mono text-agency-cyan rounded win98:rounded-none"

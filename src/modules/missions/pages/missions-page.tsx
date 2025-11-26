@@ -1,4 +1,5 @@
 import { Panel } from '@/components/ui/panel'
+import { useToast } from '@/components/ui/toast'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useEffect, useMemo, useState } from 'react'
@@ -24,6 +25,7 @@ type MissionFormValues = z.infer<typeof missionSchema>
 
 export function MissionsPage() {
   const { t } = useTranslation()
+  const { showToast } = useToast()
   const missions = useCampaignStore((state) => state.missions)
   const adjustMissionChaos = useCampaignStore((state) => state.adjustMissionChaos)
   const adjustMissionLooseEnds = useCampaignStore((state) => state.adjustMissionLooseEnds)
@@ -70,8 +72,10 @@ export function MissionsPage() {
     if (editingMissionId) {
       updateMission(editingMissionId, payload)
       setEditingMissionId(null)
+      showToast('success', t('missions.toast.updated', { name: values.name }))
     } else {
       createMission(payload)
+      showToast('success', t('missions.toast.created', { name: values.name }))
     }
     const defaults = createDefaultMissionValues()
     form.reset({ ...defaults, code: 'MSN-' + String(Math.floor(Math.random() * 900 + 100)) })
@@ -105,6 +109,7 @@ export function MissionsPage() {
     if (!mission) return
     if (window.confirm(t('missions.deleteConfirm', { code: mission.code, name: mission.name }))) {
       deleteMission(missionId)
+      showToast('success', t('missions.toast.deleted', { name: mission.name }))
       if (editingMissionId === missionId) {
         cancelMissionEdit()
       }

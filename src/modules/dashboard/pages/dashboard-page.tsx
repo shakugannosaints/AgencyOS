@@ -1,9 +1,9 @@
-import { Panel } from '@/components/ui/panel'
+﻿import { Panel } from '@/components/ui/panel'
 import { StatCard } from '@/components/ui/stat-card'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
+import { useMvpWatchlist } from '@/stores/hooks/use-mvp-watchlist'
 import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert } from 'lucide-react'
-import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -12,74 +12,18 @@ export function DashboardPage() {
   const campaign = useCampaignStore((state) => state.campaign)
   const missions = useCampaignStore((state) => state.missions)
   const anomalies = useCampaignStore((state) => state.anomalies)
-  const agents = useCampaignStore((state) => state.agents)
   const navigate = useNavigate()
 
   const activeMission = missions.find((mission) => mission.status === 'active') ?? null
   const pendingMission = missions.find((mission) => mission.status === 'planning' || mission.status === 'debrief') ?? missions[1] ?? missions[0]
 
-  const { mvpLabel, watchlistLabel } = useMemo(() => {
-    const inService = agents.filter((agent) => agent.status === 'active')
-    if (!inService.length) {
-      return { mvpLabel: '—', watchlistLabel: '—' }
-    }
-
-    // 本次任务内的增量用于评选 MVP / 观察期；若未设置则视为 0
-    const getAwards = (a: (typeof inService)[number]) => a.awardsDelta ?? 0
-    const getReprimands = (a: (typeof inService)[number]) => a.reprimandsDelta ?? 0
-
-    const allAwardsZero = inService.every((a) => getAwards(a) === 0)
-    const allReprimandsZero = inService.every((a) => getReprimands(a) === 0)
-
-    // 观察期：先处理“全 0”与一般规则（基于本次任务的申诫增量）
-    let watchCandidates = inService
-    if (allReprimandsZero) {
-      // 所有人申诫为 0 → 全员观察期
-      watchCandidates = inService
-    } else {
-      // 申诫最多；若平局 → 嘉奖最少；再平局 → 全员平局者观察期
-      const maxReprimands = Math.max(...inService.map((a) => getReprimands(a)))
-      const reprimandLeaders = inService.filter((a) => getReprimands(a) === maxReprimands)
-      if (reprimandLeaders.length === 1) {
-        watchCandidates = reprimandLeaders
-      } else {
-        const minAwardsAmongLeaders = Math.min(...reprimandLeaders.map((a) => getAwards(a)))
-        watchCandidates = reprimandLeaders.filter((a) => getAwards(a) === minAwardsAmongLeaders)
-      }
-    }
-
-    // MVP：从“未进入观察期”的特工中评选；若所有嘉奖为 0 或候选为空，则无人 MVP
-    const remainingForMvp = inService.filter(
-      (agent) => !watchCandidates.some((w) => w.id === agent.id),
-    )
-
-    let mvpCandidates: typeof inService = []
-    if (!allAwardsZero && remainingForMvp.length) {
-      const maxAwards = Math.max(...remainingForMvp.map((a) => getAwards(a)))
-      const awardLeaders = remainingForMvp.filter((a) => getAwards(a) === maxAwards)
-      if (awardLeaders.length === 1) {
-        mvpCandidates = awardLeaders
-      } else {
-        const minReprimandsAmongLeaders = Math.min(...awardLeaders.map((a) => getReprimands(a)))
-        mvpCandidates = awardLeaders.filter((a) => getReprimands(a) === minReprimandsAmongLeaders)
-      }
-    }
-
-    const mvpLabel = mvpCandidates.length
-      ? mvpCandidates.map((a) => a.codename).join(' · ')
-      : '—'
-
-    const watchlistLabel = watchCandidates.length
-      ? watchCandidates.map((a) => a.codename).join(' · ')
-      : '—'
-
-    return { mvpLabel, watchlistLabel }
-  }, [agents])
+  // Use extracted hook to calculate MVP and watchlist
+  const { mvpLabel, watchlistLabel } = useMvpWatchlist()
 
   return (
     <div className="space-y-6">
       <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label={t('dashboard.chaosPool')} value={`${activeMission?.chaos ?? 0}`} hint={t('dashboard.chaosHint')} icon={<ActivitySquare />} intent="warning" />
+        <StatCard label={t('dashboard.chaosPool')} value={``} hint={t('dashboard.chaosHint')} icon={<ActivitySquare />} intent="warning" />
         <StatCard label={t('dashboard.looseEnds')} value={activeMission?.looseEnds ?? 0} hint={t('dashboard.weatherHint')} icon={<AlertTriangle />} intent="critical" />
         <StatCard
           label={t('dashboard.mvp')}
@@ -123,7 +67,7 @@ export function DashboardPage() {
             </div>
             <div className="flex justify-between">
               <dt>{t('dashboard.optionalHint')}</dt>
-              <dd>{activeMission?.optionalObjectiveHint ?? '—'}</dd>
+              <dd>{activeMission?.optionalObjectiveHint ?? ''}</dd>
             </div>
           </dl>
         </Panel>
@@ -136,15 +80,15 @@ export function DashboardPage() {
           <ul className="space-y-3 text-sm">
             <li className="flex items-center justify-between border-b border-agency-border/30 pb-2">
               <span className="text-agency-muted">{t('dashboard.code')}</span>
-              <span className="font-mono text-agency-cyan">{pendingMission?.code ?? '—'}</span>
+              <span className="font-mono text-agency-cyan">{pendingMission?.code ?? ''}</span>
             </li>
             <li className="flex items-center justify-between border-b border-agency-border/30 pb-2">
               <span className="text-agency-muted">{t('dashboard.expectedAgents')}</span>
-              <span>{pendingMission?.expectedAgents ?? '—'}</span>
+              <span>{pendingMission?.expectedAgents ?? ''}</span>
             </li>
             <li className="flex items-center justify-between border-b border-agency-border/30 pb-2">
               <span className="text-agency-muted">{t('dashboard.goals')}</span>
-              <span>{pendingMission?.goalsSummary ?? '—'}</span>
+              <span>{pendingMission?.goalsSummary ?? ''}</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-agency-muted">{t('dashboard.briefingUpdate')}</span>

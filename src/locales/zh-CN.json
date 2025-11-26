@@ -125,7 +125,12 @@
       "approved": "已批准",
       "rejected": "已拒绝"
     },
-    "editing": "编辑中"
+    "editing": "编辑中",
+    "toast": {
+      "created": "特工「{{name}}」已创建",
+      "updated": "特工「{{name}}」已更新",
+      "deleted": "特工「{{name}}」已删除"
+    }
   },
   "missions": {
     "title": "任务列表",
@@ -173,6 +178,11 @@
       "active": "进行中",
       "debrief": "结算",
       "archived": "归档"
+    },
+    "toast": {
+      "created": "任务「{{name}}」已创建",
+      "updated": "任务「{{name}}」已更新",
+      "deleted": "任务「{{name}}」已删除"
     }
   },
   "anomalies": {

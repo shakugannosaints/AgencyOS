@@ -80,7 +80,7 @@
       "codenamePlaceholder": "Enter codename",
       "arcAnomaly": "Anomaly",
       "arcReality": "Reality",
-      "arcRole": "Role",
+      "arcRole": "Competency",
       "awards": "Awards",
       "reprimands": "Reprimands",
       "status": "Status",
@@ -125,7 +125,12 @@
       "approved": "Approved",
       "rejected": "Rejected"
     },
-    "editing": "Editing"
+    "editing": "Editing",
+    "toast": {
+      "created": "Agent \"{{name}}\" created",
+      "updated": "Agent \"{{name}}\" updated",
+      "deleted": "Agent \"{{name}}\" deleted"
+    }
   },
   "missions": {
     "title": "Mission List",
@@ -173,6 +178,11 @@
       "active": "Active",
       "debrief": "Debrief",
       "archived": "Archived"
+    },
+    "toast": {
+      "created": "Mission \"{{name}}\" created",
+      "updated": "Mission \"{{name}}\" updated",
+      "deleted": "Mission \"{{name}}\" deleted"
     }
   },
   "anomalies": {
