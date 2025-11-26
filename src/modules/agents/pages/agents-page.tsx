@@ -399,7 +399,7 @@ export function AgentsPage() {
                 <td className="px-3 py-2 text-xs text-agency-muted">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1">
-                      <span className="text-[0.6rem] w-6">+C/嘉奖</span>
+                      <span className="text-[0.6rem] w-8">+{t('agents.awardsDelta')}</span>
                       <input
                         type="number"
                         className="w-12 border border-agency-border bg-agency-ink/60 px-1 py-0.5 text-[0.7rem] font-mono text-agency-cyan rounded win98:rounded-none"
@@ -413,7 +413,7 @@ export function AgentsPage() {
                       />
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-[0.6rem] w-6">+D/申诫</span>
+                      <span className="text-[0.6rem] w-8">+{t('agents.reprimandsDelta')}</span>
                       <input
                         type="number"
                         className="w-12 border border-agency-border bg-agency-ink/60 px-1 py-0.5 text-[0.7rem] font-mono text-agency-cyan rounded win98:rounded-none"
