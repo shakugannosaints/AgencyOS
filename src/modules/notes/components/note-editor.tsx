@@ -23,31 +23,18 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
   const { t } = useTranslation()
   const editorRef = useRef<HTMLDivElement>(null)
   const [isDirty, setIsDirty] = useState(false)
-  // Track whether the user is actively editing to prevent external updates from overwriting their input
-  const isEditingRef = useRef(false)
-  // Track the initial content to only sync on first mount or when explicitly changed externally
-  const lastSyncedContentRef = useRef<string | null>(null)
 
   useEffect(() => {
-    // Only sync content if:
-    // 1. This is the first mount (lastSyncedContentRef.current is null)
-    // 2. User is not actively editing
-    // 3. The content has genuinely changed from what we last synced
-    if (editorRef.current && !isEditingRef.current) {
-      if (lastSyncedContentRef.current === null || 
-          (lastSyncedContentRef.current !== initialContent && !isDirty)) {
-        editorRef.current.innerHTML = initialContent
-        lastSyncedContentRef.current = initialContent
-      }
+    if (editorRef.current && editorRef.current.innerHTML !== initialContent) {
+      editorRef.current.innerHTML = initialContent
     }
-  }, [initialContent, isDirty])
+  }, [initialContent])
 
   const handleInput = () => {
-    isEditingRef.current = true
     setIsDirty(true)
     if (editorRef.current) {
-      // Auto-save debounce could be added here, but for now we rely on blur or manual save
-      // For this requirement "automatically save after any edit", we can use a debounce
+      const updatedContent = editorRef.current.innerHTML;
+      onSave(updatedContent); // Save the updated content immediately
     }
   }
 
@@ -55,13 +42,8 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isDirty && editorRef.current) {
-        const currentContent = editorRef.current.innerHTML
-        onSave(currentContent)
-        // Update the synced content reference to prevent unnecessary re-syncs
-        lastSyncedContentRef.current = currentContent
+        onSave(editorRef.current.innerHTML)
         setIsDirty(false)
-        // Reset editing flag after save completes
-        isEditingRef.current = false
       }
     }, 1000)
 
@@ -205,13 +187,8 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
         onInput={handleInput}
         onBlur={() => {
           if (editorRef.current) {
-            const currentContent = editorRef.current.innerHTML
-            onSave(currentContent)
-            // Update the synced content reference
-            lastSyncedContentRef.current = currentContent
+            onSave(editorRef.current.innerHTML)
             setIsDirty(false)
-            // Reset editing flag on blur
-            isEditingRef.current = false
           }
         }}
       />
