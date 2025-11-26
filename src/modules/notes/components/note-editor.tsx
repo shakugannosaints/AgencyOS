@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeRaw from 'rehype-raw'
+import { defaultSchema } from 'hast-util-sanitize'
 
 interface NoteEditorProps {
   initialContent: string
@@ -90,12 +91,101 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
 
         {mode === 'preview' && (
           <div className="w-full min-h-[200px] rounded-md border border-input bg-transparent p-3 prose prose-sm dark:prose-invert overflow-auto">
-            {/*
-              We enable rehypeRaw to allow rendering of embedded HTML inside Markdown.
-              For security, rehypeSanitize is applied after rehypeRaw to strip dangerous elements/attributes.
-              If you need a custom allowlist, replace rehypeSanitize with a schema from 'hast-util-sanitize'.
-            */}
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize]}>
+            {
+              /*
+                We enable rehypeRaw to allow rendering of embedded HTML inside Markdown.
+                rehype-sanitize is applied after rehypeRaw to strip dangerous elements/attributes.
+                By default, style attributes are removed. To allow inline color/font styles on <span>,
+                we extend the default schema to permit `style` on `span` only.
+
+                WARNING: allowing `style` increases XSS risk if note content is untrusted. If notes
+                can be authored by untrusted users, consider a safer approach (CSS classes, or a
+                stricter sanitize schema).
+              */
+            }
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  (() => {
+                    // Build an extended sanitize schema based on the default one.
+                    const base = { ...(defaultSchema as any) }
+
+                    const existingAttrs = (base.attributes || {}) as Record<string, string[]>
+
+                    // Helper to merge attribute arrays safely
+                    const mergeAttrs = (tag: string, extra: string[]) => {
+                      const prev = existingAttrs[tag] || []
+                      return Array.from(new Set([...prev, ...extra]))
+                    }
+
+                    const extendedAttributes: Record<string, string[]> = {
+                      ...existingAttrs,
+                      // allow common presentation attributes and style on many elements
+                      '*': mergeAttrs('*', ['className', 'id', 'style']),
+                      'span': mergeAttrs('span', ['style']),
+                      'div': mergeAttrs('div', ['style']),
+                      'p': mergeAttrs('p', ['style']),
+                      'h1': mergeAttrs('h1', ['style']),
+                      'h2': mergeAttrs('h2', ['style']),
+                      'h3': mergeAttrs('h3', ['style']),
+                      'h4': mergeAttrs('h4', ['style']),
+                      'h5': mergeAttrs('h5', ['style']),
+                      'h6': mergeAttrs('h6', ['style']),
+                      'a': mergeAttrs('a', ['href', 'title', 'target', 'rel', 'style', 'className']),
+                      'img': mergeAttrs('img', ['src', 'alt', 'title', 'width', 'height', 'style', 'className']),
+                      'iframe': mergeAttrs('iframe', ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen', 'style']),
+                      'table': mergeAttrs('table', ['style', 'className']),
+                      'thead': mergeAttrs('thead', ['style']),
+                      'tbody': mergeAttrs('tbody', ['style']),
+                      'tr': mergeAttrs('tr', ['style']),
+                      'th': mergeAttrs('th', ['style']),
+                      'td': mergeAttrs('td', ['style']),
+                      'pre': mergeAttrs('pre', ['style']),
+                      'code': mergeAttrs('code', ['className', 'style']),
+                      'blockquote': mergeAttrs('blockquote', ['style'])
+                    }
+
+                    // Extend allowed tagNames to include common structural and media elements
+                    const extraTagNames = [
+                      'div',
+                      'span',
+                      'section',
+                      'article',
+                      'h1',
+                      'h2',
+                      'h3',
+                      'h4',
+                      'h5',
+                      'h6',
+                      'img',
+                      'iframe',
+                      'table',
+                      'thead',
+                      'tbody',
+                      'tr',
+                      'th',
+                      'td',
+                      'pre',
+                      'code',
+                      'blockquote'
+                    ]
+
+                    const tagNames = Array.from(
+                      new Set([...(base.tagNames || []), ...extraTagNames])
+                    )
+
+                    return {
+                      ...base,
+                      tagNames,
+                      attributes: extendedAttributes
+                    }
+                  })()
+                ]
+              ]}
+            >
               {value || ''}
             </ReactMarkdown>
           </div>
