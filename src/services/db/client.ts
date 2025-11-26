@@ -1,6 +1,6 @@
 import Dexie, { type Table } from 'dexie'
 import type { AgentSummary, AnomalySummary, Campaign, MissionLogEntry, MissionSummary } from '@/lib/types'
-import type { CustomTrackSnapshot } from '@/lib/types'
+import type { CustomTrackSnapshot, Note } from '@/lib/types'
 
 export class AgencyDatabase extends Dexie {
   campaigns!: Table<Campaign>
@@ -9,6 +9,7 @@ export class AgencyDatabase extends Dexie {
   anomalies!: Table<AnomalySummary>
   logs!: Table<MissionLogEntry>
   tracks?: Table<CustomTrackSnapshot, string>
+  notes!: Table<Note>
 
   constructor() {
     super('agency_os')
@@ -25,6 +26,9 @@ export class AgencyDatabase extends Dexie {
       anomalies: '&id, status, codename',
       logs: '&id, missionId, timestamp',
       tracks: '&id',
+    })
+    this.version(3).stores({
+      notes: '&id, title, updatedAt',
     })
   }
 }

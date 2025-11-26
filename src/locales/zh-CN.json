@@ -8,7 +8,8 @@
       "anomalies": "异常体库",
       "reports": "任务报告",
       "tracks": "自定义轨道",
-      "settings": "系统设置"
+      "settings": "系统设置",
+      "notes": "笔记"
     },
     "common": {
       "edit": "编辑",
@@ -37,6 +38,31 @@
       "exportSuccess": "已导出当前快照。",
       "note": "备注",
       "recordLog": "记录日志"
+    }
+  },
+  "notes": {
+    "description": "管理您的任务笔记和情报。",
+    "create": "新建笔记",
+    "newNoteTitle": "新笔记",
+    "empty": "暂无笔记。创建一个开始记录。",
+    "untitled": "无标题笔记",
+    "noSummary": "未提供摘要。",
+    "lastModified": "最后修改",
+    "deleteConfirm": "确定要删除这条笔记吗？",
+    "title": "标题",
+    "titlePlaceholder": "输入笔记标题...",
+    "summary": "摘要",
+    "summaryPlaceholder": "笔记简要说明...",
+    "content": "内容",
+    "editor": {
+      "bold": "加粗",
+      "italic": "斜体",
+      "colorRed": "红色",
+      "colorBlue": "蓝色",
+      "colorYellow": "黄色",
+      "colorBlack": "黑色",
+      "fontMono": "等宽字体",
+      "fontSans": "无衬线字体"
     }
   },
   "dashboard": {

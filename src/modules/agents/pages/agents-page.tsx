@@ -59,6 +59,7 @@ export function AgentsPage() {
   const deleteAgent = useCampaignStore((state) => state.deleteAgent)
   const settleAgentDeltas = useCampaignStore((state) => state.settleAgentDeltas)
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null)
+  const [pendingClaims, setPendingClaims] = useState<{ id: string; itemName: string; category: string; reason: string; claimedAt: string; status: 'pending' | 'approved' | 'rejected' }[]>([])
   const [claimDraft, setClaimDraft] = useState({
     itemName: '',
     category: '',
@@ -79,10 +80,11 @@ export function AgentsPage() {
       setEditingAgentId(null)
       showToast('success', t('agents.toast.updated', { name: values.codename }))
     } else {
-      createAgent(values)
+      createAgent({ ...values, claims: pendingClaims.length > 0 ? pendingClaims : undefined })
       showToast('success', t('agents.toast.created', { name: values.codename }))
     }
     form.reset(createEmptyAgentForm())
+    setPendingClaims([])
   }
 
   const startEdit = (agentId: string) => {
@@ -98,6 +100,7 @@ export function AgentsPage() {
     setEditingAgentId(null)
     form.reset(createEmptyAgentForm())
     setClaimDraft({ itemName: '', category: '', reason: '' })
+    setPendingClaims([])
   }
 
   const handleDelete = (agentId: string) => {
@@ -113,21 +116,25 @@ export function AgentsPage() {
   }
 
   const currentClaims = useMemo(() => {
-    if (!editingAgentId) return []
-    const agent = agents.find((item) => item.id === editingAgentId)
-    return agent?.claims ?? []
-  }, [agents, editingAgentId])
+    if (editingAgentId) {
+      const agent = agents.find((item) => item.id === editingAgentId)
+      return agent?.claims ?? []
+    }
+    return pendingClaims
+  }, [agents, editingAgentId, pendingClaims])
 
   const upsertClaims = (nextClaims: { id: string; itemName: string; category: string; reason: string; claimedAt: string; status: 'pending' | 'approved' | 'rejected' }[]) => {
-    if (!editingAgentId) return
-    const agent = agents.find((item) => item.id === editingAgentId)
-    if (!agent) return
-    const { id: _id, ...rest } = agent
-    updateAgent(editingAgentId, { ...rest, claims: nextClaims })
+    if (editingAgentId) {
+      const agent = agents.find((item) => item.id === editingAgentId)
+      if (!agent) return
+      const { id: _id, ...rest } = agent
+      updateAgent(editingAgentId, { ...rest, claims: nextClaims })
+    } else {
+      setPendingClaims(nextClaims)
+    }
   }
 
   const handleAddClaim = () => {
-    if (!editingAgentId) return
     if (!claimDraft.itemName.trim()) return
     const next = [
       ...currentClaims,
@@ -257,12 +264,11 @@ export function AgentsPage() {
               <option value="pending">{t('agents.statusOptions.pending')}</option>
             </select>
           </label>
-          {editingAgentId ? (
-            <div className="md:col-span-3 space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
-              <div className="flex items-center justify-between">
-                <span>{t('agents.claims.title')}</span>
-                <span className="text-[0.65rem] text-agency-muted normal-case">{t('agents.claims.count', { count: currentClaims.length })}</span>
-              </div>
+          <div className="md:col-span-3 space-y-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
+            <div className="flex items-center justify-between">
+              <span>{t('agents.claims.title')}</span>
+              <span className="text-[0.65rem] text-agency-muted normal-case">{t('agents.claims.count', { count: currentClaims.length })}</span>
+            </div>
               <div className="grid gap-3 md:grid-cols-[2fr_1.5fr_3fr_auto] items-start">
                 <label className="space-y-1">
                   <span className="text-[0.65rem] tracking-[0.3em]">{t('agents.claims.itemName')}</span>
@@ -337,7 +343,6 @@ export function AgentsPage() {
                 </div>
               ) : null}
             </div>
-          ) : null}
           <div className="flex items-center gap-3 self-end">
             {editingAgentId ? (
               <button type="button" onClick={cancelEdit} className="border border-agency-border px-4 py-2 text-xs uppercase tracking-[0.3em] text-agency-muted rounded-2xl win98:rounded-none">
@@ -394,7 +399,7 @@ export function AgentsPage() {
                 <td className="px-3 py-2 text-xs text-agency-muted">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1">
-                      <span className="text-[0.6rem] w-6">+A</span>
+                      <span className="text-[0.6rem] w-6">+C/嘉奖</span>
                       <input
                         type="number"
                         className="w-12 border border-agency-border bg-agency-ink/60 px-1 py-0.5 text-[0.7rem] font-mono text-agency-cyan rounded win98:rounded-none"
@@ -408,7 +413,7 @@ export function AgentsPage() {
                       />
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-[0.6rem] w-6">+R</span>
+                      <span className="text-[0.6rem] w-6">+D/申诫</span>
                       <input
                         type="number"
                         className="w-12 border border-agency-border bg-agency-ink/60 px-1 py-0.5 text-[0.7rem] font-mono text-agency-cyan rounded win98:rounded-none"

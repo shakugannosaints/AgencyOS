@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings } from 'lucide-react'
+import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings, Notebook } from 'lucide-react'
 import { CommandStrip } from '@/components/ui/command-strip'
 import { cn } from '@/lib/utils'
 import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
@@ -40,6 +40,7 @@ export function AppShell() {
     { label: t('app.nav.missions'), path: '/missions', icon: BriefcaseBusiness },
     { label: t('app.nav.anomalies'), path: '/anomalies', icon: Atom },
     { label: t('app.nav.reports'), path: '/reports', icon: ScrollText },
+    { label: t('app.nav.notes'), path: '/notes', icon: Notebook }, // Using ScrollText temporarily or find a better icon
     { label: t('app.nav.tracks'), path: '/tracks', icon: Orbit },
     { label: t('app.nav.settings'), path: '/settings', icon: Settings },
   ]

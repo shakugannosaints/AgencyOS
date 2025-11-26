@@ -98,6 +98,15 @@ export interface AnomalySummary {
   status: 'active' | 'contained' | 'neutralized' | 'escaped'
 }
 
+export interface Note {
+  id: ID
+  title: string
+  summary: string
+  content: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface MissionLogEntry {
   id: ID
   missionId: ID
@@ -112,6 +121,7 @@ export interface AgencySnapshot {
   agents: AgentSummary[]
   missions: MissionSummary[]
   anomalies: AnomalySummary[]
+  notes: Note[]
   logs: MissionLogEntry[]
   tracks?: CustomTrackSnapshot[]
 }

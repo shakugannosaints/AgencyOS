@@ -1,4 +1,4 @@
-import type { AgencySnapshot } from '@/lib/types'
+import type { AgencySnapshot, Note } from '@/lib/types'
 import { db } from '@/services/db/client'
 
 export const SNAPSHOT_VERSION = 1
@@ -15,12 +15,13 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     return null
   }
 
-  const [agents, missions, anomalies, logs, tracks] = await Promise.all([
+  const [agents, missions, anomalies, logs, tracks, notes] = await Promise.all([
     db.agents.toArray(),
     db.missions.toArray(),
     db.anomalies.toArray(),
     db.logs?.toArray() ?? [],
     db.tracks?.toArray() ?? [],
+    db.notes.toArray(),
   ])
 
   return {
@@ -30,11 +31,20 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     anomalies,
     logs,
     tracks,
+    notes: notes,
   }
 }
 
 export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
-  await db.transaction('rw', [db.campaigns, db.agents, db.missions, db.anomalies, db.logs ?? 'logs', db.tracks ?? 'tracks'], async () => {
+  await db.transaction('rw', [
+    db.campaigns,
+    db.agents,
+    db.missions,
+    db.anomalies,
+    db.logs ?? 'logs',
+    db.tracks ?? 'tracks',
+    db.notes,
+  ], async () => {
     await db.campaigns.clear()
     await db.campaigns.put(snapshot.campaign)
 
@@ -65,6 +75,11 @@ export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
       if (snapshot.tracks?.length) {
         await db.tracks.bulkPut(snapshot.tracks)
       }
+    }
+
+    await db.notes.clear()
+    if (snapshot.notes.length) {
+      await db.notes.bulkPut(snapshot.notes)
     }
   })
 }
@@ -111,4 +126,17 @@ export const parseSnapshotFile = (raw: unknown): AgencySnapshot => {
     return normalizeSnapshot(raw.data as SnapshotLike)
   }
   return normalizeSnapshot(raw as SnapshotLike)
+}
+
+export async function loadNotes(): Promise<Note[]> {
+  return db.notes.toArray();
+}
+
+export async function saveNotes(notes: Note[]): Promise<void> {
+  await db.transaction('rw', db.notes, async () => {
+    await db.notes.clear();
+    if (notes.length) {
+      await db.notes.bulkPut(notes);
+    }
+  });
 }

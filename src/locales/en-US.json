@@ -8,7 +8,8 @@
       "anomalies": "Anomalies",
       "reports": "Reports",
       "tracks": "Custom Tracks",
-      "settings": "Settings"
+      "settings": "Settings",
+      "notes": "Notes"
     },
     "common": {
       "edit": "Edit",
@@ -37,6 +38,31 @@
       "exportSuccess": "Snapshot exported.",
       "note": "Note",
       "recordLog": "Record Log"
+    }
+  },
+  "notes": {
+    "description": "Manage your mission notes and intelligence.",
+    "create": "New Note",
+    "newNoteTitle": "New Note",
+    "empty": "No notes yet. Create one to get started.",
+    "untitled": "Untitled Note",
+    "noSummary": "No summary provided.",
+    "lastModified": "Last modified",
+    "deleteConfirm": "Are you sure you want to delete this note?",
+    "title": "Title",
+    "titlePlaceholder": "Enter note title...",
+    "summary": "Summary",
+    "summaryPlaceholder": "Brief summary of the note...",
+    "content": "Content",
+    "editor": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "colorRed": "Red",
+      "colorBlue": "Blue",
+      "colorYellow": "Yellow",
+      "colorBlack": "Black",
+      "fontMono": "Monospace",
+      "fontSans": "Sans-serif"
     }
   },
   "dashboard": {
@@ -84,9 +110,9 @@
       "arcAnomalyf": "Anomaly",
       "arcRealityf": "Reality",
       "arcRolef": "Competency",
-      "awards": "Awards",
-      "reprimands": "Reprimands",
-      "missionDelta": "Mission A/R",
+      "awards": "Commendations",
+      "reprimands": "Demerits",
+      "missionDelta": "Mission C/D",
       "status": "Status",
       "cancel": "Cancel Edit",
       "submit": "Register Agent",
