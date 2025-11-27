@@ -146,7 +146,7 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
 
           <section className="rounded-lg border border-agency-border/40 bg-agency-ink/30 p-4">
             <p className="text-xs text-agency-muted">{t('dashboard.dataStats.charts.agentAwards')}</p>
-            <div style={{ width: '100%', height: 220 }}>
+            <div style={{ width: '100%', height: 230 }}>
               <ResponsiveContainer>
                 <PieChart>
                   <Tooltip content={(props) => <CustomTooltip {...props} chartType="pie" total={totalAwards} />} />
@@ -165,21 +165,36 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
                   ) : (
                     <text x="50%" y="50%" textAnchor="middle" fill="#9ca3af">{t('dashboard.dataStats.noData')}</text>
                   )}
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
+            {activeAgentReprimandSlices.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-agency-muted">
+                {activeAgentReprimandSlices.map((entry, i) => {
+                  const colors = generatePalette(activeAgentReprimandSlices.length, 20)
+                  return (
+                    <div key={`${entry.name}-legend`} className="inline-flex items-center gap-1">
+                      <span
+                        className="inline-block h-2 w-2 rounded-sm"
+                        style={{ backgroundColor: colors[i % colors.length] }}
+                      />
+                      <span>{entry.name}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </section>
 
           <section className="rounded-lg border border-agency-border/40 bg-agency-ink/30 p-4">
             <p className="text-xs text-agency-muted">{t('dashboard.dataStats.charts.agentReprimands')}</p>
-            <div style={{ width: '100%', height: 220 }}>
+            <div style={{ width: '100%', height: 230 }}>
               <ResponsiveContainer>
                 <PieChart>
                   <Tooltip content={(props) => <CustomTooltip {...props} chartType="pie" total={totalReprimands} />} />
                   {activeAgentReprimandSlices.length > 0 ? (
                     (() => {
-                      const colors = generatePalette(activeAgentReprimandSlices.length, 280)
+                      const colors = generatePalette(activeAgentReprimandSlices.length, 20)
                       return (
                         <Pie data={activeAgentReprimandSlices} dataKey="value" nameKey="name" outerRadius={80} label={makePieLabel(totalReprimands)} labelLine={false}>
                           {activeAgentReprimandSlices.map((entry, i) => (
@@ -192,15 +207,30 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
                   ) : (
                     <text x="50%" y="50%" textAnchor="middle" fill="#9ca3af">{t('dashboard.dataStats.noData')}</text>
                   )}
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
+            {activeAgentReprimandSlices.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-agency-muted">
+                {activeAgentReprimandSlices.map((entry, i) => {
+                  const colors = generatePalette(activeAgentReprimandSlices.length, 20)
+                  return (
+                    <div key={`${entry.name}-legend`} className="inline-flex items-center gap-1">
+                      <span
+                        className="inline-block h-2 w-2 rounded-sm"
+                        style={{ backgroundColor: colors[i % colors.length] }}
+                      />
+                      <span>{entry.name}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </section>
 
           <section className="rounded-lg border border-agency-border/40 bg-agency-ink/30 p-4">
             <p className="text-xs text-agency-muted">{t('dashboard.dataStats.charts.anomaliesStatus')}</p>
-            <div style={{ width: '100%', height: 220 }}>
+            <div style={{ width: '100%', height: 230 }}>
               <ResponsiveContainer>
                 <PieChart>
                   <Tooltip content={(props) => <CustomTooltip {...props} chartType="pie" total={totalAnomalies} />} />
@@ -218,10 +248,25 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
                   ) : (
                     <text x="50%" y="50%" textAnchor="middle" fill="#9ca3af">{t('dashboard.dataStats.noData')}</text>
                   )}
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
+            {activeAgentReprimandSlices.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-agency-muted">
+                {activeAgentReprimandSlices.map((entry, i) => {
+                  const colors = generatePalette(activeAgentReprimandSlices.length, 20)
+                  return (
+                    <div key={`${entry.name}-legend`} className="inline-flex items-center gap-1">
+                      <span
+                        className="inline-block h-2 w-2 rounded-sm"
+                        style={{ backgroundColor: colors[i % colors.length] }}
+                      />
+                      <span>{entry.name}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </section>
         </div>
       </div>
