@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Save } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useCampaignStore } from '@/stores/campaign-store'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -103,6 +104,14 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
     }
   })()
 
+  const notesAllowHtml = useCampaignStore((s) => s.notesAllowHtml)
+
+  const getRehypePlugins = () => {
+    if (notesAllowHtml) return [rehypeRaw, [rehypeSanitize, extendedSanitizeSchema]] as any
+    // When HTML is disabled, do not use rehypeRaw - embedded HTML will not be parsed.
+    return [] as any
+  }
+
   return (
     <div className={cn('flex flex-col border rounded-md overflow-hidden bg-background', className)}>
       <div className="flex items-center gap-2 p-2 border-b bg-muted/50">
@@ -172,10 +181,7 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
                 stricter sanitize schema).
               */
             }
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw, [rehypeSanitize, extendedSanitizeSchema]]}
-            >
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={getRehypePlugins()}>
               {value || ''}
             </ReactMarkdown>
           </div>
@@ -194,7 +200,7 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
             />
 
             <div className="flex-1 min-h-[200px] rounded-md border border-input bg-transparent p-3 prose prose-sm dark:prose-invert overflow-auto">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, [rehypeSanitize, extendedSanitizeSchema]]}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={getRehypePlugins()}>
                 {value || ''}
               </ReactMarkdown>
             </div>

@@ -126,4 +126,7 @@ export interface AgencySnapshot {
   notes: Note[]
   logs: MissionLogEntry[]
   tracks?: CustomTrackSnapshot[]
+  settings?: {
+    notesAllowHtml?: boolean
+  }
 }

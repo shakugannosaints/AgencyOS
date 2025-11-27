@@ -1,6 +1,7 @@
 import { useState, useRef, type ChangeEvent } from 'react'
 import { Github, Download, Upload, Monitor, Moon, Sun, Laptop, Languages, Layout } from 'lucide-react'
 import { useThemeStore } from '@/stores/theme-store'
+import { useCampaignStore } from '@/stores/campaign-store'
 import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
 
@@ -8,6 +9,8 @@ export function SettingsPage() {
   const { t, i18n } = useTranslation()
   const themeMode = useThemeStore((state) => state.mode)
   const setThemeMode = useThemeStore((state) => state.setMode)
+  const notesAllowHtml = useCampaignStore((state) => state.notesAllowHtml)
+  const setNotesAllowHtml = useCampaignStore((state) => state.setNotesAllowHtml)
   const isWin98 = themeMode === 'win98'
   
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -20,6 +23,9 @@ export function SettingsPage() {
   const handleExportSettings = () => {
     const settings = {
       theme: themeMode,
+      settings: {
+        notesAllowHtml,
+      },
       // Future settings can be added here
       version: '1.0.0'
     }
@@ -48,6 +54,9 @@ export function SettingsPage() {
         
         if (settings.theme) {
           setThemeMode(settings.theme)
+        }
+        if (settings?.settings?.notesAllowHtml !== undefined) {
+          setNotesAllowHtml(Boolean(settings.settings.notesAllowHtml))
         }
         
         setImportMessage(t('settings.importSuccess'))
@@ -181,6 +190,26 @@ export function SettingsPage() {
             <Layout className="h-6 w-6" />
             <span className="text-sm font-medium">{t('settings.theme.fluent')}</span>
           </button>
+        </div>
+      </section>
+
+      {/* Notes Settings */}
+      <section className={cn(
+        "space-y-4 border border-agency-border/60 p-6",
+        isWin98 ? "bg-agency-ink" : "rounded-2xl bg-agency-ink/40"
+      )}>
+        <h2 className="text-lg font-semibold text-agency-cyan">{t('settings.notes.title')}</h2>
+        <p className="text-sm text-agency-muted">{t('settings.notes.description')}</p>
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={notesAllowHtml}
+              onChange={(e) => setNotesAllowHtml(e.target.checked)}
+              className={cn('w-4 h-4', isWin98 ? 'border-none' : 'rounded')}
+            />
+            <span className="text-sm">{t('settings.notes.allowHtml')}</span>
+          </label>
         </div>
       </section>
 

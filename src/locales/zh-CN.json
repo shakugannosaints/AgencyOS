@@ -337,5 +337,11 @@
       "description": "AgencyOS 是一个开源项目。欢迎各位总经理参与代码贡献，提交 Bug 反馈或功能建议。",
       "visitGithub": "访问 GitHub 仓库"
     }
+    ,
+    "notes": {
+      "title": "笔记",
+      "description": "配置笔记编辑器的行为和渲染方式。",
+      "allowHtml": "在笔记中启用 HTML 元素"
+    }
   }
 }

@@ -8,15 +8,17 @@ import {
   createAnomalySlice,
   createCampaignSlice,
   createNoteSlice,
+  createSettingsSlice,
   type AgentSlice,
   type MissionSlice,
   type AnomalySlice,
   type CampaignSlice,
   type NoteSlice,
+  type SettingsSlice,
 } from '@/stores/slices'
 
 // Combined store type
-type AgencyStore = AgentSlice & MissionSlice & AnomalySlice & CampaignSlice & NoteSlice & {
+type AgencyStore = AgentSlice & MissionSlice & AnomalySlice & CampaignSlice & NoteSlice & SettingsSlice & {
   hydrate: (snapshot: AgencySnapshot) => void
 }
 
@@ -27,6 +29,7 @@ export const useCampaignStore = create<AgencyStore>()((...args) => ({
   ...createAnomalySlice(...args),
   ...createCampaignSlice(...args),
   ...createNoteSlice(...args),
+  ...createSettingsSlice(...args),
 
   // Hydrate action for restoring from snapshot
   hydrate: (snapshot) => {
@@ -38,6 +41,7 @@ export const useCampaignStore = create<AgencyStore>()((...args) => ({
       missions: snapshot.missions,
       anomalies: snapshot.anomalies,
       notes: snapshot.notes || [],
+      notesAllowHtml: snapshot.settings?.notesAllowHtml ?? true,
       logs: snapshot.logs,
     })
 
@@ -79,6 +83,9 @@ export const selectAgencySnapshot = (state: AgencyStore): AgencySnapshot => ({
   notes: state.notes,
   logs: state.logs,
   tracks: useTracksStore.getState().tracks,
+  settings: {
+    notesAllowHtml: state.notesAllowHtml,
+  },
 })
 
 export const getAgencySnapshot = () => selectAgencySnapshot(useCampaignStore.getState())

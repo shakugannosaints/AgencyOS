@@ -338,5 +338,11 @@
       "description": "AgencyOS is an open source project. GMs are welcome to contribute code, submit bug reports, or suggest features.",
       "visitGithub": "Visit GitHub Repository"
     }
+    ,
+    "notes": {
+      "title": "Notes",
+      "description": "Options for note editor behavior and rendering.",
+      "allowHtml": "Enable HTML elements in notes"
+    }
   }
 }
