@@ -1,16 +1,16 @@
-﻿import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/ui/panel'
 import { StatCard } from '@/components/ui/stat-card'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useMvpWatchlist } from '@/stores/hooks/use-mvp-watchlist'
 import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import DataStatsModal from '../components/data-stats-modal'
+import { useTrans } from '@/lib/i18n-utils'
 
 export function DashboardPage() {
-  const { t } = useTranslation()
+  const t = useTrans()
   const campaign = useCampaignStore((state) => state.campaign)
   const updateCampaign = useCampaignStore((state) => state.updateCampaign)
   const missions = useCampaignStore((state) => state.missions)

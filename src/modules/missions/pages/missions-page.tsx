@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslation } from 'react-i18next'
+import { useCommonTranslations, useTrans } from '@/lib/i18n-utils'
 
 const missionSchema = z.object({
   code: z.string().min(2),
@@ -24,7 +24,8 @@ const missionSchema = z.object({
 type MissionFormValues = z.infer<typeof missionSchema>
 
 export function MissionsPage() {
-  const { t } = useTranslation()
+  const t = useTrans()
+  const { delete: deleteText } = useCommonTranslations()
   const { showToast } = useToast()
   const missions = useCampaignStore((state) => state.missions)
   const adjustMissionChaos = useCampaignStore((state) => state.adjustMissionChaos)
@@ -290,7 +291,7 @@ export function MissionsPage() {
                         handleDeleteMission(item.id)
                       }}
                     >
-                      {t('app.common.delete')}
+                      {deleteText}
                     </button>
                   </div>
                 </td>

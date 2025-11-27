@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTrans } from '@/lib/i18n-utils'
 
 const anomalySchema = z.object({
   codename: z.string().min(2),
@@ -16,7 +16,7 @@ const anomalySchema = z.object({
 type AnomalyFormValues = z.infer<typeof anomalySchema>
 
 export function AnomaliesPage() {
-  const { t } = useTranslation()
+  const t = useTrans()
   const anomalies = useCampaignStore((state) => state.anomalies)
   const createAnomaly = useCampaignStore((state) => state.createAnomaly)
   const updateAnomaly = useCampaignStore((state) => state.updateAnomaly)

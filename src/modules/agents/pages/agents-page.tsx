@@ -7,8 +7,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { QA_CATEGORIES } from '@/lib/types'
 import { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { cn } from '@/lib/utils'
+import { useCommonTranslations, useTrans } from '@/lib/i18n-utils'
 
 const agentSchema = z.object({
   codename: z.string().min(2, '请输入代号'),
@@ -51,7 +50,8 @@ const createEmptyAgentForm = (): AgentFormValues => ({
 })
 
 export function AgentsPage() {
-  const { t } = useTranslation()
+  const t = useTrans()
+  const { delete: deleteText, cancel: cancelText, update: updateText, submit: submitText } = useCommonTranslations()
   const { showToast } = useToast()
   const agents = useCampaignStore((state) => state.agents)
   const createAgent = useCampaignStore((state) => state.createAgent)
@@ -184,10 +184,7 @@ export function AgentsPage() {
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.codename')}
             <input
-              className={cn(
-                "w-full border bg-agency-ink/60 px-3 py-2 font-mono text-sm text-agency-cyan rounded-xl win98:rounded-none",
-                form.formState.errors.codename ? "border-agency-magenta" : "border-agency-border"
-              )}
+              className={`w-full border bg-agency-ink/60 px-3 py-2 font-mono text-sm text-agency-cyan rounded-xl win98:rounded-none ${form.formState.errors.codename ? "border-agency-magenta" : "border-agency-border"}`}
               {...form.register('codename')}
             />
             <FormFieldError error={form.formState.errors.codename} />
@@ -195,10 +192,7 @@ export function AgentsPage() {
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcAnomalyf')}
             <input
-              className={cn(
-                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
-                form.formState.errors.arcAnomaly ? "border-agency-magenta" : "border-agency-border"
-              )}
+              className={`w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none ${form.formState.errors.arcAnomaly ? "border-agency-magenta" : "border-agency-border"}`}
               {...form.register('arcAnomaly')}
             />
             <FormFieldError error={form.formState.errors.arcAnomaly} />
@@ -206,10 +200,7 @@ export function AgentsPage() {
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcRealityf')}
             <input
-              className={cn(
-                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
-                form.formState.errors.arcReality ? "border-agency-magenta" : "border-agency-border"
-              )}
+              className={`w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none ${form.formState.errors.arcReality ? "border-agency-magenta" : "border-agency-border"}`}
               {...form.register('arcReality')}
             />
             <FormFieldError error={form.formState.errors.arcReality} />
@@ -217,10 +208,7 @@ export function AgentsPage() {
           <label className="space-y-1 text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('agents.form.arcRolef')}
             <input
-              className={cn(
-                "w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none",
-                form.formState.errors.arcRole ? "border-agency-magenta" : "border-agency-border"
-              )}
+              className={`w-full border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none ${form.formState.errors.arcRole ? "border-agency-magenta" : "border-agency-border"}`}
               {...form.register('arcRole')}
             />
             <FormFieldError error={form.formState.errors.arcRole} />
@@ -335,7 +323,7 @@ export function AgentsPage() {
                           onClick={() => handleDeleteClaim(claim.id)}
                           className="mt-1 border border-agency-border px-2 py-1 text-[0.6rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-magenta hover:text-agency-magenta rounded-xl win98:rounded-none"
                         >
-                          {t('app.common.delete')}
+                          {deleteText}
                         </button>
                       </div>
                     ))}
@@ -346,11 +334,11 @@ export function AgentsPage() {
           <div className="flex items-center gap-3 self-end">
             {editingAgentId ? (
               <button type="button" onClick={cancelEdit} className="border border-agency-border px-4 py-2 text-xs uppercase tracking-[0.3em] text-agency-muted rounded-2xl win98:rounded-none">
-                {t('agents.form.cancel')}
+                {cancelText}
               </button>
             ) : null}
             <button type="submit" className="border border-agency-cyan/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-agency-cyan transition hover:border-agency-cyan rounded-2xl win98:rounded-none">
-              {editingAgentId ? t('agents.form.update') : t('agents.form.submit')}
+              {editingAgentId ? updateText : submitText}
             </button>
           </div>
         </form>

@@ -1,13 +1,13 @@
 import { Plus } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { NoteList } from '../components/note-list'
-import { useEffect, useState } from 'react'
 import { loadNotes, saveNotes } from '@/services/db/repository'
 import type { Note } from '@/lib/types'
+import { useTrans } from '@/lib/i18n-utils'
 
 export function NotesPage() {
-  const { t } = useTranslation()
+  const t = useTrans()
   const notes = useCampaignStore((state) => state.notes)
   const addNote = useCampaignStore((state) => state.addNote)
   const updateNote = useCampaignStore((state) => state.updateNote)
@@ -63,12 +63,12 @@ export function NotesPage() {
           </p>
         </div>
         <button
-          onClick={handleCreateNote}
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          {t('notes.create')}
-        </button>
+            onClick={handleCreateNote}
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            {t('notes.create')}
+          </button>
       </div>
 
       <div className="flex-1 overflow-y-auto pr-2 pb-10">

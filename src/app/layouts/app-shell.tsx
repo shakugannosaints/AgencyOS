@@ -8,17 +8,21 @@ import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
 import { useCampaignPersistence } from '@/stores/hooks/use-campaign-persistence'
 import { createSnapshotEnvelope, parseSnapshotFile } from '@/services/db/repository'
 import { useThemeStore } from '@/stores/theme-store'
-import { useTranslation } from 'react-i18next'
+import { useNavTranslations, useCommonTranslations, useTrans } from '@/lib/i18n-utils'
+import type { MissionSummary } from '@/lib/types'
 
 export function AppShell() {
-  const { t } = useTranslation()
   useCampaignPersistence()
+  const t = useTrans()
+  const { dashboard, agents, missions: navMissions, anomalies, reports, notes, tracks, settings } = useNavTranslations()
+  const { edit, divisionName, divisionCode, status, tags, cancel, save, current, chaos, looseEnds, session, nextBriefing, weather, snapshot, export: exportText, import: importText, importing: importingText, importSuccess, importError } = useCommonTranslations()
+  
   const campaign = useCampaignStore((state) => state.campaign)
-  const missions = useCampaignStore((state) => state.missions)
+  const missionsStore = useCampaignStore((state) => state.missions)
   const updateCampaign = useCampaignStore((state) => state.updateCampaign)
-  const activeMission = missions.find((mission) => mission.status === 'active') ?? missions[0]
+  const activeMission = missionsStore.find((mission) => mission.status === 'active') ?? missionsStore[0]
   const chaosValue = activeMission?.chaos ?? 0
-  const looseEndsValue = missions.reduce((sum, mission) => sum + (mission.looseEnds ?? 0), 0)
+  const looseEndsValue = missionsStore.reduce((sum, mission: MissionSummary) => sum + (mission.looseEnds ?? 0), 0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [importMessage, setImportMessage] = useState<string | null>(null)
   const [importing, setImporting] = useState(false)
@@ -35,14 +39,14 @@ export function AppShell() {
   const isSquare = isWin98 || isRetro
 
   const navItems = [
-    { label: t('app.nav.dashboard'), path: '/', icon: LayoutDashboard },
-    { label: t('app.nav.agents'), path: '/agents', icon: Users },
-    { label: t('app.nav.missions'), path: '/missions', icon: BriefcaseBusiness },
-    { label: t('app.nav.anomalies'), path: '/anomalies', icon: Atom },
-    { label: t('app.nav.reports'), path: '/reports', icon: ScrollText },
-    { label: t('app.nav.notes'), path: '/notes', icon: Notebook }, // Using ScrollText temporarily or find a better icon
-    { label: t('app.nav.tracks'), path: '/tracks', icon: Orbit },
-    { label: t('app.nav.settings'), path: '/settings', icon: Settings },
+    { label: dashboard, path: '/', icon: LayoutDashboard },
+    { label: agents, path: '/agents', icon: Users },
+    { label: navMissions, path: '/missions', icon: BriefcaseBusiness },
+    { label: anomalies, path: '/anomalies', icon: Atom },
+    { label: reports, path: '/reports', icon: ScrollText },
+    { label: notes, path: '/notes', icon: Notebook },
+    { label: tracks, path: '/tracks', icon: Orbit },
+    { label: settings, path: '/settings', icon: Settings },
   ]
 
   useEffect(() => {
@@ -63,7 +67,7 @@ export function AppShell() {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    setImportMessage(t('app.common.exportSuccess'))
+    setImportMessage(importSuccess)
   }
 
   const handleImportClick = () => {
@@ -83,7 +87,7 @@ export function AppShell() {
       setImportMessage(t('app.common.importSuccess'))
     } catch (error) {
       console.error('[AgencyOS] 导入失败', error)
-      setImportMessage(error instanceof Error ? error.message : t('app.common.importError'))
+      setImportMessage(error instanceof Error ? error.message : importError)
     } finally {
       setImporting(false)
       event.target.value = ''
@@ -122,10 +126,7 @@ export function AppShell() {
     <div className="min-h-screen bg-agency-ink/95 px-4 py-6 text-agency-cyan">
       <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr]">
         <aside
-          className={cn(
-            'space-y-6 border border-agency-border bg-agency-panel/80 p-4',
-            isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel',
-          )}
+          className={`space-y-6 border border-agency-border bg-agency-panel/80 p-4 ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'}`}
         >
           {isWin98 && (
             <div className="win98-title-bar -mx-3 -mt-3 mb-4 flex items-center justify-between px-2 py-1">
@@ -146,58 +147,42 @@ export function AppShell() {
               <button
                 type="button"
                 onClick={openHeaderEditor}
-                className={cn(
-                  "rounded-full border border-agency-border px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.25em] text-agency-muted hover:border-agency-cyan hover:text-agency-cyan",
-                  isWin98 && "rounded-none bg-[#c0c0c0] text-black shadow-[inset_-1px_-1px_#000000,inset_1px_1px_#ffffff,inset_-2px_-2px_#808080,inset_2px_2px_#dfdfdf] active:shadow-[inset_1px_1px_#000000,inset_-1px_-1px_#ffffff,inset_2px_2px_#808080,inset_-2px_-2px_#dfdfdf]",
-                  isRetro && "rounded-none"
-                )}
+                className={`rounded-full border border-agency-border px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.25em] text-agency-muted hover:border-agency-cyan hover:text-agency-cyan ${isWin98 ? 'rounded-none bg-[#c0c0c0] text-black shadow-[inset_-1px_-1px_#000000,inset_1px_1px_#ffffff,inset_-2px_-2px_#808080,inset_2px_2px_#dfdfdf] active:shadow-[inset_1px_1px_#000000,inset_-1px_-1px_#ffffff,inset_2px_2px_#808080,inset_-2px_-2px_#dfdfdf]' : ''} ${isRetro ? 'rounded-none' : ''}`}
               >
-                {t('app.common.edit')}
+                {edit}
               </button>
             </div>
             {isEditingHeader ? (
               <div className="space-y-2 text-xs text-agency-muted">
                 <div>
-                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{t('app.common.divisionName')}</label>
+                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{divisionName}</label>
                   <input
-                    className={cn(
-                      'mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                     value={headerDraft.name}
                     onChange={(e) => setHeaderDraft((prev) => ({ ...prev, name: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{t('app.common.divisionCode')}</label>
+                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{divisionCode}</label>
                   <input
-                    className={cn(
-                      'mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                     value={headerDraft.divisionCode}
                     onChange={(e) => setHeaderDraft((prev) => ({ ...prev, divisionCode: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{t('app.common.status')}</label>
+                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{status}</label>
                   <input
-                    className={cn(
-                      'mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                     value={headerDraft.status}
                     onChange={(e) => setHeaderDraft((prev) => ({ ...prev, status: e.target.value }))}
                     placeholder={campaign.status}
                   />
                 </div>
                 <div>
-                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{t('app.common.tags')}</label>
+                  <label className="block text-[0.6rem] uppercase tracking-[0.25em]">{tags}</label>
                   <input
-                    className={cn(
-                      'mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`mt-1 w-full border border-agency-border bg-agency-ink/40 px-2 py-1 text-sm text-agency-cyan outline-none focus:border-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                     value={headerDraft.styleText}
                     onChange={(e) => setHeaderDraft((prev) => ({ ...prev, styleText: e.target.value }))}
                     placeholder={campaign.styleTags.join(' / ')}
@@ -207,22 +192,16 @@ export function AppShell() {
                   <button
                     type="button"
                     onClick={cancelHeaderEdit}
-                    className={cn(
-                      'border border-agency-border px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-agency-muted hover:border-agency-amber hover:text-agency-amber',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`border border-agency-border px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-agency-muted hover:border-agency-amber hover:text-agency-amber ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                   >
-                    {t('app.common.cancel')}
+                    {cancel}
                   </button>
                   <button
                     type="button"
                     onClick={confirmHeaderEdit}
-                    className={cn(
-                      'border border-agency-cyan px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-agency-cyan hover:bg-agency-cyan/10',
-                      isSquare ? 'rounded-none' : 'rounded-xl',
-                    )}
+                    className={`border border-agency-cyan px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-agency-cyan hover:bg-agency-cyan/10 ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                   >
-                    {t('app.common.save')}
+                    {save}
                   </button>
                 </div>
               </div>
@@ -230,7 +209,7 @@ export function AppShell() {
               <>
                 <p className="text-xl font-semibold text-white">{campaign.name}</p>
                 <p className="text-xs text-agency-muted">
-                  {t('app.common.status')}：{campaign.status} · {campaign.styleTags.join(' / ')}
+                  {status}：{campaign.status} · {campaign.styleTags.join(' / ')}
                 </p>
               </>
             )}
@@ -242,18 +221,15 @@ export function AppShell() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  cn(
-                    'flex items-center justify-between border px-4 py-3 font-mono text-xs uppercase tracking-[0.35em] transition',
+                  `flex items-center justify-between border px-4 py-3 font-mono text-xs uppercase tracking-[0.35em] transition ${
                     isActive
-                      ? cn(
-                          'border-agency-cyan/80 bg-agency-ink text-white',
-                          isWin98 ? 'rounded-none shadow-none win98-active' : (isRetro ? 'rounded-none shadow-none' : 'rounded-2xl shadow-panel'),
-                        )
-                      : cn(
-                          'border-agency-border/60 text-agency-muted hover:border-agency-cyan/40 hover:text-agency-cyan',
-                          isSquare ? 'rounded-none' : 'rounded-2xl',
-                        ),
-                  )
+                      ? `border-agency-cyan/80 bg-agency-ink text-white ${
+                          isWin98 ? 'rounded-none shadow-none win98-active' : (isRetro ? 'rounded-none shadow-none' : 'rounded-2xl shadow-panel')
+                        }`
+                      : `border-agency-border/60 text-agency-muted hover:border-agency-cyan/40 hover:text-agency-cyan ${
+                          isSquare ? 'rounded-none' : 'rounded-2xl'
+                        }`
+                  }`
                 }
               >
                 <span className="flex items-center gap-3 text-base tracking-normal">
@@ -267,54 +243,42 @@ export function AppShell() {
           </div>
 
           <div className="space-y-2 text-[0.65rem] text-agency-muted">
-            <p className="uppercase tracking-[0.5em]">{t('app.common.chaos')}</p>
+            <p className="uppercase tracking-[0.5em]">{chaos}</p>
             <div
-              className={cn(
-                'border border-agency-magenta/40 bg-gradient-to-r from-agency-magenta/20 to-transparent p-3 font-mono',
-                isSquare ? 'rounded-none' : 'rounded-2xl',
-              )}
+              className={`border border-agency-magenta/40 bg-gradient-to-r from-agency-magenta/20 to-transparent p-3 font-mono ${isSquare ? 'rounded-none' : 'rounded-2xl'}`}
             >
-              <p>{t('app.common.current')}：{chaosValue}</p>
-              <p>{t('app.common.looseEnds')}：{looseEndsValue}</p>
+              <p>{current}：{chaosValue}</p>
+              <p>{looseEnds}：{looseEndsValue}</p>
             </div>
           </div>
         </aside>
 
         <main className="min-w-0 space-y-6">
           <div className="grid gap-3 md:grid-cols-3">
-            <CommandStrip label={t('app.common.session')} value={campaign.divisionCode} />
-            <CommandStrip label={t('app.common.nextBriefing')} value={activeMission?.code ?? '—'} />
-            <CommandStrip label={t('app.common.weather')} value={`${t('app.common.looseEnds')}×${looseEndsValue}`} />
+            <CommandStrip label={session} value={campaign.divisionCode} />
+            <CommandStrip label={nextBriefing} value={activeMission?.code ?? '—'} />
+            <CommandStrip label={weather} value={`${looseEnds}×${looseEndsValue}`} />
           </div>
           <div
-            className={cn(
-              'border border-agency-border/60 p-4 text-[0.65rem] uppercase tracking-[0.4em] text-agency-muted',
-              isSquare ? 'rounded-none bg-agency-panel' : 'rounded-3xl bg-agency-ink/40',
-            )}
+            className={`border border-agency-border/60 p-4 text-[0.65rem] uppercase tracking-[0.4em] text-agency-muted ${isSquare ? 'rounded-none bg-agency-panel' : 'rounded-3xl bg-agency-ink/40'}`}
           >
             <div className="flex flex-wrap items-center gap-2">
-              <span>{t('app.common.snapshot')}</span>
+              <span>{snapshot}</span>
               <div className="flex flex-wrap gap-2 text-xs normal-case">
                 <button
                   type="button"
                   onClick={handleExportSnapshot}
-                  className={cn(
-                    'border border-agency-cyan/40 px-3 py-1 font-mono text-agency-cyan hover:border-agency-cyan',
-                    isSquare ? 'rounded-none' : 'rounded-xl',
-                  )}
+                  className={`border border-agency-cyan px-3 py-1 font-mono text-agency-cyan hover:border-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                 >
-                  {t('app.common.export')}
+                  {exportText}
                 </button>
                 <button
                   type="button"
                   onClick={handleImportClick}
-                  className={cn(
-                    'border border-agency-border px-3 py-1 font-mono text-agency-muted hover:border-agency-cyan hover:text-agency-cyan',
-                    isSquare ? 'rounded-none' : 'rounded-xl',
-                  )}
+                  className={`border border-agency-border px-3 py-1 font-mono text-agency-muted hover:border-agency-cyan hover:text-agency-cyan ${isSquare ? 'rounded-none' : 'rounded-xl'}`}
                   disabled={importing}
                 >
-                  {importing ? t('app.common.importing') : t('app.common.import')}
+                  {importing ? importingText : importText}
                 </button>
                 <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={handleImportChange} />
               </div>
@@ -322,10 +286,7 @@ export function AppShell() {
             {importMessage ? <p className="mt-2 text-[0.65rem] normal-case text-agency-amber">{importMessage}</p> : null}
           </div>
           <div
-            className={cn(
-              'border border-agency-border/80 bg-agency-panel/70 p-6 backdrop-blur',
-              isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel',
-            )}
+            className={`border border-agency-border/80 bg-agency-panel/70 p-6 backdrop-blur ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'}`}
           >
             <Outlet />
           </div>
