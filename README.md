@@ -12,6 +12,11 @@ https://agencyos.icemoe.moe/#/
 
 如果你想自己部署，见快速开始一节。
 
+### GitHub Pages 自动构建策略
+
+自动部署到 GitHub Pages 只会在推送以 `v` 或 `V` 开头的版本 tag（例如 `v1.2.3`）时触发。
+如果你需要强制触发发布，请在仓库 Actions 中手动运行 `Deploy to GitHub Pages`（`workflow_dispatch`）。
+
 ## ✨ 核心能力
 
 1. **战役仪表板**：展示分部状态、下一次任务、混沌池与异常体统计（`/dashboard`）。
