@@ -101,6 +101,19 @@
   ,
   "currentGeneralManager": "Current General Manager",
   "currentGeneralManagerHint": "Click edit to change the on-duty general manager"
+  ,
+  "dataStats": {
+    "open": "Data Stats",
+    "title": "Data Statistics",
+    "charts": {
+      "looseEnds": "Loose Ends per Mission",
+      "agentAwards": "Active Agents & Awards",
+      "agentReprimands": "Active Agents & Demerits",
+      "anomaliesStatus": "Anomalies by Status"
+    }
+    ,
+    "noData": "No data to display"
+  }
   },
   "agents": {
     "title": "Agent Roster",

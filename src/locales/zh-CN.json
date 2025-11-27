@@ -100,6 +100,19 @@
     "domain": "领域",
     "currentGeneralManager": "当前值班总经理",
     "currentGeneralManagerHint": "点击编辑以修改当前值班总经理"
+    ,
+    "dataStats": {
+      "open": "数据统计",
+      "title": "数据统计",
+      "charts": {
+        "looseEnds": "每任务散逸端",
+        "agentAwards": "现役特工与嘉奖",
+        "agentReprimands": "现役特工与申诫",
+        "anomaliesStatus": "异常体状态分布"
+      }
+      ,
+      "noData": "暂无数据可显示"
+    }
   },
   "agents": {
     "title": "特工列表",

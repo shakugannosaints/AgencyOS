@@ -33,8 +33,15 @@
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.1.13",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "recharts": "^2.5.0"
   },
+  "dependenciesMeta": {
+    "recharts": {
+      "optional": false
+    }
+  },
+  "resolutions": {},
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",

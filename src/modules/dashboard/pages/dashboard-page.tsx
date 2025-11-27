@@ -7,6 +7,7 @@ import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert } from 'lucide-react
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
+import DataStatsModal from '../components/data-stats-modal'
 
 export function DashboardPage() {
   const { t } = useTranslation()
@@ -25,6 +26,7 @@ export function DashboardPage() {
   // Editable General Manager state
   const [isEditingGM, setIsEditingGM] = useState(false)
   const [gmValue, setGmValue] = useState<string>(campaign.generalManager ?? '')
+  const [showStats, setShowStats] = useState(false)
 
   useEffect(() => {
     setGmValue(campaign.generalManager ?? '')
@@ -50,6 +52,16 @@ export function DashboardPage() {
           className="text-blue-500 [&>div>div:last-child>p:nth-child(2)]:text-blue-500"
         />
       </section>
+
+      <div className="flex justify-end">
+        <button
+          type="button"
+          className="border border-agency-border px-3 py-1 text-xs uppercase tracking-[0.3em] text-agency-cyan transition hover:border-agency-cyan/60 rounded-2xl win98:rounded-none"
+          onClick={() => setShowStats(true)}
+        >
+          {t('dashboard.dataStats.open')}
+        </button>
+      </div>
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Panel>
@@ -190,6 +202,7 @@ export function DashboardPage() {
           ))}
         </div>
       </Panel>
+      {showStats && <DataStatsModal onClose={() => setShowStats(false)} />}
     </div>
   )
 }
