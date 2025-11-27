@@ -11,7 +11,7 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
   (set) => ({
-      mode: 'night',
+      mode: 'win98',
       setMode: (mode) => set({ mode }),
     }),
     {
