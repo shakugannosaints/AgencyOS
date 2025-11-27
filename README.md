@@ -2,7 +2,9 @@
 
 > 面向三角机构桌游主持人（GM）的离线优先控制台。复刻 Agency OS 的冷峻企业风，实现战役、特工、任务、异常体与混沌池的全流程追踪。
 
-![f5e06bba3cdaddc99c085924dbd1bb52.png](https://s2.loli.net/2025/11/25/cZPuOqojgaSVLvG.png)
+![be047570-42b6-4f7b-911c-002a2c2a5a59.png](https://s2.loli.net/2025/11/28/F8fAZVHzQWO9C5a.png)
+![7fcdcb14-d010-48f0-89fd-c681deddc060.png](https://s2.loli.net/2025/11/28/tHVuXnWlEDmYUje.png)
+
 
 ## 页面发布
 
