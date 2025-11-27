@@ -13,6 +13,7 @@ import {
   Pie,
   Cell,
 } from 'recharts'
+import { generatePalette } from './palette-utils'
 
 interface Props {
   onClose: () => void
@@ -67,15 +68,7 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
     ].filter((s) => (s.value ?? 0) > 0)
   }, [anomalies, t])
 
-  // Generate a visually distinct HSL-based palette for N items
-  const generatePalette = (n: number, offset = 0) => {
-    if (n <= 0) return [] as string[]
-    return Array.from({ length: n }).map((_, i) => {
-      const hue = Math.round((i * (360 / n) + offset) % 360)
-      // saturation 62%, lightness 52% gives good contrast on dark background
-      return `hsl(${hue},62%,52%)`
-    })
-  }
+  // generatePalette moved to ./palette-utils
 
   // Custom tooltip for richer, themed hover cards
   const CustomTooltip = ({ active, payload, label, chartType, total }: any) => {
