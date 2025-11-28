@@ -1,0 +1,1332 @@
+[
+  {
+    "title": "可购买补给",
+    "summary": "可使用嘉奖购买的补给品。",
+    "page": "128"
+  },
+  {
+    "title": "CEO首席执行官",
+    "summary": "在这个复杂且多变的世界中，充满了艰难的抉择。",
+    "page": "106"
+  },
+  {
+    "title": "R&D研发",
+    "summary": "三角机构需要具有创造力和新颖思维的人，来塑造未来世界。",
+    "page": "102"
+  },
+  {
+    "title": "Barista咖啡师",
+    "summary": "咖啡师深谙：只要有笑容，一天就能有个好开始；而当笑容不足时，咖啡因也能成为绝佳替代。",
+    "page": "104"
+  },
+  {
+    "title": "Gravedigger掘墓人",
+    "summary": "掘墓人是夜幕中默默无闻的英雄。",
+    "page": "110"
+  },
+  {
+    "title": "Hotline客服",
+    "summary": "有些人只能“听”，客服却会真正“倾听”。",
+    "page": "114"
+  },
+  {
+    "title": "Intern实习生",
+    "summary": "未付薪的实习生是任何组织正常运作的关键。",
+    "page": "108"
+  },
+  {
+    "title": "PR公关",
+    "summary": "三角机构经常需要能巧妙解释异常效应、并将忧心的目击者引导至“正确”结论的人。",
+    "page": "100"
+  },
+  {
+    "title": "Reception前台接待",
+    "summary": "正如每个故事都有一个开端，每个想法都有一次起源，三角机构的大楼也必须拥有符合消防法规的入口与出口。",
+    "page": "112"
+  },
+  {
+    "title": "Clown小丑",
+    "summary": "对三角机构而言，小丑就是仁慈的天使。",
+    "page": "116"
+  },
+  {
+    "title": "Pursued被追捕者",
+    "summary": "被追捕者一直在逃避过去。",
+    "page": "84"
+  },
+  {
+    "title": "Newborn新生者",
+    "summary": "无论是刚出壳、刚启动、还是刚抵达我们这片土地，新生者特工对现代生活都不够熟悉。",
+    "page": "90"
+  },
+  {
+    "title": "Creature异类",
+    "summary": "厌倦了居于社会边缘，异类特工选择离开自己的家园，融入现代世界。",
+    "page": "96"
+  },
+  {
+    "title": "Overbooked卷王",
+    "summary": "卷王出于自豪或必需，在平凡世界中另谋一职。",
+    "page": "82"
+  },
+  {
+    "title": "Star明星",
+    "summary": "凭借天赋、能力或与生俱来的魅力，明星特工无论走到哪里都能轻易地赢得人们的喜爱与崇拜。",
+    "page": "86"
+  },
+  {
+    "title": "Struggling底层草根",
+    "summary": "背负巨额债务、接连不断的开销，或缺乏收入来源——对于拮据者特工而言，日常花销永远无法做到收支平衡。",
+    "page": "88"
+  },
+  {
+    "title": "Romantic恋爱脑",
+    "summary": "对于浪漫主义者而言，“坠入爱河”是一件无比轻而易举的事，无论好坏都在顷刻之间发生。",
+    "page": "92"
+  },
+  {
+    "title": "Backbone顶梁柱",
+    "summary": "无论是个书友会，还是一个政治家族，顶梁柱总是领导着一批拥有明确目标且忠诚的成员。",
+    "page": "94"
+  },
+  {
+    "title": "Caretaker看护人",
+    "summary": "看护人与同行的依赖对象之间有着深厚的羁绊，他们在工作中彼此学习、共同成长。",
+    "page": "80"
+  },
+  {
+    "title": "Drain汲取",
+    "summary": "异常 永远无法满足的渴望，温柔的话语反而让你感到空虚，和无穷的兴趣。",
+    "page": "64"
+  },
+  {
+    "title": "Growth生长",
+    "summary": "异常 不可战胜的英雄。",
+    "page": "68"
+  },
+  {
+    "title": "Timepiece时计",
+    "summary": "异常 无尽的上学日。",
+    "page": "66"
+  },
+  {
+    "title": "Catalogue目录",
+    "summary": "异常 每个鸡蛋里都有两个蛋黄。",
+    "page": "62"
+  },
+  {
+    "title": "Absence缺失",
+    "summary": "异常 无人骑乘的秋千轻轻摇摆。",
+    "page": "76"
+  },
+  {
+    "title": "Whisper低语",
+    "summary": "异常 那些美好的情感，在诉说间变得扭曲；随意的对话，升级成激烈的争执；最后的告别，被噪音淹没。",
+    "page": "60"
+  },
+  {
+    "title": "Dream梦境",
+    "summary": "异常 床脚下的怪物。",
+    "page": "72"
+  },
+  {
+    "title": "GUN枪械",
+    "summary": "异常 一句话终结了。",
+    "page": "70"
+  },
+  {
+    "title": "Manifold流形",
+    "summary": "异常 没有出路的迷宫。",
+    "page": "74"
+  },
+  {
+    "title": "混沌",
+    "summary": "混沌（Chaos） 直接影响现实总是伴随着风险，即便是局方也不例外。",
+    "page": "33"
+  },
+  {
+    "title": "角色素质",
+    "summary": "素质（Qualities） 局方已将所有可能的行动（包括你的异常行为）归类为九项理想素质。",
+    "page": "34"
+  },
+  {
+    "title": "游戏基本",
+    "summary": "异常回收任务流程 -- 晨会 特工小组的指挥官将介绍任务开始前的日常场景，以再现你们执行一般性事务或维系平凡关系的时间片段。",
+    "page": "20"
+  },
+  {
+    "title": "异常能力",
+    "summary": "所有特工都是共振者（Resonants），这意味着他们都与一个独特的异常绑定。",
+    "page": "44"
+  },
+  {
+    "title": "现实改写请求",
+    "summary": "除了你们这些特工的辛勤工作与坚定不移的奉献，局方在维护现实方面最强大的工具便是悄然地改写近期过去的能力。",
+    "page": "40"
+  },
+  {
+    "title": "现实细节",
+    "summary": "在机构中，我们理解你可能拥有你关心的人、地点和机构。",
+    "page": "132"
+  },
+  {
+    "title": "工作生活平衡",
+    "summary": "花费时间 每位外勤特工在其外勤生涯结束前，都获得 30 个抽象的时间单位供其使用。",
+    "page": "122"
+  },
+  {
+    "title": "异常收容",
+    "summary": "一旦确认了异常的焦点并进入其域界，要使目标异常平息并顺利封存于常规公文包，通常可以采取以下几种方法： 暂时满足其焦点（使其进入满足状态） 说服其行为无效或适得其反（使其陷入困惑） 移除导致异常产生的核心因素（使其陷入绝望） 在 “一次完美的任务” 中，特工们选择了第一种方法，通过制作完美三明治暂时满足异常的焦点。",
+    "page": "26"
+  },
+  {
+    "title": "其他类型任务",
+    "summary": "其他任务机会（Alternate Mission-pportunities） 异常回收并不是唯一的任务类型！根据你所在分部的运作效率、地理位置及政治环境，你的指挥官（GM）可能会派遣特工小队执行以下特殊任务之一： -- 清理行动（Clean-Up） 当异常自行销毁或被其他特工小队收容，但遗留了大量松散端时，局方可能会指派特工追踪相关人员，并控制危险信息的传播。",
+    "page": "29"
+  },
+  {
+    "title": "解决玩家冲突",
+    "summary": "冲突解决（Conflict Resolution） 特工和玩家都有各自的个性，这意味着他们偶尔会发生分歧。",
+    "page": "48"
+  },
+  {
+    "title": "任务报告",
+    "summary": "任务报告（The Mission Report） 每次执行任务时，特工小队必须填写任务报告并提交存档。",
+    "page": "31"
+  },
+  {
+    "title": "三重升华",
+    "summary": "当你在未进行任何调整的情况下掷出恰好三个 3，你将完美引导机构的力量，进入三重升华（Triscendence）状态！ 三重升华的效果： 掷骰自动成功，无需任何额外调整。",
+    "page": "36"
+  },
+  {
+    "title": "使用四面骰子",
+    "summary": "使用四面骰（Using Four-sided Dice） 我们的宇宙充满了相互竞争的利益。",
+    "page": "32"
+  },
+  {
+    "title": "伤害",
+    "summary": "执行任务时，你将不可避免地遭遇危险或致命情况。",
+    "page": "46"
+  },
+  {
+    "title": "最佳表现奖",
+    "summary": "你的晋升资格不仅取决于你私下的工作表现；我们也会监控你与他人合作的情况。",
+    "page": "134"
+  },
+  {
+    "title": "嘉奖和处分",
+    "summary": "特工绩效评估 -- 嘉奖（Commendations） 嘉奖代表你在任务中表现出色。",
+    "page": "28"
+  },
+  {
+    "title": "界定普通",
+    "summary": "什么是“普通”事物？ 异常现象（Anomalies）是一个非常特殊的概念：它们是由于观察而引起的现实扭曲。",
+    "page": "55"
+  },
+  {
+    "title": "入职问卷",
+    "summary": "你的回答将帮助外勤小队更好地了解你，并确保你对自己也有更清晰的认识。",
+    "page": "118"
+  },
+  {
+    "title": "异常",
+    "summary": "异常现象是对现实最大的威胁，它们渗透到存在的每一个角落。",
+    "page": "24"
+  },
+  {
+    "title": "现实身份",
+    "summary": "现实 你的“现实”描述了你加入机构时的历史、既往境遇与当前状态。",
+    "page": "78"
+  },
+  {
+    "title": "启动流程",
+    "summary": "你与一个特定角色关系密切：外勤小队的总经理。",
+    "page": "185"
+  },
+  {
+    "title": "确定总部位置",
+    "summary": "确定你的区域 首先，你的外勤小组需要确认所属分部负责的区域。",
+    "page": "54"
+  },
+  {
+    "title": "职能",
+    "summary": "你的职能是构成 ARC 的第三部分，同时也是最重要的一环。",
+    "page": "98"
+  },
+  {
+    "title": "确定特工的ARC",
+    "summary": "构建你的特工 ARC 现在，是时候选择构成 <你/你的角色> 的要素了。",
+    "page": "56"
+  },
+  {
+    "title": "裁决与评估",
+    "summary": "裁决 所以你想成为一个“好 GM”吗？这里有一些其他基本要点需要记住。",
+    "page": "188"
+  },
+  {
+    "title": "玩家缺席",
+    "summary": "最后：如果某个特工必须错过一场任务，你不必取消整个班次。",
+    "page": "194"
+  },
+  {
+    "title": "混沌和小型异常",
+    "summary": "如何使用混沌——什么是小型异常？",
+    "page": "155"
+  },
+  {
+    "title": "阵营",
+    "summary": "阵营 有助于赋予你所属分部区域独特个性——并成为反派不断出现的来源——的一种方式，是列出该区域内的各种组织和社区。",
+    "page": "181"
+  },
+  {
+    "title": "早会",
+    "summary": "当你的特工在调查任务中奔波时，他们将决定自己的行动路线和交谈对象。",
+    "page": "182"
+  },
+  {
+    "title": "善后任务",
+    "summary": "善后任务总是源于某个事件，该事件制造了大量松散端。",
+    "page": "176"
+  },
+  {
+    "title": "创建异常",
+    "summary": "焦点：它执着于什么？ 冲动：它会做什么？ 领域：它的位置在哪里？ 历史：它是如何诞生的？ 外观：它看起来是什么样的？ 精心制作的异常现象会促使特工们 解开谜团、克服挑战，并通过做出艰难的选择来了解自己。",
+    "page": "151"
+  },
+  {
+    "title": "对异常处理方式",
+    "summary": "消灭（公司）-更多后续和更强的特工 捕获（现实）-更安全的现实和更灵活的特工进程 解放（异常）-更多可用能力和更大的异常社区 让玩家产生不同方向的需求。",
+    "page": "172"
+  },
+  {
+    "title": "市场破坏任务",
+    "summary": "市场破坏 正如在任何行业中一样，异常封存与研究的世界也可能变得竞争激烈。",
+    "page": "179"
+  },
+  {
+    "title": "松散端和天气时间",
+    "summary": "揭示 在其最安全的状态下，现实就像一幅空白的挂毯，由许多散漫的思维精心编织而成。",
+    "page": "164"
+  },
+  {
+    "title": "I1",
+    "summary": "这是我做的！（I Made This） 触摸某件作品、奖杯，或其他象征他人成就的物品，并与目标进行眼神交流。",
+    "page": "227"
+  },
+  {
+    "title": "I8",
+    "summary": "影响者（Influencer） 当你使用 “再来一点？”（Would You Like Some More?） 时，目标的渴望不再局限于他们刚刚享受过的事物。",
+    "page": "230"
+  },
+  {
+    "title": "I2",
+    "summary": "我刚刚还拿着呢！（I Swear I Just Had It） 当有人即将与某个物体互动（如遥控器、门、飞机等），拍一下自己的口袋并进行 欺瞒（Subtlety） 检定。",
+    "page": "227"
+  },
+  {
+    "title": "I3",
+    "summary": "我去后面看看（I’ll Check in the Back） 伸手触及某人的心脏，并进行 共情（Empathy） 检定。",
+    "page": "228"
+  },
+  {
+    "title": "I10",
+    "summary": "它有口袋（It Has Pockets） 你可以将物体吸收进自己的身体， 在它们完全或部分进入你体内的情况下操纵它们。",
+    "page": "230"
+  },
+  {
+    "title": "I4",
+    "summary": "如果我有……（If I Only Had…） 每个人都缺失些什么，你可以决定他们缺少的是什么。",
+    "page": "228"
+  },
+  {
+    "title": "I6",
+    "summary": "壁橱里的怪物（In the Closet, Under the Bed） 怪物无处不在，它们隐藏在光明之中。",
+    "page": "262"
+  },
+  {
+    "title": "I9",
+    "summary": "铁胃（Iron Stomach） 你的“私人空间（Personal Space）”能力现在不再需要呼吸，也不需要掷骰。",
+    "page": "251"
+  },
+  {
+    "title": "I5",
+    "summary": "冲动购买（Impulse Buy） 你可以使用 通用管理员工具包（General Manager Toolkit） 中的次级异常（Minor Anomaly） 创造规则。",
+    "page": "229"
+  },
+  {
+    "title": "I7",
+    "summary": "无法逃脱的引力（Inescapable Orbit） 你的引力将命运扭曲，让你的愿望吸引到自己身边。",
+    "page": "251"
+  },
+  {
+    "title": "E3",
+    "summary": "亲爱的特工， 怀着沉重的心情，我们必须宣布你的雇佣关系即刻终止。",
+    "page": "216"
+  },
+  {
+    "title": "E2",
+    "summary": "你好，玩家。",
+    "page": "216"
+  },
+  {
+    "title": "E1",
+    "summary": "终焉使者（Endbringer） 你看到了终结的来临，你看到了避免它的可能性。",
+    "page": "216"
+  },
+  {
+    "title": "S7",
+    "summary": "技能传输（SKILL TK） 在每次任务开始时，在简报结束前的某个时间点， 选择一个来自任何桌面角色扮演游戏（Tabletop Role-Playing Game, TTRPG）的技能、能力或物品的描述文本。",
+    "page": "265"
+  },
+  {
+    "title": "S16",
+    "summary": "缝合（Stitch） 选择你可以看到或感知到的一个边缘（如屋顶、门框、桌面、砖块、纸张）。",
+    "page": "268"
+  },
+  {
+    "title": "S5",
+    "summary": "看看你赢了什么（See What You’ve Won） 需要什么？任何东西？ 挥舞你的手臂，华丽地一摆，进行 坚持（Persistence） 检定。",
+    "page": "264"
+  },
+  {
+    "title": "S2",
+    "summary": "拯救一匹马（Save a Horse） 瞄准你的“枪（Gun）”朝向任何目的地，进行 主动（Initiative） 检定。",
+    "page": "263"
+  },
+  {
+    "title": "S19",
+    "summary": "共鸣之痛（Sympathetic Pain） 每当某件事伤害或损害你（即使该伤害被重定向、抵抗，或导致你的死亡）， 微笑并进行 缜密（Attentiveness） 检定。",
+    "page": "69"
+  },
+  {
+    "title": "S13",
+    "summary": "基因拼接（Splice） 当你握住一个昏迷或死亡的目标时， 将他们完全融合进你的身体，并进行 欺瞒（Subtlety） 检定。",
+    "page": "269"
+  },
+  {
+    "title": "S15",
+    "summary": "盗取（Steal） 每当你“借用（Borrow）”某样东西时， 你会以物理形式获得该物品的实体复制品。",
+    "page": "267"
+  },
+  {
+    "title": "S11",
+    "summary": "灵魂送行（Spirit Away） 当你附近的某人即将因任何原因（包括你）受伤或死亡时， 你可以进行 主动（Initiative） 检定。",
+    "page": "266"
+  },
+  {
+    "title": "S9",
+    "summary": "需要组装（Some Assembly Required） 拿取任意数量你“借来（Borrowed）”或“偷走（Stolen）”的东西， 并将它们与任意数量的其他物品拼凑在一起。",
+    "page": "265"
+  },
+  {
+    "title": "S10",
+    "summary": "声音屏障（Sound Barrier） 你的话语可以抵消痛苦。",
+    "page": "266"
+  },
+  {
+    "title": "S17",
+    "summary": "流弹（Stray Bullet） 举枪朝空中射击。",
+    "page": "268"
+  },
+  {
+    "title": "S14",
+    "summary": "孢子（Spores） 你可以制造自己微小的孢子。",
+    "page": "267"
+  },
+  {
+    "title": "S18",
+    "summary": "吞噬星辰（Swallowing a Star） 用某种更加密集的东西取代你的心脏。",
+    "page": "268"
+  },
+  {
+    "title": "S12",
+    "summary": "森林之灵（Spirit of the Forest） 成为一株植物。",
+    "page": "266"
+  },
+  {
+    "title": "S6",
+    "summary": "六发左轮（Six Shooter） 它永远是上膛的。",
+    "page": "264"
+  },
+  {
+    "title": "S4",
+    "summary": "安全连接（Secure Connection） 选择两个有思维的目标（你可以是其中之一）。",
+    "page": "264"
+  },
+  {
+    "title": "S3",
+    "summary": "薛定谔效应（Schrödinger Effect） 如果你没有被直接观察到，你对世界而言便不存在。",
+    "page": "264"
+  },
+  {
+    "title": "S8",
+    "summary": "诗歌猛击（Slam Poetry） 谁说言语不会伤人？ 背诵两句你从未用于此能力的极其糟糕的诗句，进行 活力（Dynamism） 检定。",
+    "page": "265"
+  },
+  {
+    "title": "S1",
+    "summary": "沙尘暴（Sandstorm） 如果你的沙袋不在手边，问别人要一个。",
+    "page": "263"
+  },
+  {
+    "title": "V2",
+    "summary": "你好，玩家！ 你一定能感觉到，这场突破。",
+    "page": "276"
+  },
+  {
+    "title": "V1",
+    "summary": "隐匿之地（Vale） 当你想让一个地方变得更神秘时，站在外面并进行 气质（Presence） 检定。",
+    "page": "275"
+  },
+  {
+    "title": "K1",
+    "summary": "异常公文包（The Abnormal Briefcase） 异常公文包具备普通公文包的所有功能，但…… -- 特殊能力： 当你领取因捕获异常（Anomaly）而获得的奖励后， 你可以激活公文包的隐藏能力。",
+    "page": "238"
+  },
+  {
+    "title": "F9",
+    "summary": "你可以抓取任何你能看到的无生命物体，并进行 缜密（Attentiveness） 检定。",
+    "page": "219"
+  },
+  {
+    "title": "F10",
+    "summary": "未来由我们的想象塑造。",
+    "page": "219"
+  },
+  {
+    "title": "F7",
+    "summary": "焦点小组（Focus Group） 当你使用 “你的最佳自我（Your Best Self）” 时，你可以同时找到你所在执行小队（Field Team）每个成员的 1 个替代版本。",
+    "page": "218"
+  },
+  {
+    "title": "F5",
+    "summary": "你的身体可以调整密度和内部结构，形成一层额外的护甲，而外形保持不变。",
+    "page": "218"
+  },
+  {
+    "title": "F1",
+    "summary": "你现在可以随时召唤一台拍立得相机，并用它拍摄任何物体或建筑，然后进行 欺瞒（Subtlety） 检定。",
+    "page": "205"
+  },
+  {
+    "title": "F2",
+    "summary": "你确认了两个与你极其相似的自己，它们与你足够接近，以至于能够共享心灵连接。",
+    "page": "217"
+  },
+  {
+    "title": "F3",
+    "summary": "每个人的时间都是有限的。",
+    "page": "104"
+  },
+  {
+    "title": "F11",
+    "summary": "如果某人已死，你可以与他们交谈。",
+    "page": "220"
+  },
+  {
+    "title": "F6",
+    "summary": "你可以融入地面，然后进行 欺瞒（Subtlety） 检定。",
+    "page": "218"
+  },
+  {
+    "title": "F8",
+    "summary": "无论何处，皆近在咫尺 如果你曾去过某个地方，它就永远在你附近。",
+    "page": "218"
+  },
+  {
+    "title": "F4",
+    "summary": "你没有速度限制，每一个终结，都是一次离场。",
+    "page": "217"
+  },
+  {
+    "title": "A8",
+    "summary": "进行 欺瞒（Duplicity）检定。",
+    "page": "203"
+  },
+  {
+    "title": "A7",
+    "summary": "亲爱的特工， 我们怀着沉重的心情通知您，您的雇佣关系即刻终止。",
+    "page": "203"
+  },
+  {
+    "title": "A12",
+    "summary": "事后再问 在你杀死或消灭（Eliminate） 某人后的最长一小时内，你可以直接与他们对话，就像他们仍然在场一样。",
+    "page": "204"
+  },
+  {
+    "title": "A9",
+    "summary": "选择一件你钟爱的物品，并赋予它终极的便利性。",
+    "page": "204"
+  },
+  {
+    "title": "A3",
+    "summary": "恭喜你，特工！ 你对机构使命的投入已经被团队注意到，我们很高兴宣布你的首次晋升！机构对你未来的持续成功寄予厚望。",
+    "page": "202"
+  },
+  {
+    "title": "A4",
+    "summary": "命运随你的意志展开。",
+    "page": "202"
+  },
+  {
+    "title": "A2",
+    "summary": "终极涟漪枪Ripple Gun Ultima 一件蕴含惊人力量的遗物 结合了 涟漪枪 的现实稳定特性与 终极之刃 震撼天地的威力，涟漪枪·终极（Ripple Gun Ultima）是一种虚构的武器，其设计目的在于淘汰意志薄弱的特工，例如你自己。",
+    "page": "201"
+  },
+  {
+    "title": "A6",
+    "summary": "你已对一切伤害免疫， 除了唯一的一种致命弱点。",
+    "page": "203"
+  },
+  {
+    "title": "A5",
+    "summary": "你能够看见两种想法之间最短的距离。",
+    "page": "202"
+  },
+  {
+    "title": "A11",
+    "summary": "你总能融入其中 对一个目标说出任意一句话，然后进行 欺瞒（Duplicity）检定。",
+    "page": "204"
+  },
+  {
+    "title": "A10",
+    "summary": "视角转换 当使用 强制透视（Forced Perspective） 时，你可以自由地调整受影响物体的大小，使其符合当前观察者的视角感知。",
+    "page": "204"
+  },
+  {
+    "title": "C8",
+    "summary": "你创造并获得了一件强大的神器：时钟之面（Clock Face）。",
+    "page": "205"
+  },
+  {
+    "title": "C6",
+    "summary": "你可以指定一个你所在的空间，并留下持久的印记。",
+    "page": "209"
+  },
+  {
+    "title": "C9",
+    "summary": "附带损害（Collateral Damage） 当一个效果本应消灭（Eliminate） 一个目标时，你可以选择让该效果改为消灭一个空间范围。",
+    "page": "210"
+  },
+  {
+    "title": "C7",
+    "summary": "你可以将一名普通目标推过某个门槛，并进行 欺瞒（Duplicity） 检定。",
+    "page": "209"
+  },
+  {
+    "title": "C10",
+    "summary": "当你被敌人攻击时，承受这一击，然后进行 活力（Dynamism） 检定。",
+    "page": "210"
+  },
+  {
+    "title": "C5",
+    "summary": "在每次任务开始时，简报结束前的任何时刻，秘密写下最多六个不同的 “三词短语”（例如：“所以我说”、 “我的土豚笑了”、 “直到最后” 等）。",
+    "page": "209"
+  },
+  {
+    "title": "C3",
+    "summary": "选择你的两个拼接体（Splices），想象它们合二为一的可能性。",
+    "page": "208"
+  },
+  {
+    "title": "C4",
+    "summary": "可以理解的决定，特工。",
+    "page": "208"
+  },
+  {
+    "title": "C1",
+    "summary": "“能让我试试吗？” 尝试永远不会有坏处。",
+    "page": "207"
+  },
+  {
+    "title": "C2",
+    "summary": "当你开口，他们别无选择，只能聆听。",
+    "page": "208"
+  },
+  {
+    "title": "X1",
+    "summary": "我感到宽慰。",
+    "page": "283"
+  },
+  {
+    "title": "X3",
+    "summary": "你好，玩家。",
+    "page": "286"
+  },
+  {
+    "title": "X2 赛风商店",
+    "summary": "太棒了！你干得真好。",
+    "page": "285"
+  },
+  {
+    "title": "Z3",
+    "summary": "Chair 一扇守护着长久封闭楼梯间的门吱呀作响地打开，邀请你上行。",
+    "page": "293"
+  },
+  {
+    "title": "Z2",
+    "summary": "The Emergency 与你离别，三角机构的隐约威胁依旧萦绕在你的记忆中。",
+    "page": "291"
+  },
+  {
+    "title": "Z1",
+    "summary": "Unstoppable 好吧，我们早就料到这一刻会到来，现在已无回头路。",
+    "page": "43"
+  },
+  {
+    "title": "O2",
+    "summary": "通晓万语（Omnilingual） 你掌握所有人类语言。",
+    "page": "247"
+  },
+  {
+    "title": "O8",
+    "summary": "自由了。",
+    "page": "249"
+  },
+  {
+    "title": "O1",
+    "summary": "当有人向您讲解某项技能、手艺、流程或计划时，您可以打断他们并说：“好，我懂了。",
+    "page": "246"
+  },
+  {
+    "title": "O5",
+    "summary": "万中一（One-In-All） 你与自身潜能的连接，使你的替代自我可以取代任何你遇见的人。",
+    "page": "251"
+  },
+  {
+    "title": "O4",
+    "summary": "你好，玩家。",
+    "page": "247"
+  },
+  {
+    "title": "O7",
+    "summary": "过热（Overheat） 温度只是速度的另一种表现形式。",
+    "page": "248"
+  },
+  {
+    "title": "O3",
+    "summary": "似曾相识的面孔（One of Those Faces） 与你交谈时，掩饰表情，并进行 欺瞒（Duplicity） 检定。",
+    "page": "247"
+  },
+  {
+    "title": "O6",
+    "summary": "只有 XX 世代的孩子记得（Only XXs Kids Remember） 想象一个虚构作品、事件或产品，它可以是真实的，也可以是不存在的。",
+    "page": "5"
+  },
+  {
+    "title": "L7",
+    "summary": "大厅漫步者（Lobby Walker） 在现实之外，还有一个平行空间，被机构（Agency）称为“大厅（Lobby）”。",
+    "page": "275"
+  },
+  {
+    "title": "L5",
+    "summary": "小手（Little Hand） 你创造并可以使用一件强大的神器：“小手（Little Hand）”。",
+    "page": "237"
+  },
+  {
+    "title": "L2",
+    "summary": "让我帮你捡起来（Let Me Get That For You） 当某人掉落某物时，你可以进行 欺瞒（Duplicity） 检定。",
+    "page": "63"
+  },
+  {
+    "title": "L9",
+    "summary": "隐于人群（Lost in the Crowd） 每当你进入 6 人及以上的群体时，你会立即“成为”这群人中的每一个人。",
+    "page": "238"
+  },
+  {
+    "title": "L8",
+    "summary": "失物招领（Lost and Found） 许多被忽视的物品都会掉入大厅。",
+    "page": "238"
+  },
+  {
+    "title": "L11",
+    "summary": "你好，玩家。",
+    "page": "125"
+  },
+  {
+    "title": "L4",
+    "summary": "限时抢购（Limited Time Only） 是时候来一场限时清仓了！ 在物品下点燃一根火柴，并进行 专业（Professionalism） 检定。",
+    "page": "229"
+  },
+  {
+    "title": "L1",
+    "summary": "电影世界（La-La Land） 让现实模仿艺术。",
+    "page": "235"
+  },
+  {
+    "title": "L6",
+    "summary": "活体护甲（Living Armor） 重塑你的身体，彻底包覆目标。",
+    "page": "237"
+  },
+  {
+    "title": "L3",
+    "summary": "派对灵魂（Life of the Party） 无论身处何地，你都会让派对开始！ 做点什么来活跃气氛，并进行 气质（Presence） 检定。",
+    "page": "207"
+  },
+  {
+    "title": "L10",
+    "summary": "他们不会告诉你，但我刚刚得到了消息——三角机构已经关闭了他们为你做过的唯一一件好事：你的生命保险中的复活功能。",
+    "page": "133"
+  },
+  {
+    "title": "W4",
+    "summary": "我们都去了哪里（Where We All Go） 将你的灵魂注入枪中，进入被消灭（Eliminated）之物存放的空间，进行 专业（Professionalism） 检定。",
+    "page": "271"
+  },
+  {
+    "title": "W1",
+    "summary": "唤醒之声（Wake-Up Call） 世间只有两种状态：沉睡与清醒。",
+    "page": "252"
+  },
+  {
+    "title": "W7",
+    "summary": "可惜你让事情走到了这一步。",
+    "page": "165"
+  },
+  {
+    "title": "W6",
+    "summary": "紧迫之地（The Urgency’s Location） -- “好吧，GM，他们成功了。",
+    "page": "279"
+  },
+  {
+    "title": "W8",
+    "summary": "太不可思议了，特工！ 执行副总裁这个头衔由寥寥无几的人获得，并且能保住的人更少。",
+    "page": "280"
+  },
+  {
+    "title": "W11",
+    "summary": "如果我是你，我不会这么做 你的枪现在可以潜入他人的思想。",
+    "page": "71"
+  },
+  {
+    "title": "W10",
+    "summary": "最糟糕的聚会 当你真的想要毁掉某人的一天时，打开他们附近的一扇门，并投掷 缜密 检定。",
+    "page": "97"
+  },
+  {
+    "title": "W3",
+    "summary": "当它被创作时（When It Was Written） 当有人引用或展示一件作品（如艺术、商业、潮流等）时，你可以追溯它的创作历程。",
+    "page": "67"
+  },
+  {
+    "title": "W5",
+    "summary": "你曾是谁（Who You Used to Be） 你可以使用消极回响（Negatives）作用于在场之人，并从他们的视角审视他们的过往。",
+    "page": "77"
+  },
+  {
+    "title": "W2",
+    "summary": "我都做了什么？（What Have I Done?） 已经有足够的杀戮了。",
+    "page": "210"
+  },
+  {
+    "title": "W9",
+    "summary": "顺势而行 沙岸的边缘如同海浪般模糊。",
+    "page": "263"
+  },
+  {
+    "title": "H2",
+    "summary": "静默时刻（Hush） 安静的时间开始了。",
+    "page": "266"
+  },
+  {
+    "title": "H4",
+    "summary": "终于。",
+    "page": "179"
+  },
+  {
+    "title": "H5",
+    "summary": "你好，玩家。",
+    "page": "125"
+  },
+  {
+    "title": "H3",
+    "summary": "令人失望的决定，特工。",
+    "page": "224"
+  },
+  {
+    "title": "H1",
+    "summary": "习惯塑造（Habit Forming） 在目标大脑中创造新的神经通路。",
+    "page": "202"
+  },
+  {
+    "title": "Q3",
+    "summary": "你的奉献让我们非常感激，特工。",
+    "page": "231"
+  },
+  {
+    "title": "Q2",
+    "summary": "谢谢你。",
+    "page": "118"
+  },
+  {
+    "title": "J？",
+    "summary": "工作台（Job Desk） - 退休选项 糟糕透顶！从我们把你的思想像果冻管一样吸走的那一刻起，我们就知道你是个冤大头。",
+    "page": "230"
+  },
+  {
+    "title": "J2",
+    "summary": "重大胜利！ 从你被录用那一刻起，我们就知道，总有一天你会成为我们职场家庭中不可替代的一员。",
+    "page": "231"
+  },
+  {
+    "title": "J1",
+    "summary": "恰好是你想要的（Just What You Wanted） 与他人一起，从现实的道具桌上抓取某件物品。",
+    "page": "63"
+  },
+  {
+    "title": "J3",
+    "summary": "一个几乎平庸的员工也值得得到恰当的赞美：太棒了！ 到现在，你应该已经充分意识到那些可怕力量的真正规模——它们正威胁着颠覆现实那脆弱的平衡。",
+    "page": "232"
+  },
+  {
+    "title": "J4",
+    "summary": "终结（The End） 终结是一项特殊任务，仅对持有“终焉使者（Endbringer）”的特工开放。",
+    "page": "215"
+  },
+  {
+    "title": "P10",
+    "summary": "口袋星辰（Pocket Stars） 每个人都是星辰，而你是一座行走的星系。",
+    "page": "252"
+  },
+  {
+    "title": "P5",
+    "summary": "永久转移（Permanent Transfer） 在使用“你的最佳自我（Your Best Self）”后， 你可以邀请你的替代版本留在这个现实世界，成为永久存在的一部分。",
+    "page": "217"
+  },
+  {
+    "title": "P12",
+    "summary": "私人频道（Private Channel） 打开邮箱、调节对讲机的拨盘，或拨打一个电话号码，并进行 主动（Initiative） 检定。",
+    "page": "253"
+  },
+  {
+    "title": "P8",
+    "summary": "吹笛人（Piper） 邀请某个角色或物品，从你正在互动的艺术作品或小说中进入现实世界。",
+    "page": "73"
+  },
+  {
+    "title": "P11",
+    "summary": "正在此刻（Precisely When I Mean To） 任何时候你和你的盟友前往新的地点，你可以选择让所有人到达该地点的“昨天”或“明天”。",
+    "page": "253"
+  },
+  {
+    "title": "P4",
+    "summary": "完美回击（Perfect Comeback） 当某人或某物试图对你造成伤害、伤害你的感情，或者开始做你想阻止的事情时， 你知道该说什么。",
+    "page": "61"
+  },
+  {
+    "title": "P6",
+    "summary": "个人空间（Personal Space） 深吸一口气并屏住呼吸。",
+    "page": "230"
+  },
+  {
+    "title": "P14",
+    "summary": "公共领域（Public Domain） 当你使用“戏剧术（Dramaturg）”时， 你的“面具（Mask）”可以赋予目标某个神话或虚构角色的人格与知识。",
+    "page": "215"
+  },
+  {
+    "title": "P3",
+    "summary": "杀人者是人（People Kill People） 赋予目标你的“枪（Gun）”之力。",
+    "page": "214"
+  },
+  {
+    "title": "P7",
+    "summary": "私人储藏（Personal Stash） 你可能会需要某些东西！ 你获得一个“私人储藏（Personal Stash）”，可用于存放你的异常能力创造的物品。",
+    "page": "251"
+  },
+  {
+    "title": "P1",
+    "summary": "复制（Paste） 释放你体内的“拼接（Spliced）”目标副本。",
+    "page": "267"
+  },
+  {
+    "title": "P9",
+    "summary": "倒带（Play It Backwards） 拿起一份实体的大规模发行媒体，并向其低语信息。",
+    "page": "206"
+  },
+  {
+    "title": "P13",
+    "summary": "拖延（Procrastinate） 在任何玩家（包括你自己）掷骰后， 但在他们选择是否花费“素质保证（Quality Assurances）”前， 你可以选择在该投掷结果上增加或减少 3 个 3。",
+    "page": "67"
+  },
+  {
+    "title": "P2",
+    "summary": "暂停按钮（Pause Button） 正如其名，按下任意按钮，并进行 主动（Initiative） 检定。",
+    "page": "250"
+  },
+  {
+    "title": "T5",
+    "summary": "战利品陈列（Trophy Case） 树已枯，但斧犹记。",
+    "page": "271"
+  },
+  {
+    "title": "T1",
+    "summary": "非常感谢（Thank You So Much） 展示你的感激之情，拿起某样属于别人的东西， 并对主人说：“非常感谢。",
+    "page": "207"
+  },
+  {
+    "title": "T4",
+    "summary": "敬启者（To Whom it May Concern） 他们的年龄由你决定。",
+    "page": "270"
+  },
+  {
+    "title": "T2",
+    "summary": "真是太有趣了 当有人在你附近讲话时，说“真是太有趣了”，并掷出气质 Presence。",
+    "page": "269"
+  },
+  {
+    "title": "T6",
+    "summary": "你好，玩家。",
+    "page": "271"
+  },
+  {
+    "title": "T8",
+    "summary": "定型角色（Typecast） 人群喜欢经典。",
+    "page": "273"
+  },
+  {
+    "title": "T7",
+    "summary": "稳定终于降临了。",
+    "page": "272"
+  },
+  {
+    "title": "T3",
+    "summary": "我们希望这条信息能让你安好，特工！ 你已经非常擅长引导机构的力量，现在获准了解到关于素质保证的另一个真相：它们比你想象的还要有用！ 像你这样经验丰富的特工能够改变你个人的因果链，把历史素材随意搭配，创造出任何时刻都完美的背景故事。",
+    "page": "270"
+  },
+  {
+    "title": "Y4",
+    "summary": "你还在玩这个？ 让某人知道什么是“不酷的”。",
+    "page": "278"
+  },
+  {
+    "title": "Y1",
+    "summary": "你不该这样做 当一个物体被用来伤害或羞辱你（如子弹、油漆桶、便条纸等）时，掷活力（Dynamism）。",
+    "page": "286"
+  },
+  {
+    "title": "Y5",
+    "summary": "你最糟糕的自我 打开一个足够容纳目标的容器，然后掷欺瞒（Duplicity）。",
+    "page": "287"
+  },
+  {
+    "title": "Y2",
+    "summary": "亲爱的特工， 我们从未有过任何怀疑，显然你也同样毫无疑问！ 你已达到外勤工作的巅峰，并且完全配得上我们授予的最高头衔——Chair。",
+    "page": "286"
+  },
+  {
+    "title": "Y3",
+    "summary": "你是个赢家，宝贝 让他们的梦想成真。",
+    "page": "287"
+  },
+  {
+    "title": "U4",
+    "summary": "不稳定（Unstable） 你现在可以对普通生物使用“解缠”能力。",
+    "page": "275"
+  },
+  {
+    "title": "U3",
+    "summary": "解缠（Unspool） 所有束缚在你面前都会失去力量。",
+    "page": "275"
+  },
+  {
+    "title": "U2",
+    "summary": "我们曾希望，简单的一次口头警告便能让你调整方向。",
+    "page": "295"
+  },
+  {
+    "title": "U1",
+    "summary": "不可靠的叙述者（Unreliable Narrator） 通过描述来唤起体验、记忆或感官。",
+    "page": "273"
+  },
+  {
+    "title": "D7",
+    "summary": "当你成功对一名普通目标使用任何“汲取（Drain）”能力后，你可以宣布他们成为你的新门垫（Doormat）。",
+    "page": "238"
+  },
+  {
+    "title": "D3",
+    "summary": "当你目睹一场死亡时，你可以让死者复生，毫发无伤。",
+    "page": "211"
+  },
+  {
+    "title": "D4",
+    "summary": "恭喜你，表现尚可，高级助理！ 既然你已经展示了你的能力和投入，我们很高兴与你分享专属的三角机构应用程序的私人邀请以及关于我们研究的异常的更多信息。",
+    "page": "212"
+  },
+  {
+    "title": "D6",
+    "summary": "当你使用 公开携带（Open Carry） 时，你可以用以下后果替换原本的后果列表。",
+    "page": "214"
+  },
+  {
+    "title": "D2",
+    "summary": "调整你的外观（改变服装或配饰），然后进行 专业（Professionalism） 检定。",
+    "page": "211"
+  },
+  {
+    "title": "D5",
+    "summary": "当你消灭（Eliminate）或杀死目标时，你可以释放该目标的完美复制体作为战利品（Trophy），并进行 欺瞒（Duplicity） 检定。",
+    "page": "214"
+  },
+  {
+    "title": "D8",
+    "summary": "梦与故事来自同一片领域，而栖息其中的角色亦然。",
+    "page": "215"
+  },
+  {
+    "title": "D1",
+    "summary": "你可以将强烈的情感与随意的想法联系在一起。",
+    "page": "211"
+  },
+  {
+    "title": "R4",
+    "summary": "反冲（Recoil） 将你的“枪（Gun）”交给某人，并告诉他们随意开火。",
+    "page": "282"
+  },
+  {
+    "title": "R13",
+    "summary": "近在身后（Right Behind You） 当你使用“梦魇（Nightmare）”时，你的幻象形态可以变成附着于阴影的独立实体。",
+    "page": "262"
+  },
+  {
+    "title": "R1",
+    "summary": "迎向刀口（Ran Into My Knife） 当某人没有注意到你或他们周围的环境时，你可以喊出“停下！快停下！（Wait! Stop!）”并进行 主动（Initiative） 检定。",
+    "page": "243"
+  },
+  {
+    "title": "R10",
+    "summary": "重播（Rerun） 这永远不会过时。",
+    "page": "248"
+  },
+  {
+    "title": "R12",
+    "summary": "牛仔之魂（Ride a Cowboy） 如果某物或某人杀死了你，你可以立即占据它们的身体。",
+    "page": "222"
+  },
+  {
+    "title": "R8",
+    "summary": "装填（Reload） 记录你杀死或消除（Eliminate）的每一个活体或异常体（Anomalous Target）， 使用以下方式进行追踪： 🔲 1 🔲 2 🔲 3 🔲 4 🔲 5 🔲 6 🔲 7 当该进度轨道填满时， 你的六发左轮（Six-Shooter）提供的 3 将恢复至最大值， 并重置轨道。",
+    "page": "261"
+  },
+  {
+    "title": "R11",
+    "summary": "撤回（Retract） 每个人都会犯错，除了你。",
+    "page": "250"
+  },
+  {
+    "title": "R3",
+    "summary": "朗读（Read Aloud） 没人应该被遗忘。",
+    "page": "241"
+  },
+  {
+    "title": "R14",
+    "summary": "撕裂现实（Rip） 伸出手，撕开现实的织布。",
+    "page": "262"
+  },
+  {
+    "title": "R7",
+    "summary": "精炼感官（Refined Senses） 折叠你的大脑，并微调你的感官器官，使其朝向特定目标优化。",
+    "page": "261"
+  },
+  {
+    "title": "R9",
+    "summary": "替代（Replace） 建立一段关系很难，所以不如取代一段已存在的关系。",
+    "page": "261"
+  },
+  {
+    "title": "R15",
+    "summary": "火箭链锤（Rocket Watch） 大指针（Big Hand）、小指针（Little Hand）和钟面（Clock Face）结合在一起， 形成了火箭链锤（Rocket Watch），一把威力无比的武器， 由长而坚固的锁链挥舞。",
+    "page": "263"
+  },
+  {
+    "title": "R6",
+    "summary": "删改（Redact） 有些词会自然消亡，而有些则被彻底抹去。",
+    "page": "260"
+  },
+  {
+    "title": "R5",
+    "summary": "红灯（Red Light） 一切都在持续进行。",
+    "page": "210"
+  },
+  {
+    "title": "R2",
+    "summary": "随机存取记忆（Random Access Memory） 当某人描述一段记忆时，将其存入文件夹。",
+    "page": "259"
+  },
+  {
+    "title": "N2",
+    "summary": "与文化不合 你决定离开。",
+    "page": "245"
+  },
+  {
+    "title": "N1",
+    "summary": "你不能再继续这条道路，特工。",
+    "page": "244"
+  },
+  {
+    "title": "N3",
+    "summary": "能够走到这一步，表明你对自己的职业生涯投入了平均水平的努力。",
+    "page": "246"
+  },
+  {
+    "title": "G1",
+    "summary": "玻璃大炮（Glass Cannon） 当 沙暴（Sandstorm） 触发时，你可以选择让爆发出的不是沙子，而是高速飞溅的玻璃碎片。",
+    "page": "220"
+  },
+  {
+    "title": "G9",
+    "summary": "软体（Gummy） 你的身体现在变得极度柔韧。",
+    "page": "223"
+  },
+  {
+    "title": "G4",
+    "summary": "锐眼（Good Eye） 你现在可以使用 “速拔（Quick Draw）” 来保护任何你能感知到的附近目标，只要你能同时看到他们和试图伤害他们的威胁。",
+    "page": "222"
+  },
+  {
+    "title": "G3",
+    "summary": "你持续达成我们的期望！ 中层需要管理，而没有哪个组织比我们更具“中层”。",
+    "page": "220"
+  },
+  {
+    "title": "G6",
+    "summary": "绿手指（Green Thumb） 专注于附近的一株植物，进行气质（Presence）检定。",
+    "page": "222"
+  },
+  {
+    "title": "G7",
+    "summary": "突破重塑（Groundbreaking） 庆祝某人的华丽重塑。",
+    "page": "222"
+  },
+  {
+    "title": "G8",
+    "summary": "我们没有多少时间了，三角机构不会容忍你的力量继续增长。",
+    "page": "223"
+  },
+  {
+    "title": "G2",
+    "summary": "天知道我在干什么（God Forbid I Do Anything） 无论你做什么，都会被视为平常、合理的。",
+    "page": "220"
+  },
+  {
+    "title": "G5",
+    "summary": "Gooey 你的身体、衣物、携带的补给物资（Requisitions）和个人物品都可以随时液化，并在无痛无代价的情况下恢复正常。",
+    "page": "222"
+  },
+  {
+    "title": "B1",
+    "summary": "直接操控生物体 你现在可以直接对活体目标使用 强制透视（Forced Perspective）。",
+    "page": "205"
+  },
+  {
+    "title": "B9",
+    "summary": "窃听誓约 接受某人的承诺，然后进行 欺瞒（Subtlety） 检定。",
+    "page": "206"
+  },
+  {
+    "title": "B11",
+    "summary": "当一个普通目标对你感到不满、愤怒或敌对时，对他们说：“今天是我的生日！” 然后进行 共情（Empathy） 检定。",
+    "page": "207"
+  },
+  {
+    "title": "B4",
+    "summary": "大指针（Big Hand） 你创造并获得了一件强大的神器：大指针（Big Hand）。",
+    "page": "205"
+  },
+  {
+    "title": "B7",
+    "summary": "梦魇（Bogeyman） 你将在那些被你纠缠过的人心中永远留下阴影。",
+    "page": "206"
+  },
+  {
+    "title": "B3",
+    "summary": "他们难道没听过那些故事吗？ 如果你礼貌地向某人请求任何形式的帮助，而他们拒绝了你，你可以自动激活以下效果，无需进行检定： 借用（Borrow） 的 “成功时” 效果 窃取（Steal） 的 “当获得 6 个或更多的 3 时” 效果 -- 如果你想激活更多的 Borrow 效果： 你可以进行一次欺瞒（Subtlety）检定，并消耗任何掷出的 3 来触发额外效果。",
+    "page": "205"
+  },
+  {
+    "title": "B6",
+    "summary": "掌控数字通路 你能够深入设备的屏幕或显示器，成为电子数据的化身。",
+    "page": "206"
+  },
+  {
+    "title": "B8",
+    "summary": "如果你知道目标在思考自己时使用的名字，你可以无视距离对他们使用你的异常能力（Anomaly Abilities）。",
+    "page": "206"
+  },
+  {
+    "title": "B5",
+    "summary": "誓约束缚（Binding Vow） 在你的存在下，言语本身将承载极大的重量。",
+    "page": "206"
+  },
+  {
+    "title": "B2",
+    "summary": "时间信标 用未来的努力来弥补今日的问题。",
+    "page": "205"
+  },
+  {
+    "title": "B10",
+    "summary": "任何处于 “副职赋权（Deputize）” 后果影响下的目标，将具备以下特性： 除非你主动解除，他们永远不会失去这些效果。",
+    "page": "207"
+  },
+  {
+    "title": "M12",
+    "summary": "我的杰作（My Masterpiece） 当你使用“那边是什么？（What’s That Over There?）”时，你可以创造任何物体， 无论材料或规格如何，只要你能想象得到，包括抽象概念（如：“坚不可摧的保险箱”、“最好的冰淇淋”）。",
+    "page": "244"
+  },
+  {
+    "title": "M9",
+    "summary": "镜面（Mirror） 用手指在空气中绘制形状，并进行 欺瞒（Duplicity） 检定。",
+    "page": "241"
+  },
+  {
+    "title": "M7",
+    "summary": "模仿（Mimic） 你对自己声音的掌控延展至所有声音的掌控。",
+    "page": "204"
+  },
+  {
+    "title": "M4",
+    "summary": "流放于画中（Marooned） 艺术是一座监狱，而你是它的新任典狱长。",
+    "page": "241"
+  },
+  {
+    "title": "M6",
+    "summary": "融合（Meld） 你的血肉可以与任何人的血肉兼容。",
+    "page": "237"
+  },
+  {
+    "title": "M3",
+    "summary": "让自己有用（Make Yourself Useful） 触碰一个普通人或物体，并进行 活力（Dynamism） 检定。",
+    "page": "241"
+  },
+  {
+    "title": "M1",
+    "summary": "魔法护甲（Magic Armor） 活体护甲（Living Armor） 现在无法被移除，除非是由其他特工（Agents）操作。",
+    "page": "240"
+  },
+  {
+    "title": "M11",
+    "summary": "肌肉密度（Muscle Density） 你可以在不投掷骰子的情况下，自动触发“吞噬星辰（Swallowing a Star）”的成功效果。",
+    "page": "243"
+  },
+  {
+    "title": "M8",
+    "summary": "你的思维因不断重塑而永久改变。",
+    "page": "243"
+  },
+  {
+    "title": "M2",
+    "summary": "让我的怪兽成长（Make My Monster Grow） 你可以变大，非常大！大声呐喊，并进行 坚持（Persistence） 检定。",
+    "page": "240"
+  },
+  {
+    "title": "M5",
+    "summary": "假面舞会（Masquerade） 当你进行“戏剧术（Dramaturg）”检定时， 你的面具（Masks）不再局限于附身沉睡者（Sleepers）， 它们可以创造属于自己的身体，并赋予其中的人格以实体形态。",
+    "page": "215"
+  },
+  {
+    "title": "M10",
+    "summary": "还记得我吗？（Miss Me?） 你像影子一样难以摆脱。",
+    "page": "243"
+  }
+]

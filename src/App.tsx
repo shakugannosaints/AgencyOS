@@ -7,6 +7,7 @@ import { MissionsPage } from '@/modules/missions/pages/missions-page'
 import { AnomaliesPage } from '@/modules/anomalies/pages/anomalies-page'
 import { ReportsPage } from '@/modules/reports/pages/reports-page'
 import { NotesPage } from '@/modules/notes/pages/notes-page'
+import { RulesPage } from '@/modules/rules/pages/rules-page'
 import { TracksPage } from '@/modules/tracks/pages/tracks-page'
 import { SettingsPage } from '@/modules/settings/pages/settings-page'
 
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="anomalies" element={<AnomaliesPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="notes" element={<NotesPage />} />
+            <Route path="rules" element={<RulesPage />} />
             <Route path="tracks" element={<TracksPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>

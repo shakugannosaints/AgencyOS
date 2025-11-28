@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings, Notebook } from 'lucide-react'
+import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings, Notebook, BookOpen } from 'lucide-react'
 import { CommandStrip } from '@/components/ui/command-strip'
 import { cn } from '@/lib/utils'
 import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
@@ -14,7 +14,7 @@ import type { MissionSummary } from '@/lib/types'
 export function AppShell() {
   useCampaignPersistence()
   const t = useTrans()
-  const { dashboard, agents, missions: navMissions, anomalies, reports, notes, tracks, settings } = useNavTranslations()
+  const { dashboard, agents, missions: navMissions, anomalies, reports, notes, tracks, settings, rules } = useNavTranslations()
   const { edit, divisionName, divisionCode, status, tags, cancel, save, current, chaos, looseEnds, session, nextBriefing, weather, snapshot, export: exportText, import: importText, importing: importingText, importSuccess, importError } = useCommonTranslations()
   
   const campaign = useCampaignStore((state) => state.campaign)
@@ -43,7 +43,8 @@ export function AppShell() {
     { label: agents, path: '/agents', icon: Users },
     { label: navMissions, path: '/missions', icon: BriefcaseBusiness },
     { label: anomalies, path: '/anomalies', icon: Atom },
-    { label: reports, path: '/reports', icon: ScrollText },
+  { label: reports, path: '/reports', icon: ScrollText },
+  { label: rules, path: '/rules', icon: BookOpen },
     { label: notes, path: '/notes', icon: Notebook },
     { label: tracks, path: '/tracks', icon: Orbit },
     { label: settings, path: '/settings', icon: Settings },

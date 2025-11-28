@@ -43,6 +43,7 @@ export function useNavTranslations() {
     missions: t('app.nav.missions'),
     anomalies: t('app.nav.anomalies'),
     reports: t('app.nav.reports'),
+    rules: t('app.nav.rules'),
   };
 }
 

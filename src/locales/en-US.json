@@ -9,7 +9,8 @@
       "reports": "Reports",
       "tracks": "Custom Tracks",
       "settings": "Settings",
-      "notes": "Notes"
+      "notes": "Notes",
+      "rules": "Rule Lookup"
     },
     "common": {
       "edit": "Edit",
@@ -281,6 +282,12 @@
     "date": "Date",
     "lastUpdate": "Last Updated"
   },
+    "rules": {
+      "title": "Rule Lookup",
+      "description": "Quickly search rule summaries by title, content, or page number (local summaries only).",
+      "placeholder": "Search rules by title, keywords, or page...",
+      "noResults": "No rule entries found."
+    },
   "tracks": {
     "title": "Custom Track Management",
     "subtitle": "Custom Tracks",

@@ -9,6 +9,7 @@
       "reports": "任务报告",
       "tracks": "自定义轨道",
       "settings": "系统设置",
+      "rules": "规则速查",
       "notes": "经理笔记"
     },
     "common": {
@@ -279,6 +280,12 @@
     "type": "类型",
     "date": "日期",
     "lastUpdate": "最后更新"
+  },
+  "rules": {
+    "title": "规则速查",
+    "description": "通过条目标题、摘要或页码快速查找规则要点（仅本地汇总）。",
+    "placeholder": "搜索规则（标题/关键词/页码）...",
+    "noResults": "未找到符合条件的规则条目。"
   },
   "tracks": {
     "title": "自定义轨道管理",
