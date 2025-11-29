@@ -30,6 +30,7 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
     return missions.map((m, idx) => ({
       name: m.code || m.name || `#${idx + 1}`,
       looseEnds: m.looseEnds ?? 0,
+      realityRequestsFailed: m.realityRequestsFailed ?? 0,
     }))
   }, [missions])
 
@@ -81,8 +82,9 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
     if (arr.length === 0) return null
   const item = arr[0]
   const rawValue = item.value ?? 0
-  const itemPayload = item.payload as { looseEnds?: number } | undefined
+  const itemPayload = item.payload as { looseEnds?: number, realityRequestsFailed?: number } | undefined
   const looseEnds = itemPayload?.looseEnds
+  const realityRequestsFailed = itemPayload?.realityRequestsFailed
     const value = typeof rawValue === 'string' ? Number(rawValue) : rawValue
     const percent = total && total > 0 ? Math.round((Number(value) / total) * 1000) / 10 : null
     return (
@@ -96,6 +98,9 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
         )}
         {chartType === 'line' && looseEnds !== undefined && (
           <div className="mt-2 text-xs text-agency-muted">{t('dashboard.dataStats.charts.looseEnds')}: {looseEnds}</div>
+        )}
+        {chartType === 'line' && realityRequestsFailed !== undefined && (
+          <div className="mt-2 text-xs text-agency-muted">{t('dashboard.realityRequestsFailed')}: {realityRequestsFailed}</div>
         )}
       </div>
     )

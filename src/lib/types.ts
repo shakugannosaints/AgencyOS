@@ -86,6 +86,7 @@ export interface MissionSummary {
   status: MissionStatus
   chaos: number
   looseEnds: number
+  realityRequestsFailed?: number
   scheduledDate: string
   optionalObjectiveHint?: string
   expectedAgents?: string
@@ -113,7 +114,7 @@ export interface MissionLogEntry {
   id: ID
   missionId: ID
   timestamp: string
-  type: 'log' | 'chaos' | 'loose-end'
+  type: 'log' | 'chaos' | 'loose-end' | 'reality-failure'
   detail: string
   delta?: number
 }

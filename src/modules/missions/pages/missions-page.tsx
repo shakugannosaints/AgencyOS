@@ -15,6 +15,7 @@ const missionSchema = z.object({
   status: z.enum(['planning', 'active', 'debrief', 'archived']),
   chaos: z.number(),
   looseEnds: z.number(),
+  realityRequestsFailed: z.number().optional(),
   scheduledDate: z.string(),
   optionalObjectiveHint: z.string().optional().or(z.literal('')),
   expectedAgents: z.string().optional().or(z.literal('')),
@@ -32,6 +33,7 @@ export function MissionsPage() {
   const missions = useCampaignStore((state) => state.missions)
   const adjustMissionChaos = useCampaignStore((state) => state.adjustMissionChaos)
   const adjustMissionLooseEnds = useCampaignStore((state) => state.adjustMissionLooseEnds)
+  const adjustMissionRealityRequestsFailed = useCampaignStore((state) => state.adjustMissionRealityRequestsFailed)
   const appendMissionLog = useCampaignStore((state) => state.appendMissionLog)
   const createMission = useCampaignStore((state) => state.createMission)
   const updateMission = useCampaignStore((state) => state.updateMission)
@@ -47,7 +49,8 @@ export function MissionsPage() {
     type: '收容',
     status: 'planning',
     chaos: 0,
-    looseEnds: 0,
+  looseEnds: 0,
+  realityRequestsFailed: 0,
     scheduledDate: new Date().toISOString().substring(0, 10),
     optionalObjectiveHint: '',
     expectedAgents: '',
@@ -94,8 +97,9 @@ export function MissionsPage() {
       name: target.name,
       type: target.type,
       status: target.status,
-      chaos: target.chaos,
-      looseEnds: target.looseEnds,
+  chaos: target.chaos,
+  looseEnds: target.looseEnds,
+  realityRequestsFailed: target.realityRequestsFailed ?? 0,
       scheduledDate: target.scheduledDate.substring(0, 10),
       optionalObjectiveHint: target.optionalObjectiveHint ?? '',
       expectedAgents: target.expectedAgents ?? '',
@@ -139,8 +143,9 @@ export function MissionsPage() {
               <p className="text-sm text-agency-muted">{mission.type} · {formatDate(mission.scheduledDate)}</p>
             </div>
             <div className="flex gap-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
-              <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.chaos')}：{mission.chaos}</span>
-              <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.looseEnds')}：{mission.looseEnds}</span>
+                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.chaos')}：{mission.chaos}</span>
+                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.looseEnds')}：{mission.looseEnds}</span>
+                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('missions.realityRequestsFailedLabel')}：{mission.realityRequestsFailed ?? 0}</span>
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
@@ -162,6 +167,17 @@ export function MissionsPage() {
                   +1
                 </button>
                 <button type="button" className="border border-agency-border px-4 py-2 text-sm text-agency-muted rounded-2xl win98:rounded-none" onClick={() => adjustMissionLooseEnds(mission.id, -1, note)}>
+                  -1
+                </button>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-agency-muted">{t('missions.realityRequestsFailedAdjust')}</p>
+              <div className="flex gap-2">
+                <button type="button" className="border border-agency-amber/40 px-4 py-2 text-sm text-agency-amber rounded-2xl win98:rounded-none" onClick={() => adjustMissionRealityRequestsFailed(mission.id, 1, note)}>
+                  +1
+                </button>
+                <button type="button" className="border border-agency-border px-4 py-2 text-sm text-agency-muted rounded-2xl win98:rounded-none" onClick={() => adjustMissionRealityRequestsFailed(mission.id, -1, note)}>
                   -1
                 </button>
               </div>
@@ -218,6 +234,10 @@ export function MissionsPage() {
             <input type="number" className="mt-1 w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('looseEnds', { valueAsNumber: true })} />
           </label>
           <label className="text-xs uppercase tracking-[0.3em] text-agency-muted">
+            {t('missions.realityRequestsFailedLabel')}
+            <input type="number" className="mt-1 w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('realityRequestsFailed', { valueAsNumber: true })} />
+          </label>
+          <label className="text-xs uppercase tracking-[0.3em] text-agency-muted">
             {t('missions.form.date')}
             <input type="date" className="mt-1 w-full border border-agency-border bg-agency-ink/60 px-3 py-2 text-sm text-agency-cyan rounded-xl win98:rounded-none" {...form.register('scheduledDate')} />
           </label>
@@ -256,6 +276,7 @@ export function MissionsPage() {
               <th className="px-4 py-3 text-left">{t('missions.table.status')}</th>
               <th className="px-4 py-3 text-left">{t('app.common.chaos')}</th>
               <th className="px-4 py-3 text-left">{t('app.common.looseEnds')}</th>
+              <th className="px-4 py-3 text-left">{t('missions.realityRequestsFailedLabel')}</th>
               <th className="px-4 py-3 text-left">{t('missions.table.date')}</th>
               <th className="px-4 py-3 text-left">{t('missions.table.actions')}</th>
             </tr>
@@ -273,6 +294,7 @@ export function MissionsPage() {
                 <td className="px-4 py-3 uppercase tracking-[0.3em] text-xs">{item.status}</td>
                 <td className="px-4 py-3">{item.chaos}</td>
                 <td className="px-4 py-3">{item.looseEnds}</td>
+                <td className="px-4 py-3">{item.realityRequestsFailed ?? 0}</td>
                 <td className="px-4 py-3">{formatDate(item.scheduledDate)}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">

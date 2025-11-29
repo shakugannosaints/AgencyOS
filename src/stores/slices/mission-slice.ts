@@ -11,6 +11,7 @@ export interface MissionSlice {
   deleteMission: (id: string) => void
   adjustMissionChaos: (missionId: string, delta: number, note: string) => void
   adjustMissionLooseEnds: (missionId: string, delta: number, note: string) => void
+  adjustMissionRealityRequestsFailed: (missionId: string, delta: number, note: string) => void
   appendMissionLog: (missionId: string, detail: string) => void
 }
 
@@ -81,6 +82,25 @@ export const createMissionSlice: StateCreator<
           missionId,
           type: 'log' as const,
           detail,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    })),
+  adjustMissionRealityRequestsFailed: (missionId, delta, note) =>
+    set((state) => ({
+      missions: state.missions.map((mission) =>
+        mission.id === missionId
+          ? { ...mission, realityRequestsFailed: Math.max(0, (mission.realityRequestsFailed ?? 0) + delta) }
+          : mission,
+      ),
+      logs: [
+        ...state.logs,
+        {
+          id: createId(),
+          missionId,
+          type: 'reality-failure' as const,
+          delta,
+          detail: note,
           timestamp: new Date().toISOString(),
         },
       ],

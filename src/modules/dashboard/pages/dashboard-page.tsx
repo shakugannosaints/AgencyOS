@@ -3,7 +3,7 @@ import { StatCard } from '@/components/ui/stat-card'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useMvpWatchlist } from '@/stores/hooks/use-mvp-watchlist'
-import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert } from 'lucide-react'
+import { ActivitySquare, AlertTriangle, Trophy, ShieldAlert, Zap } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import DataStatsModal from '../components/data-stats-modal'
@@ -14,6 +14,9 @@ export function DashboardPage() {
   const campaign = useCampaignStore((state) => state.campaign)
   const updateCampaign = useCampaignStore((state) => state.updateCampaign)
   const missions = useCampaignStore((state) => state.missions)
+  const adjustMissionChaos = useCampaignStore((state) => state.adjustMissionChaos)
+  const adjustMissionLooseEnds = useCampaignStore((state) => state.adjustMissionLooseEnds)
+  const adjustMissionRealityRequestsFailed = useCampaignStore((state) => state.adjustMissionRealityRequestsFailed)
   const anomalies = useCampaignStore((state) => state.anomalies)
   const navigate = useNavigate()
 
@@ -27,6 +30,7 @@ export function DashboardPage() {
   const [isEditingGM, setIsEditingGM] = useState(false)
   const [gmValue, setGmValue] = useState<string>(campaign.generalManager ?? '')
   const [showStats, setShowStats] = useState(false)
+  const defaultNote = t('missions.defaultNote')
 
   useEffect(() => {
     // schedule the value update in a microtask so it does not cause synchronous setState in effect
@@ -35,9 +39,41 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label={t('dashboard.chaosPool')} value={activeMission?.chaos ?? 0} hint={t('dashboard.chaosHint')} icon={<ActivitySquare />} intent="warning" />
-        <StatCard label={t('dashboard.looseEnds')} value={activeMission?.looseEnds ?? 0} hint={t('dashboard.weatherHint')} icon={<AlertTriangle />} intent="critical" />
+      <section className="grid gap-4 md:grid-cols-3">
+        <StatCard
+          label={t('dashboard.chaosPool')}
+          value={activeMission?.chaos ?? 0}
+          hint={t('dashboard.chaosHint')}
+          icon={<ActivitySquare />}
+          intent="warning"
+          editable={!!activeMission}
+          onIncrement={() => { if(!activeMission) return; adjustMissionChaos(activeMission.id, 1, defaultNote)}}
+          onDecrement={() => { if(!activeMission) return; adjustMissionChaos(activeMission.id, -1, defaultNote)}}
+          onSet={(value) => { if(!activeMission) return; const delta = Math.max(0, value) - (activeMission.chaos ?? 0); adjustMissionChaos(activeMission.id, delta, defaultNote)}}
+        />
+        <StatCard
+          label={t('dashboard.looseEnds')}
+          value={activeMission?.looseEnds ?? 0}
+          hint={t('dashboard.weatherHint')}
+          icon={<AlertTriangle />}
+          intent="critical"
+          editable={!!activeMission}
+          onIncrement={() => { if(!activeMission) return; adjustMissionLooseEnds(activeMission.id, 1, defaultNote)}}
+          onDecrement={() => { if(!activeMission) return; adjustMissionLooseEnds(activeMission.id, -1, defaultNote)}}
+          onSet={(value) => { if(!activeMission) return; const delta = (value ?? 0) - (activeMission.looseEnds ?? 0); adjustMissionLooseEnds(activeMission.id, delta, defaultNote)}}
+        />
+        <StatCard
+          label={t('dashboard.realityRequestsFailed')}
+          value={activeMission?.realityRequestsFailed ?? 0}
+          hint={t('dashboard.realityRequestsFailedHint')}
+          icon={<Zap />}
+          editable={!!activeMission}
+          onIncrement={() => { if(!activeMission) return; adjustMissionRealityRequestsFailed(activeMission.id, 1, defaultNote)}}
+          onDecrement={() => { if(!activeMission) return; adjustMissionRealityRequestsFailed(activeMission.id, -1, defaultNote)}}
+          onSet={(value) => { if(!activeMission) return; const delta = Math.max(0, value) - (activeMission.realityRequestsFailed ?? 0); adjustMissionRealityRequestsFailed(activeMission.id, delta, defaultNote)}}
+        />
+      </section>
+      <section className="grid gap-4 md:grid-cols-2">
         <StatCard
           label={t('dashboard.mvp')}
           value={mvpLabel}

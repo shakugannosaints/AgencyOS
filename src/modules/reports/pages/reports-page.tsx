@@ -30,9 +30,10 @@ export function ReportsPage() {
               <p className="font-semibold text-white">{mission.code} · {mission.name}</p>
               <p className="text-xs text-agency-muted">{t('reports.type')}：{mission.type} · {t('reports.date')}：{formatDate(mission.scheduledDate)}</p>
             </div>
-            <div className="flex gap-3 text-xs uppercase tracking-[0.3em] text-agency-muted">
+              <div className="flex gap-3 text-xs uppercase tracking-[0.3em] text-agency-muted">
               <span className="rounded-xl border border-agency-border px-3 py-1">{t('app.common.chaos')}：{mission.chaos}</span>
               <span className="rounded-xl border border-agency-border px-3 py-1">{t('app.common.looseEnds')}：{mission.looseEnds}</span>
+              <span className="rounded-xl border border-agency-border px-3 py-1">{t('missions.realityRequestsFailedLabel', { defaultValue: t('missions.realityRequestsFailed') })}：{mission.realityRequestsFailed ?? 0}</span>
             </div>
           </div>
         ))}
