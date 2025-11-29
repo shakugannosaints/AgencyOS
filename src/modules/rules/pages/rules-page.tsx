@@ -21,7 +21,9 @@ export const RulesPage: FC = () => {
   const t = useTrans()
   const [query, setQuery] = useState('')
 
-  const rules = Array.isArray(coreRules) ? (coreRules as RuleEntry[]) : []
+  const rules = useMemo(() => {
+    return Array.isArray(coreRules) ? (coreRules as RuleEntry[]) : []
+  }, [])
 
   const results = useMemo(() => {
     const q = normalizeText(query)

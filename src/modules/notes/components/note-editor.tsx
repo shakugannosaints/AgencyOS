@@ -8,6 +8,8 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeRaw from 'rehype-raw'
 import { defaultSchema } from 'hast-util-sanitize'
+import type { Schema } from 'hast-util-sanitize'
+import type { Pluggable } from 'unified'
 
 interface NoteEditorProps {
   initialContent: string
@@ -22,7 +24,8 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
   const [mode, setMode] = useState<'edit' | 'preview' | 'both'>('edit')
 
   useEffect(() => {
-    setValue(initialContent || '')
+    // schedule the state update to avoid synchronous setState inside the effect
+    queueMicrotask(() => setValue(initialContent || ''))
   }, [initialContent])
 
   // debounce auto-save
@@ -37,7 +40,7 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
 
   // Build an extended sanitize schema once so preview and split use the same rules
   const extendedSanitizeSchema = (() => {
-    const base = { ...(defaultSchema as any) }
+    const base = { ...(defaultSchema as Schema) }
     const existingAttrs = (base.attributes || {}) as Record<string, string[]>
 
     const mergeAttrs = (tag: string, extra: string[]) => {
@@ -106,10 +109,10 @@ export function NoteEditor({ initialContent, onSave, className }: NoteEditorProp
 
   const notesAllowHtml = useCampaignStore((s) => s.notesAllowHtml)
 
-  const getRehypePlugins = () => {
-    if (notesAllowHtml) return [rehypeRaw, [rehypeSanitize, extendedSanitizeSchema]] as any
+  const getRehypePlugins = (): Pluggable[] => {
+    if (notesAllowHtml) return [rehypeRaw, [rehypeSanitize, extendedSanitizeSchema]] as Pluggable[]
     // When HTML is disabled, do not use rehypeRaw - embedded HTML will not be parsed.
-    return [] as any
+    return []
   }
 
   return (

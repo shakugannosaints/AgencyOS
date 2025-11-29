@@ -1,6 +1,6 @@
 import { Panel } from '@/components/ui/panel'
 import { FormFieldError } from '@/components/ui/form-field'
-import { useToast } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'

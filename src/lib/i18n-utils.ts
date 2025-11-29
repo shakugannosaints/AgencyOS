@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import type { TOptions } from 'i18next';
 
 /**
  * 更简洁的翻译hook，直接返回t函数
@@ -18,11 +19,11 @@ export function useI18n(namespace?: string) {
     /**
      * 翻译文本，支持命名空间
      */
-    translate: (key: string, options?: any) => t(key, options),
+  translate: (key: string, options?: TOptions) => t(key, options),
     /**
      * 安全翻译，如果key不存在则返回key
      */
-    safeTranslate: (key: string, options?: any) => {
+  safeTranslate: (key: string, options?: TOptions) => {
       const result = t(key, options);
       return result === key ? `[${key}]` : result;
     }

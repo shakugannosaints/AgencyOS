@@ -1,5 +1,5 @@
 import { Panel } from '@/components/ui/panel'
-import { useToast } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
 import { formatDate } from '@/lib/utils'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { useEffect, useMemo, useState } from 'react'
@@ -22,6 +22,8 @@ const missionSchema = z.object({
 })
 
 type MissionFormValues = z.infer<typeof missionSchema>
+
+const generateMissionCode = () => 'MSN-' + String(Math.floor(Math.random() * 900 + 100))
 
 export function MissionsPage() {
   const t = useTrans()
@@ -52,6 +54,7 @@ export function MissionsPage() {
     goalsSummary: '',
   })
 
+
   const form = useForm<MissionFormValues>({
     resolver: zodResolver(missionSchema),
     defaultValues: createDefaultMissionValues(),
@@ -59,12 +62,12 @@ export function MissionsPage() {
 
   useEffect(() => {
     if (!selectedMissionId) {
-      setSelectedMissionId(missions[0]?.id)
+      queueMicrotask(() => setSelectedMissionId(missions[0]?.id))
       return
     }
     const exists = missions.some((mission) => mission.id === selectedMissionId)
     if (!exists) {
-      setSelectedMissionId(missions[0]?.id)
+      queueMicrotask(() => setSelectedMissionId(missions[0]?.id))
     }
   }, [missions, selectedMissionId])
 
@@ -78,8 +81,8 @@ export function MissionsPage() {
       createMission(payload)
       showToast('success', t('missions.toast.created', { name: values.name }))
     }
-    const defaults = createDefaultMissionValues()
-    form.reset({ ...defaults, code: 'MSN-' + String(Math.floor(Math.random() * 900 + 100)) })
+  const defaults = createDefaultMissionValues()
+  form.reset({ ...defaults, code: generateMissionCode() })
   }
 
   const startEditMission = (missionId: string) => {

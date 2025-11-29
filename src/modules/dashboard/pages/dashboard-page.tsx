@@ -29,7 +29,8 @@ export function DashboardPage() {
   const [showStats, setShowStats] = useState(false)
 
   useEffect(() => {
-    setGmValue(campaign.generalManager ?? '')
+    // schedule the value update in a microtask so it does not cause synchronous setState in effect
+    queueMicrotask(() => setGmValue(campaign.generalManager ?? ''))
   }, [campaign.generalManager])
 
   return (

@@ -71,11 +71,20 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
   // generatePalette moved to ./palette-utils
 
   // Custom tooltip for richer, themed hover cards
-  const CustomTooltip = ({ active, payload, label, chartType, total }: any) => {
-    if (!active || !payload || payload.length === 0) return null
-    const item = payload[0]
-    const value = item.value ?? 0
-    const percent = total && total > 0 ? Math.round((value / total) * 1000) / 10 : null
+  // Recharts typings are complex for custom content; use a lightweight handler and destructure.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomTooltip = (rawProps: any & { chartType?: 'line' | 'pie'; total?: number }) => {
+    const { active, payload, label, chartType, total } = rawProps
+    // normalize payload to typed object if possible
+    if (!active || !payload) return null
+  const arr = Array.isArray(payload) ? payload as unknown as { value?: number | string; payload?: unknown }[] : []
+    if (arr.length === 0) return null
+  const item = arr[0]
+  const rawValue = item.value ?? 0
+  const itemPayload = item.payload as { looseEnds?: number } | undefined
+  const looseEnds = itemPayload?.looseEnds
+    const value = typeof rawValue === 'string' ? Number(rawValue) : rawValue
+    const percent = total && total > 0 ? Math.round((Number(value) / total) * 1000) / 10 : null
     return (
       <div className="rounded-md border border-agency-border/60 bg-agency-ink/95 p-3 text-sm text-white shadow-lg">
         <div className="flex items-baseline justify-between gap-4">
@@ -85,8 +94,8 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
         {percent !== null && (
           <div className="mt-1 text-xs text-agency-muted">{percent}%</div>
         )}
-        {chartType === 'line' && item.payload && item.payload.looseEnds !== undefined && (
-          <div className="mt-2 text-xs text-agency-muted">{t('dashboard.dataStats.charts.looseEnds')}: {item.payload.looseEnds}</div>
+        {chartType === 'line' && looseEnds !== undefined && (
+          <div className="mt-2 text-xs text-agency-muted">{t('dashboard.dataStats.charts.looseEnds')}: {looseEnds}</div>
         )}
       </div>
     )
@@ -97,8 +106,8 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
   const totalReprimands = activeAgentReprimandSlices.reduce((s, e) => s + (e.value ?? 0), 0)
   const totalAnomalies = anomalySlices.reduce((s, e) => s + (e.value ?? 0), 0)
 
-  const makePieLabel = (total: number) => (entry: any) => {
-    const percent = total > 0 ? Math.round((entry.value / total) * 100) : 0
+  const makePieLabel = (total: number) => (entry: { value?: number }) => {
+    const percent = total > 0 ? Math.round(((entry.value ?? 0) / total) * 100) : 0
     return `${percent}%`
   }
 
@@ -147,8 +156,7 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
                       const colors = generatePalette(activeAgentSlices.length, 200)
                       return (
                         <Pie data={activeAgentSlices} dataKey="value" nameKey="name" outerRadius={80} label={makePieLabel(totalAwards)} labelLine={false}>
-                          {activeAgentSlices.map((entry, i) => (
-                            // eslint-disable-next-line react/no-array-index-key
+                            {activeAgentSlices.map((entry, i) => (
                             <Cell key={`${entry.name}-${i}`} fill={colors[i % colors.length]} />
                           ))}
                         </Pie>
@@ -190,7 +198,6 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
                       return (
                         <Pie data={activeAgentReprimandSlices} dataKey="value" nameKey="name" outerRadius={80} label={makePieLabel(totalReprimands)} labelLine={false}>
                           {activeAgentReprimandSlices.map((entry, i) => (
-                            // eslint-disable-next-line react/no-array-index-key
                             <Cell key={`${entry.name}-rep-${i}`} fill={colors[i % colors.length]} />
                           ))}
                         </Pie>

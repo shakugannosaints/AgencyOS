@@ -1,32 +1,12 @@
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
+import { useCallback, useState, type ReactNode } from 'react'
 import { createId } from '@/lib/utils'
+import ToastContext, { type Toast, type ToastType } from './toast-context'
 import { useIsTheme } from '@/lib/theme-utils'
 import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react'
 
-type ToastType = 'success' | 'error' | 'warning' | 'info'
+// Context and supporting types are exported from toast-context.ts
 
-interface Toast {
-  id: string
-  type: ToastType
-  message: string
-  duration?: number
-}
-
-interface ToastContextValue {
-  toasts: Toast[]
-  showToast: (type: ToastType, message: string, duration?: number) => void
-  dismissToast: (id: string) => void
-}
-
-const ToastContext = createContext<ToastContextValue | null>(null)
-
-export function useToast() {
-  const context = useContext(ToastContext)
-  if (!context) {
-    throw new Error('useToast must be used within a ToastProvider')
-  }
-  return context
-}
+// `useToast` is exported from `use-toast.ts` to keep this file limited to components only.
 
 interface ToastProviderProps {
   children: ReactNode
