@@ -2,7 +2,7 @@ import type { EmergencyAction } from '@/lib/types'
 
 export const EMERGENCY_COLOR = '#0047BB'
 
-export function executeDomAction(action: EmergencyAction): void {
+export function executeDomAction(action: EmergencyAction): string | null {
   const { type, selector, payload } = action
   
   // Special handling for addElement which might not have a selector for the element itself yet
@@ -16,21 +16,27 @@ export function executeDomAction(action: EmergencyAction): void {
       if (newEl) {
         // Ensure the new element has the selector if provided in payload (e.g. id)
         // or we might need to track it.
-        // For now, just append.
+        let addedId = newEl.id
+        if (!addedId) {
+            addedId = `urgency-${Date.now()}-${Math.floor(Math.random() * 10000)}`
+            newEl.id = addedId
+        }
+
         if (payload.position === 'prepend') {
           parent.prepend(newEl)
         } else {
           parent.append(newEl)
         }
+        return addedId
       }
     }
-    return
+    return null
   }
 
   const element = document.querySelector(selector)
   if (!element) {
     // console.warn(`[Emergency] Element not found: ${selector}`)
-    return
+    return null
   }
 
   switch (type) {
@@ -56,6 +62,7 @@ export function executeDomAction(action: EmergencyAction): void {
       break
     }
   }
+  return null
 }
 
 export function revertDomAction(action: EmergencyAction): void {
@@ -63,12 +70,17 @@ export function revertDomAction(action: EmergencyAction): void {
   
   if (type === 'addElement') {
     // Revert add = remove
-    // We need to identify the added element. 
-    // If the payload had an ID, we can use it.
-    // If not, we might be in trouble unless we stored the reference or a unique selector in originalState?
-    // Actually, for addElement, we should probably enforce an ID or return it.
-    // But let's assume the LLM provides an ID in the HTML or we can find it.
-    // If the HTML string contains id="...", we can find it.
+    
+    // 1. Try to find by stored ID
+    if (originalState?.addedElementId) {
+        const el = document.getElementById(originalState.addedElementId)
+        if (el) {
+            el.remove()
+            return
+        }
+    }
+
+    // 2. Fallback: Try to find by ID in payload HTML
     const match = action.payload.html.match(/id=['"]([^'"]+)['"]/)
     if (match) {
       const el = document.getElementById(match[1])

@@ -54,7 +54,12 @@ export function DomController() {
               }
            }
         } else {
-           executeDomAction(action)
+           const addedId = executeDomAction(action)
+           if (addedId && !action.originalState) {
+               setTimeout(() => {
+                   updateEmergencyAction(action.id, { originalState: { addedElementId: addedId } })
+               }, 0)
+           }
         }
         
         executedIds.current.add(action.id)
