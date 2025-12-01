@@ -15,14 +15,23 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     return null
   }
 
-  const [agents, missions, anomalies, logs, tracks, notes] = await Promise.all([
+  const [agents, missions, anomalies, logs, tracks, notes, emergencySettings, emergencyActions, emergencyMessages] = await Promise.all([
     db.agents.toArray(),
     db.missions.toArray(),
     db.anomalies.toArray(),
     db.logs?.toArray() ?? [],
     db.tracks?.toArray() ?? [],
     db.notes.toArray(),
+    db.table('emergencySettings').get('config'),
+    db.emergencyActions?.toArray() ?? [],
+    db.emergencyMessages?.toArray() ?? [],
   ])
+
+  const emergency = emergencySettings ? {
+    ...emergencySettings,
+    actionHistory: emergencyActions,
+    chatHistory: emergencyMessages
+  } : undefined
 
   return {
     campaign,
@@ -32,6 +41,7 @@ export async function loadAgencySnapshot(): Promise<AgencySnapshot | null> {
     logs,
     tracks,
     notes: notes,
+    emergency,
   }
 }
 
@@ -44,6 +54,9 @@ export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
     db.logs ?? 'logs',
     db.tracks ?? 'tracks',
     db.notes,
+    db.table('emergencySettings'),
+    db.emergencyActions ?? 'emergencyActions',
+    db.emergencyMessages ?? 'emergencyMessages',
   ], async () => {
     await db.campaigns.clear()
     await db.campaigns.put(snapshot.campaign)
@@ -80,6 +93,21 @@ export async function saveAgencySnapshot(snapshot: AgencySnapshot) {
     await db.notes.clear()
     if (snapshot.notes.length) {
       await db.notes.bulkPut(snapshot.notes)
+    }
+
+    if (snapshot.emergency) {
+        const { actionHistory, chatHistory, ...settings } = snapshot.emergency
+        await db.table('emergencySettings').put({ ...settings, id: 'config' })
+        
+        if (db.emergencyActions) {
+            await db.emergencyActions.clear()
+            if (actionHistory.length) await db.emergencyActions.bulkPut(actionHistory)
+        }
+        
+        if (db.emergencyMessages) {
+            await db.emergencyMessages.clear()
+            if (chatHistory.length) await db.emergencyMessages.bulkPut(chatHistory)
+        }
     }
   })
 }

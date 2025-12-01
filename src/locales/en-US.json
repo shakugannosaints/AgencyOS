@@ -373,6 +373,29 @@
     "dashboard": {
       "readOnlyStyle": "Dashboard Read-only Style",
       "readOnlyStyleHint": "When enabled, remove +/- buttons on dashboard cards while keeping inline editing by clicking the number."
+    },
+    "emergency": {
+      "title": "Urgency Protocol",
+      "description": "Enable the \"Urgency\" anomaly entity integration.",
+      "status": {
+        "active": "ACTIVE",
+        "inactive": "INACTIVE"
+      },
+      "llmConfig": {
+        "title": "LLM Configuration",
+        "apiUrl": "API URL",
+        "model": "Model Name",
+        "apiKey": "API Key"
+      },
+      "permissions": {
+        "title": "Permissions",
+        "readDom": "Read Page Content",
+        "writeDom": "Modify Interface (Styles & Text)",
+        "writeCampaign": "Modify Campaign Data",
+        "writeSettings": "Modify Settings"
+      },
+      "save": "Save Configuration",
+      "saved": "Configuration Saved"
     }
   }
 }

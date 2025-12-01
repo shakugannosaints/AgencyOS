@@ -11,6 +11,9 @@ import { useThemeStore } from '@/stores/theme-store'
 import { getWeatherRuleForCount } from '@/lib/weather-utils'
 import { useNavTranslations, useCommonTranslations, useTrans } from '@/lib/i18n-utils'
 import type { MissionSummary } from '@/lib/types'
+import { EmergencyChat } from '@/modules/emergency/components/emergency-chat'
+import { DomController } from '@/modules/emergency/components/dom-controller'
+import { EmergencyManager } from '@/modules/emergency/components/emergency-manager'
 
 export function AppShell() {
   useCampaignPersistence()
@@ -318,6 +321,9 @@ export function AppShell() {
           </div>
         </main>
       </div>
+      <DomController />
+      <EmergencyManager />
+      <EmergencyChat />
     </div>
   )
 }

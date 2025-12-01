@@ -4,6 +4,7 @@ import { useThemeStore } from '@/stores/theme-store'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
+import { PermissionSettings } from '../components/permission-settings'
 
 export function SettingsPage() {
   const { t, i18n } = useTranslation()
@@ -228,6 +229,14 @@ export function SettingsPage() {
               <span className="text-sm">{t('settings.dashboard.readOnlyStyle')}</span>
             </label>
           </div>
+      </section>
+
+      {/* Emergency Settings */}
+      <section className={cn(
+        "space-y-4 border border-agency-border/60 p-6",
+        isWin98 ? "bg-agency-ink" : "rounded-2xl bg-agency-ink/40"
+      )}>
+         <PermissionSettings />
       </section>
 
       {/* Instructions */}

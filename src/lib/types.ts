@@ -119,6 +119,30 @@ export interface MissionLogEntry {
   delta?: number
 }
 
+export interface EmergencyAction {
+  id: ID
+  timestamp: number
+  type: 'setStyle' | 'updateText' | 'addElement' | 'removeElement' | 'runAnimation' | 'updateData' | 'navigate'
+  selector: string
+  payload: any
+  originalState?: any
+}
+
+export interface EmergencyMessage {
+  id: ID
+  sender: 'user' | 'agent'
+  text: string
+  timestamp: number
+}
+
+export interface EmergencyPermissions {
+  canReadDom: boolean
+  canWriteDom: boolean;
+  canWriteCampaignData: boolean;
+  canWriteSettingsData: boolean;
+  allowedAreas: string[]
+}
+
 export interface AgencySnapshot {
   campaign: Campaign
   agents: AgentSummary[]
@@ -130,5 +154,16 @@ export interface AgencySnapshot {
   settings?: {
     notesAllowHtml?: boolean
     dashboardReadOnlyStyle?: boolean
+  }
+  emergency?: {
+    isEnabled: boolean
+    permissions: EmergencyPermissions
+    chatHistory: EmergencyMessage[]
+    actionHistory: EmergencyAction[]
+    llmConfig: {
+      apiUrl: string
+      model: string
+      apiKey?: string
+    }
   }
 }

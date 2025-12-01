@@ -9,16 +9,18 @@ import {
   createCampaignSlice,
   createNoteSlice,
   createSettingsSlice,
+  createEmergencySlice,
   type AgentSlice,
   type MissionSlice,
   type AnomalySlice,
   type CampaignSlice,
   type NoteSlice,
   type SettingsSlice,
+  type EmergencySlice,
 } from '@/stores/slices'
 
 // Combined store type
-type AgencyStore = AgentSlice & MissionSlice & AnomalySlice & CampaignSlice & NoteSlice & SettingsSlice & {
+type AgencyStore = AgentSlice & MissionSlice & AnomalySlice & CampaignSlice & NoteSlice & SettingsSlice & EmergencySlice & {
   hydrate: (snapshot: AgencySnapshot) => void
 }
 
@@ -30,11 +32,13 @@ export const useCampaignStore = create<AgencyStore>()((...args) => ({
   ...createCampaignSlice(...args),
   ...createNoteSlice(...args),
   ...createSettingsSlice(...args),
+  ...createEmergencySlice(...args),
 
   // Hydrate action for restoring from snapshot
   hydrate: (snapshot) => {
     const [set] = args
     // Restore main campaign data
+    const currentEmergency = useCampaignStore.getState().emergency
     set({
       campaign: snapshot.campaign,
       agents: snapshot.agents,
@@ -44,6 +48,12 @@ export const useCampaignStore = create<AgencyStore>()((...args) => ({
   notesAllowHtml: snapshot.settings?.notesAllowHtml ?? true,
   dashboardReadOnlyStyle: snapshot.settings?.dashboardReadOnlyStyle ?? false,
       logs: snapshot.logs,
+      ...(snapshot.emergency ? {
+        emergency: {
+          ...currentEmergency,
+          ...snapshot.emergency
+        }
+      } : {}),
     })
 
     // Restore tracks separately if present
@@ -88,6 +98,13 @@ export const selectAgencySnapshot = (state: AgencyStore): AgencySnapshot => ({
   settings: {
     notesAllowHtml: state.notesAllowHtml,
     dashboardReadOnlyStyle: state.dashboardReadOnlyStyle,
+  },
+  emergency: {
+    isEnabled: state.emergency.isEnabled,
+    permissions: state.emergency.permissions,
+    chatHistory: state.emergency.chatHistory,
+    actionHistory: state.emergency.actionHistory,
+    llmConfig: state.emergency.llmConfig,
   },
 })
 

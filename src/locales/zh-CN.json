@@ -373,6 +373,29 @@
     "dashboard": {
       "readOnlyStyle": "仪表板只读样式",
       "readOnlyStyleHint": "开启后，仪表板会隐藏卡片的加减按钮，但仍可点击数字进行编辑。"
+    },
+    "emergency": {
+      "title": "紧急事态协议",
+      "description": "启用“紧急事态”异常实体集成。",
+      "status": {
+        "active": "已激活",
+        "inactive": "未激活"
+      },
+      "llmConfig": {
+        "title": "LLM 配置",
+        "apiUrl": "API 地址",
+        "model": "模型名称",
+        "apiKey": "API 密钥"
+      },
+      "permissions": {
+        "title": "权限控制",
+        "readDom": "读取页面内容",
+        "writeDom": "修改界面 (样式与文本)",
+        "writeCampaign": "修改战役数据",
+        "writeSettings": "修改系统设置"
+      },
+      "save": "保存配置",
+      "saved": "配置已保存"
     }
   }
 }
