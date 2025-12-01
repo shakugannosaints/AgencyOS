@@ -5,6 +5,7 @@ import { gatherContext } from '../services/context-service'
 
 export function EmergencyManager() {
   const isEnabled = useCampaignStore((state) => state.emergency.isEnabled)
+  const isChatOpen = useCampaignStore((state) => state.emergency.isChatOpen)
   const pollingInterval = useCampaignStore((state) => state.emergency.pollingInterval)
   const llmConfig = useCampaignStore((state) => state.emergency.llmConfig)
   const addEmergencyAction = useCampaignStore((state) => state.addEmergencyAction)
@@ -14,7 +15,7 @@ export function EmergencyManager() {
   const isProcessingRef = useRef(false)
 
   useEffect(() => {
-    if (!isEnabled || !pollingInterval || pollingInterval <= 0) {
+    if (!isEnabled || !pollingInterval || pollingInterval <= 0 || isChatOpen) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
         intervalRef.current = null
@@ -27,8 +28,8 @@ export function EmergencyManager() {
       isProcessingRef.current = true
 
       try {
-        // Gather context with 'polling' trigger
-        const context = gatherContext('polling', '')
+        // Gather context with 'auto_poll' trigger
+        const context = gatherContext('auto_poll', '')
         
         // Call LLM
         const response = await callEmergencyLlm(context, llmConfig)
@@ -57,7 +58,7 @@ export function EmergencyManager() {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isEnabled, pollingInterval, llmConfig, addEmergencyAction, addEmergencyMessage])
+  }, [isEnabled, pollingInterval, llmConfig, addEmergencyAction, addEmergencyMessage, isChatOpen])
 
   return null
 }
