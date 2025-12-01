@@ -51,11 +51,9 @@ export function PermissionSettings() {
 
   return (
     <div className={cn(
-        "space-y-6 mt-8 pt-8 border-t border-agency-border",
-        isWin98 ? "font-mono" : ""
     )}>
       <div className="flex items-center justify-between">
-        <div className={cn(isWin98 ? "pl-2 pb-5" : "")}>
+        <div className={cn(isWin98 ? "pl-2" : "")}>
             <h3 className="text-lg font-medium text-[#0047BB]">{t('settings.emergency.title')}</h3>
             <p className="text-xs text-agency-muted">{t('settings.emergency.description')}</p>
         </div>
