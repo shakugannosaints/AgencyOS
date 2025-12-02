@@ -15,16 +15,16 @@ describe('settings-slice', () => {
     const slice = createSettingsSlice(set as any, get as any, {} as any) as SettingsSlice
 
   // initial default exposed by slice return
-  expect(slice.notesAllowHtml).toBe(true)
+  expect(slice.notesAllowHtml).toBe(false)
   expect(slice.dashboardReadOnlyStyle).toBe(false)
 
-    // toggle to false
-    slice.setNotesAllowHtml(false)
-    expect(state.notesAllowHtml).toBe(false)
-
-    // toggle back to true
+    // toggle to true
     slice.setNotesAllowHtml(true)
     expect(state.notesAllowHtml).toBe(true)
+
+    // toggle back to false
+    slice.setNotesAllowHtml(false)
+    expect(state.notesAllowHtml).toBe(false)
   // toggle dashboardReadOnlyStyle
   slice.setDashboardReadOnlyStyle(true)
   expect(state.dashboardReadOnlyStyle).toBe(true)

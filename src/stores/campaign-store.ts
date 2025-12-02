@@ -103,7 +103,7 @@ export const selectAgencySnapshot = (state: AgencyStore): AgencySnapshot => ({
     isEnabled: state.emergency.isEnabled,
     permissions: state.emergency.permissions,
     chatHistory: state.emergency.chatHistory,
-    actionHistory: state.emergency.actionHistory,
+    actionHistory: [], // Do not persist action history
     llmConfig: state.emergency.llmConfig,
   },
 })

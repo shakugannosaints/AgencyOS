@@ -7,6 +7,13 @@ export function executeDomAction(action: EmergencyAction): string | null {
   
   // Special handling for addElement which might not have a selector for the element itself yet
   if (type === 'addElement') {
+    // Security: Basic check to prevent execution of scripts or embedding of external content
+    // This is not a full sanitizer, but prevents obvious XSS vectors in this simulation feature.
+    if (/<script|iframe|object|embed|form|base|link|meta/i.test(payload.html)) {
+      console.warn('[Emergency] Blocked potentially unsafe HTML injection')
+      return null
+    }
+
     const parent = document.querySelector(payload.parentSelector || 'body')
     if (parent) {
       const template = document.createElement('template')
@@ -21,6 +28,9 @@ export function executeDomAction(action: EmergencyAction): string | null {
             addedId = `urgency-${Date.now()}-${Math.floor(Math.random() * 10000)}`
             newEl.id = addedId
         }
+
+        // Mark as LLM created for safety
+        newEl.setAttribute('data-llm-created', 'true')
 
         if (payload.position === 'prepend') {
           parent.prepend(newEl)
@@ -52,7 +62,15 @@ export function executeDomAction(action: EmergencyAction): string | null {
       break
     }
     case 'removeElement': {
-      element.remove()
+      const isLlmCreated = element.getAttribute('data-llm-created') === 'true'
+      if (isLlmCreated) {
+        element.remove()
+      } else {
+        // Safety: Only hide non-LLM elements instead of removing them
+        if (element instanceof HTMLElement) {
+          element.style.display = 'none'
+        }
+      }
       break
     }
     case 'runAnimation': {
@@ -105,7 +123,14 @@ export function revertDomAction(action: EmergencyAction): void {
       break
     }
     case 'removeElement': {
-      // Revert remove = add back
+      // Revert remove = add back OR show
+      if (originalState?.method === 'hide') {
+          if (element instanceof HTMLElement) {
+              element.style.display = originalState.originalDisplay || ''
+          }
+          return
+      }
+
       if (originalState?.html && originalState?.parentSelector) {
         const parent = document.querySelector(originalState.parentSelector)
         if (parent) {
@@ -154,10 +179,19 @@ export function captureState(action: Omit<EmergencyAction, 'id' | 'timestamp'>):
       return { text: element?.textContent }
     case 'removeElement':
       if (element) {
-         return {
-            parentSelector: getUniqueSelector(element.parentElement),
-            nextSiblingSelector: element.nextElementSibling ? getUniqueSelector(element.nextElementSibling) : null,
-            html: element.outerHTML
+         const isLlmCreated = element.getAttribute('data-llm-created') === 'true'
+         if (isLlmCreated) {
+            return {
+                method: 'remove',
+                parentSelector: getUniqueSelector(element.parentElement),
+                nextSiblingSelector: element.nextElementSibling ? getUniqueSelector(element.nextElementSibling) : null,
+                html: element.outerHTML
+            }
+         } else {
+            return {
+                method: 'hide',
+                originalDisplay: (element as HTMLElement).style.display
+            }
          }
       }
       return null

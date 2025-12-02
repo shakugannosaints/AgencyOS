@@ -8,7 +8,7 @@ export interface SettingsSlice {
 }
 
 export const createSettingsSlice: StateCreator<SettingsSlice> = (set) => ({
-  notesAllowHtml: true, // preserve current behavior by default
+  notesAllowHtml: false, // default to false for security
   setNotesAllowHtml: (value: boolean) => set({ notesAllowHtml: value }),
   dashboardReadOnlyStyle: false,
   setDashboardReadOnlyStyle: (value: boolean) => set({ dashboardReadOnlyStyle: value }),
