@@ -91,7 +91,7 @@
   },
   "dashboard": {
     "chaosPool": "混沌池",
-    "chaosHint": "领域中3以内免费，并且三倍效果",
+    "chaosHint": "领域中3以内免费，超过3点消耗变为1/3",
     "looseEnds": "散逸端",
     "weatherHint": "注意天气",
     "mvp": "MVP",
