@@ -405,7 +405,79 @@
         "description": "When set, Urgency will automatically observe the page and act every X seconds. Attention! This may lead to very bad consequences!"
       },
       "save": "Save Configuration",
-      "saved": "Configuration Saved"
+      "saved": "Configuration saved"
+    }
+  },
+  "desktop": {
+    "notepad": {
+      "title": "My Manual 1998: Pro Edition - Untitled.txt",
+      "placeholder": "Enter notes here..."
+    },
+    "schedule": {
+      "title": "Personal Schedule (Read-Only)",
+      "description": "Please enter todo items for system review and archiving:",
+      "placeholder": "e.g. Tea with anomaly at 3 PM...",
+      "submit": "Submit Schedule",
+      "processing": "Processing...",
+      "optimizing": "Optimizing schedule...",
+      "archived": "Schedule archived by [REDACTED]."
+    },
+    "commendation": {
+      "title": "Commendation Application System v1.0",
+      "count": "Applications Submitted:",
+      "submit": "Submit Application",
+      "feedbacks": {
+        "0": "Application submitted...",
+        "1": "Queuing...",
+        "2": "Form 27B/6 missing...",
+        "3": "Manager is on lunch break...",
+        "4": "System busy...",
+        "5": "Recorded on file...",
+        "6": "Verbal commendation received (no substantial reward)",
+        "7": "Application rejected: Insufficient permissions",
+        "8": "Application rejected: Insufficient reason",
+        "9": "Application rejected: Illegible handwriting"
+      }
+    },
+    "emergency": {
+      "title": "Secure Inbox (Level 5)",
+      "noSelection": "Select a mail to read...",
+      "mail1": {
+        "subject": "WARNING: CONTAINMENT BREACH",
+        "body": "Containment breach detected in Sector [DATA EXPUNGED].\n\nAll personnel must proceed to Shelter [REDACTED] immediately.\n\nThis is not a drill.\nRepeat, this is not a drill."
+      },
+      "mail2": {
+        "subject": "Regarding Friday Frozen Yogurt Party",
+        "body": "To All Staff:\n\nDue to the accidental escape of [REDACTED], this Friday's frozen yogurt party is cancelled.\n\nAlso, if you see any talking frozen yogurt, DO NOT CONSUME and report immediately."
+      },
+      "mail3": {
+        "subject": "DO NOT LOOK AT THE MOON",
+        "body": "DO NOT LOOK AT THE MOON.\nDO NOT LOOK AT THE MOON.\nDO NOT LOOK AT THE MOON.\nDO NOT LOOK AT THE MOON.\n[SYSTEM INTERCEPT: ANOMALY HAZARD]"
+      }
+    },
+    "chaos": {
+      "title": "Chaos Controller",
+      "status": "Reality Stability",
+      "stabilize": "Stabilize Reality",
+      "stabilizing": "Stabilizing..."
+    },
+    "icons": {
+      "manual": "My Manual 1998: Pro",
+      "antivirus": "Standard Antivirus",
+      "emergency": "Emergency",
+      "commendation": "Commendation",
+      "chaos": "Chaos Controller",
+      "schedule": "Personal Schedule"
+    },
+    "taskbar": {
+      "start": "WORK",
+      "emergency": "Emergency Protocol"
+    },
+    "startMenu": {
+      "agencyOS": "Agency OS 98",
+      "shutdown": "Shut Down...",
+      "run": "Run...",
+      "settings": "Settings"
     }
   }
 }

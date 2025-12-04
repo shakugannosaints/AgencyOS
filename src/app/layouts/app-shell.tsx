@@ -14,20 +14,25 @@ import type { MissionSummary } from '@/lib/types'
 import { EmergencyChat } from '@/modules/emergency/components/emergency-chat'
 import { DomController } from '@/modules/emergency/components/dom-controller'
 import { EmergencyManager } from '@/modules/emergency/components/emergency-manager'
+import { DesktopNotepad } from '@/modules/desktop/components/notepad'
+import { VoidSchedule } from '@/modules/desktop/components/void-schedule'
+import { CommendationClicker } from '@/modules/desktop/components/commendation'
+import { EmergencyInbox } from '@/modules/desktop/components/emergency-inbox'
+import { ChaosController } from '@/modules/desktop/components/chaos-controller'
+import { StartMenu } from '@/modules/desktop/components/start-menu'
 
 interface DesktopItem {
   id: string
-  name: string
   icon: React.ElementType
 }
 
 const DESKTOP_ITEMS: DesktopItem[] = [
-  { id: 'manual', name: '我的手册1998：专业版', icon: Book },
-  { id: 'antivirus', name: '常规杀毒软件', icon: Eye },
-  { id: 'emergency', name: '紧急处理', icon: Mail },
-  { id: 'commendation', name: '嘉奖评级', icon: CheckSquare },
-  { id: 'chaos', name: '混沌掌控者', icon: Tornado },
-  { id: 'schedule', name: '个人日程表', icon: Trash2 },
+  { id: 'manual', icon: Book },
+  { id: 'antivirus', icon: Eye },
+  { id: 'emergency', icon: Mail },
+  { id: 'commendation', icon: CheckSquare },
+  { id: 'chaos', icon: Tornado },
+  { id: 'schedule', icon: Trash2 },
 ]
 
 export function AppShell() {
@@ -62,9 +67,10 @@ export function AppShell() {
   const toggleEmergencyChat = useCampaignStore((state) => state.toggleEmergencyChat)
 
   const [openPrograms, setOpenPrograms] = useState<string[]>([])
+  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false)
 
   const toggleProgram = (id: string) => {
-    if (id === 'emergency') {
+    if (id === 'antivirus') {
       if (emergency.isEnabled) {
         toggleEmergencyChat()
       }
@@ -168,7 +174,7 @@ export function AppShell() {
       {/* Desktop Icons */}
       <div className="fixed left-4 top-4 z-0 flex flex-col gap-6">
         {DESKTOP_ITEMS.map((item) => {
-          const isActive = item.id === 'emergency' ? emergency.isChatOpen : openPrograms.includes(item.id)
+          const isActive = item.id === 'antivirus' ? emergency.isChatOpen : openPrograms.includes(item.id)
           return (
             <button
               key={item.id}
@@ -192,7 +198,7 @@ export function AppShell() {
                 isWin98 ? "text-[#ffffff] drop-shadow-[1px_1px_1px_rgba(0,0,0,0.8)]" : "text-agency-muted group-hover:text-agency-cyan",
                 isActive && !isWin98 && "text-agency-cyan"
               )}>
-                {item.name}
+                {t(`desktop.icons.${item.id}`)}
               </span>
             </button>
           )
@@ -206,15 +212,31 @@ export function AppShell() {
           ? "border-t-[#dfdfdf] bg-[#c0c0c0] text-black shadow-[inset_0_1px_0_#ffffff]" 
           : "border-agency-border bg-agency-panel/95 backdrop-blur"
       )}>
+        <StartMenu 
+          isOpen={isStartMenuOpen} 
+          onClose={() => setIsStartMenuOpen(false)}
+          onOpenProgram={toggleProgram}
+        />
+
         <div className="flex items-center gap-2">
           {/* Start Button */}
           <button
             type="button"
+            onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
+            data-start-button
             className={cn(
               "flex items-center gap-2 px-3 py-1 font-bold uppercase tracking-wider",
               isWin98 
-                ? "border-2 border-b-[#404040] border-l-[#ffffff] border-r-[#404040] border-t-[#ffffff] bg-[#c0c0c0] active:border-b-[#ffffff] active:border-l-[#404040] active:border-r-[#ffffff] active:border-t-[#404040]" 
-                : "rounded hover:bg-agency-cyan/10"
+                ? cn(
+                    "border-2 border-b-[#404040] border-l-[#ffffff] border-r-[#404040] border-t-[#ffffff] bg-[#c0c0c0]",
+                    isStartMenuOpen 
+                      ? "border-b-[#ffffff] border-l-[#404040] border-r-[#ffffff] border-t-[#404040] bg-[#dfdfdf] shadow-[inset_1px_1px_#000000]"
+                      : "active:border-b-[#ffffff] active:border-l-[#404040] active:border-r-[#ffffff] active:border-t-[#404040]"
+                  )
+                : cn(
+                    "rounded hover:bg-agency-cyan/10",
+                    isStartMenuOpen && "bg-agency-cyan/20"
+                  )
             )}
           >
             <div className="flex flex-col gap-[1px]">
@@ -224,7 +246,7 @@ export function AppShell() {
                 <div className="h-0 w-0 border-b-[4px] border-l-[3px] border-r-[3px] border-b-red-500 border-l-transparent border-r-transparent" />
               </div>
             </div>
-            <span className="text-xs">工作</span>
+            <span className="text-xs">{t('desktop.taskbar.start')}</span>
           </button>
 
           {/* Taskbar Items */}
@@ -248,7 +270,7 @@ export function AppShell() {
                   )}
                 >
                   <Mail className="h-3 w-3 flex-shrink-0" />
-                  <span className="truncate">Emergency Protocol</span>
+                  <span className="truncate">{t('desktop.taskbar.emergency')}</span>
                 </button>
             )}
 
@@ -266,7 +288,7 @@ export function AppShell() {
                   )}
                 >
                   <item.icon className="h-3 w-3" />
-                  <span className="truncate">{item.name}</span>
+                  <span className="truncate">{t(`desktop.icons.${item.id}`)}</span>
                 </div>
               )
             })}
@@ -488,6 +510,27 @@ export function AppShell() {
       <DomController />
       <EmergencyManager />
       <EmergencyChat />
+      
+      <DesktopNotepad 
+        isOpen={openPrograms.includes('manual')} 
+        onClose={() => toggleProgram('manual')} 
+      />
+      <VoidSchedule 
+        isOpen={openPrograms.includes('schedule')} 
+        onClose={() => toggleProgram('schedule')} 
+      />
+      <CommendationClicker 
+        isOpen={openPrograms.includes('commendation')} 
+        onClose={() => toggleProgram('commendation')} 
+      />
+      <EmergencyInbox 
+        isOpen={openPrograms.includes('emergency')} 
+        onClose={() => toggleProgram('emergency')} 
+      />
+      <ChaosController 
+        isOpen={openPrograms.includes('chaos')} 
+        onClose={() => toggleProgram('chaos')} 
+      />
     </div>
   )
 }
