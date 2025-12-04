@@ -41,11 +41,21 @@ export function WindowFrame({
   // Center window on first open if no position provided
   useEffect(() => {
     if (!initializedRef.current && !initialPosition && typeof window !== 'undefined') {
-      setPosition({
-        x: Math.max(0, window.innerWidth / 2 - size.width / 2),
-        y: Math.max(0, window.innerHeight / 2 - size.height / 2)
+      // Avoid calling setState synchronously inside effects to prevent cascading renders.
+      // We schedule the update in the next animation frame.
+      const raf = requestAnimationFrame(() => {
+        setPosition((prev) => {
+          const next = {
+            x: Math.max(0, window.innerWidth / 2 - size.width / 2),
+            y: Math.max(0, window.innerHeight / 2 - size.height / 2)
+          }
+          // Only update if different to avoid unnecessary renders.
+          if (prev.x === next.x && prev.y === next.y) return prev
+          return next
+        })
+        initializedRef.current = true
       })
-      initializedRef.current = true
+      return () => cancelAnimationFrame(raf)
     }
   }, [initialPosition, size.width, size.height])
 
