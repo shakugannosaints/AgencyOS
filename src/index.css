@@ -57,7 +57,7 @@
 }
 
 :root[data-theme='win98'] {
-  --agency-ink: 0 128 128;         /* 经典 Win98 桌面青色 #008080 */
+  --agency-ink: 14 1 47;           /* #0E012F */
   --agency-panel: 192 192 192;     /* 经典 Win98 窗口灰 #c0c0c0 */
   --agency-border: 128 128 128;    /* 深灰边框 */
   --agency-cyan: 0 0 0;            /* 主文字黑色 */

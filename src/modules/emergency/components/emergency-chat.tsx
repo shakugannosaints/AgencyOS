@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { useCampaignStore } from '@/stores/campaign-store'
+import { useThemeStore } from '@/stores/theme-store'
 import { callEmergencyLlm } from '../services/llm-service'
 import { gatherContext } from '../services/context-service'
 import { cn } from '@/lib/utils'
-import { Send, ChevronUp, ChevronDown, Trash2 } from 'lucide-react'
+import { Send, Trash2, X } from 'lucide-react'
 
 export function EmergencyChat() {
   const { 
@@ -20,6 +21,10 @@ export function EmergencyChat() {
     clearEmergencyHistory
   } = useCampaignStore((state) => state)
 
+  const themeMode = useThemeStore((state) => state.mode)
+  const win98TitleBarColor = useThemeStore((state) => state.win98TitleBarColor)
+  const isWin98 = themeMode === 'win98'
+
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -30,7 +35,7 @@ export function EmergencyChat() {
     }
   }, [chatHistory, isChatOpen])
 
-  if (!isEnabled) return null
+  if (!isEnabled || !isChatOpen) return null
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return
@@ -64,23 +69,40 @@ export function EmergencyChat() {
 
   return (
     <div className={cn(
-      "fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-t border-agency-border bg-agency-ink/95 backdrop-blur",
-      isChatOpen ? "h-[40vh]" : "h-10"
+      "fixed left-1/2 top-1/2 z-50 w-[400px] -translate-x-1/2 -translate-y-1/2 transform flex flex-col shadow-2xl",
+      isWin98 
+        ? "border-2 border-b-[#404040] border-l-[#dfdfdf] border-r-[#404040] border-t-[#dfdfdf] bg-[#c0c0c0] p-[2px]" 
+        : "rounded-xl border border-agency-border bg-agency-panel/95 backdrop-blur overflow-hidden"
     )}>
-       {/* Header / Banner */}
-       <div 
-         className="flex items-center justify-between px-4 h-10 bg-[#0047BB] cursor-pointer hover:bg-[#003aa0] transition-colors"
-         onClick={toggleEmergencyChat}
+       {/* Window Title Bar */}
+       <div className={cn(
+         "flex items-center justify-between px-2 py-1 select-none",
+         isWin98 
+           ? "win98-title-bar mb-[2px]" 
+           : "bg-agency-ink/50 border-b border-agency-border"
+       )}
+       style={isWin98 && win98TitleBarColor === 'red' ? { background: 'linear-gradient(90deg, #800000, #d01010)' } : undefined}
        >
-          <span className="font-mono text-xs tracking-[0.2em] text-white animate-pulse">
-            URGENCY
+          <span className={cn("text-xs font-bold", isWin98 ? "text-white" : "text-agency-cyan")}>
+            Emergency Protocol
           </span>
-          {isChatOpen ? <ChevronDown className="w-4 h-4 text-white" /> : <ChevronUp className="w-4 h-4 text-white" />}
+          <div className="flex gap-1">
+             <button 
+               onClick={toggleEmergencyChat}
+               className={cn(
+                 "flex h-4 w-4 items-center justify-center",
+                 isWin98 
+                   ? "bg-[#c0c0c0] text-black shadow-[inset_-1px_-1px_#000000,inset_1px_1px_#ffffff,inset_-2px_-2px_#808080,inset_2px_2px_#dfdfdf] active:shadow-[inset_1px_1px_#000000,inset_-1px_-1px_#ffffff,inset_2px_2px_#808080,inset_-2px_-2px_#dfdfdf]" 
+                   : "hover:text-agency-cyan"
+               )}
+             >
+               <X className="h-3 w-3" />
+             </button>
+          </div>
        </div>
 
        {/* Chat Content */}
-       {isChatOpen && (
-         <div className="flex flex-col h-[calc(40vh-2.5rem)]">
+       <div className={cn("flex flex-col h-[400px]", isWin98 ? "bg-white border border-[#808080] shadow-[inset_1px_1px_#000000]" : "")}>
             <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef}>
                {chatHistory.map(msg => (
                  <div key={msg.id} className={cn(
@@ -107,7 +129,7 @@ export function EmergencyChat() {
                )}
             </div>
             
-            <div className="p-3 border-t border-agency-border bg-agency-panel flex gap-2">
+            <div className={cn("p-2 flex gap-2", isWin98 ? "bg-[#c0c0c0]" : "border-t border-agency-border bg-agency-panel")}>
                <button 
                  onClick={clearEmergencyHistory}
                  className="p-2 text-agency-muted hover:text-red-500 transition-colors"
@@ -116,7 +138,12 @@ export function EmergencyChat() {
                  <Trash2 className="w-4 h-4" />
                </button>
                <input
-                 className="flex-1 bg-agency-ink border border-agency-border rounded px-3 py-1 text-sm text-agency-cyan focus:border-[#0047BB] outline-none"
+                 className={cn(
+                   "flex-1 border rounded px-3 py-1 text-sm outline-none",
+                   isWin98 
+                     ? "bg-white border-[#808080] shadow-[inset_1px_1px_#000000] text-black" 
+                     : "bg-agency-ink border-agency-border text-agency-cyan focus:border-[#0047BB]"
+                 )}
                  value={input}
                  onChange={e => setInput(e.target.value)}
                  onKeyDown={e => e.key === 'Enter' && handleSend()}
@@ -132,7 +159,6 @@ export function EmergencyChat() {
                </button>
             </div>
          </div>
-       )}
     </div>
   )
 }

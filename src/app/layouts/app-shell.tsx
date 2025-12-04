@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings, Notebook, BookOpen } from 'lucide-react'
+import { LayoutDashboard, Users, BriefcaseBusiness, Atom, ScrollText, Orbit, Settings, Notebook, BookOpen, Book, Eye, Mail, CheckSquare, Tornado, Trash2, Volume2 } from 'lucide-react'
 import { CommandStrip } from '@/components/ui/command-strip'
 import { cn } from '@/lib/utils'
 import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
@@ -14,6 +14,21 @@ import type { MissionSummary } from '@/lib/types'
 import { EmergencyChat } from '@/modules/emergency/components/emergency-chat'
 import { DomController } from '@/modules/emergency/components/dom-controller'
 import { EmergencyManager } from '@/modules/emergency/components/emergency-manager'
+
+interface DesktopItem {
+  id: string
+  name: string
+  icon: React.ElementType
+}
+
+const DESKTOP_ITEMS: DesktopItem[] = [
+  { id: 'manual', name: '我的手册1998：专业版', icon: Book },
+  { id: 'antivirus', name: '常规杀毒软件', icon: Eye },
+  { id: 'emergency', name: '紧急处理', icon: Mail },
+  { id: 'commendation', name: '嘉奖评级', icon: CheckSquare },
+  { id: 'chaos', name: '混沌掌控者', icon: Tornado },
+  { id: 'schedule', name: '个人日程表', icon: Trash2 },
+]
 
 export function AppShell() {
   useCampaignPersistence()
@@ -38,9 +53,30 @@ export function AppShell() {
     styleText: '',
   })
   const themeMode = useThemeStore((state) => state.mode)
+  const win98TitleBarColor = useThemeStore((state) => state.win98TitleBarColor)
   const isWin98 = themeMode === 'win98'
   const isRetro = themeMode === 'retro'
   const isSquare = isWin98 || isRetro
+
+  const emergency = useCampaignStore((state) => state.emergency)
+  const toggleEmergencyChat = useCampaignStore((state) => state.toggleEmergencyChat)
+
+  const [openPrograms, setOpenPrograms] = useState<string[]>([])
+
+  const toggleProgram = (id: string) => {
+    if (id === 'emergency') {
+      if (emergency.isEnabled) {
+        toggleEmergencyChat()
+      }
+      return
+    }
+    setOpenPrograms(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(p => p !== id)
+      }
+      return [...prev, id]
+    })
+  }
 
   const navItems = [
     { label: dashboard, path: '/', icon: LayoutDashboard },
@@ -128,13 +164,141 @@ export function AppShell() {
   }
 
   return (
-    <div className="min-h-screen bg-agency-ink/95 px-4 py-6 text-agency-cyan">
-      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr]">
+    <div className="min-h-screen bg-agency-ink/95 px-4 py-6 text-agency-cyan pb-16">
+      {/* Desktop Icons */}
+      <div className="fixed left-4 top-4 z-0 flex flex-col gap-6">
+        {DESKTOP_ITEMS.map((item) => {
+          const isActive = item.id === 'emergency' ? emergency.isChatOpen : openPrograms.includes(item.id)
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onDoubleClick={() => toggleProgram(item.id)}
+              className={cn(
+                "group flex w-24 flex-col items-center gap-1 text-center focus:outline-none",
+                isWin98 && "ghost"
+              )}
+            >
+              <div className={cn(
+                "flex h-12 w-12 items-center justify-center transition-colors",
+                isWin98 
+                  ? "text-[#ffffff] drop-shadow-[1px_1px_1px_rgba(0,0,0,0.8)]" 
+                  : (isActive ? "text-agency-cyan" : "text-agency-muted group-hover:text-agency-cyan")
+              )}>
+                <item.icon className="h-8 w-8" strokeWidth={1.5} />
+              </div>
+              <span className={cn(
+                "text-[10px] font-medium leading-tight transition-colors",
+                isWin98 ? "text-[#ffffff] drop-shadow-[1px_1px_1px_rgba(0,0,0,0.8)]" : "text-agency-muted group-hover:text-agency-cyan",
+                isActive && !isWin98 && "text-agency-cyan"
+              )}>
+                {item.name}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Taskbar */}
+      <div className={cn(
+        "fixed bottom-0 left-0 right-0 z-50 flex h-10 items-center justify-between border-t px-2",
+        isWin98 
+          ? "border-t-[#dfdfdf] bg-[#c0c0c0] text-black shadow-[inset_0_1px_0_#ffffff]" 
+          : "border-agency-border bg-agency-panel/95 backdrop-blur"
+      )}>
+        <div className="flex items-center gap-2">
+          {/* Start Button */}
+          <button
+            type="button"
+            className={cn(
+              "flex items-center gap-2 px-3 py-1 font-bold uppercase tracking-wider",
+              isWin98 
+                ? "border-2 border-b-[#404040] border-l-[#ffffff] border-r-[#404040] border-t-[#ffffff] bg-[#c0c0c0] active:border-b-[#ffffff] active:border-l-[#404040] active:border-r-[#ffffff] active:border-t-[#404040]" 
+                : "rounded hover:bg-agency-cyan/10"
+            )}
+          >
+            <div className="flex flex-col gap-[1px]">
+              <div className="h-0 w-0 border-b-[4px] border-l-[3px] border-r-[3px] border-b-red-500 border-l-transparent border-r-transparent" />
+              <div className="flex gap-[1px]">
+                <div className="h-0 w-0 border-b-[4px] border-l-[3px] border-r-[3px] border-b-red-500 border-l-transparent border-r-transparent" />
+                <div className="h-0 w-0 border-b-[4px] border-l-[3px] border-r-[3px] border-b-red-500 border-l-transparent border-r-transparent" />
+              </div>
+            </div>
+            <span className="text-xs">工作</span>
+          </button>
+
+          {/* Taskbar Items */}
+          <div className="ml-2 flex gap-1">
+            {/* Emergency Protocol Item (if enabled) */}
+            {emergency.isEnabled && (
+                <button
+                  type="button"
+                  onClick={toggleEmergencyChat}
+                  className={cn(
+                    "flex w-32 items-center gap-2 px-2 py-1 text-xs text-left ghost",
+                    isWin98
+                      ? cn(
+                          "border-2 border-b-[#404040] border-l-[#ffffff] border-r-[#404040] border-t-[#ffffff] bg-[#c0c0c0] font-bold",
+                          emergency.isChatOpen && "border-b-[#ffffff] border-l-[#404040] border-r-[#ffffff] border-t-[#404040] bg-[#dfdfdf] shadow-[inset_1px_1px_#000000]"
+                        )
+                      : cn(
+                          "rounded text-agency-cyan",
+                          emergency.isChatOpen ? "bg-agency-cyan/20" : "bg-agency-cyan/10 hover:bg-agency-cyan/20"
+                        )
+                  )}
+                >
+                  <Mail className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">Emergency Protocol</span>
+                </button>
+            )}
+
+            {openPrograms.map((id) => {
+              const item = DESKTOP_ITEMS.find(i => i.id === id)
+              if (!item) return null
+              return (
+                <div
+                  key={id}
+                  className={cn(
+                    "flex w-32 items-center gap-2 px-2 py-1 text-xs",
+                    isWin98
+                      ? "border-2 border-b-[#ffffff] border-l-[#404040] border-r-[#ffffff] border-t-[#404040] bg-[#dfdfdf] font-bold shadow-[inset_1px_1px_#000000]"
+                      : "rounded bg-agency-cyan/10 text-agency-cyan"
+                  )}
+                >
+                  <item.icon className="h-3 w-3" />
+                  <span className="truncate">{item.name}</span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Tray */}
+        <div className={cn(
+          "flex items-center gap-3 px-3 py-1",
+          isWin98 
+            ? "border-2 border-b-[#ffffff] border-l-[#808080] border-r-[#ffffff] border-t-[#808080] shadow-[inset_1px_1px_#000000]" 
+            : ""
+        )}>
+          <Eye className="h-3 w-3" />
+          <Volume2 className="h-3 w-3" />
+          <span className="ml-1 font-mono text-xs">{chaosValue}</span>
+        </div>
+      </div>
+
+      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr] relative z-10">
         <aside
           className={`space-y-6 border border-agency-border bg-agency-panel/80 p-4 ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'}`}
         >
           {isWin98 && (
-            <div className="win98-title-bar -mx-3 -mt-3 mb-4 flex items-center justify-between px-2 py-1">
+            <div 
+              className="win98-title-bar -mx-3 -mt-3 mb-4 flex items-center justify-between px-2 py-1"
+              style={{
+                background: win98TitleBarColor === 'red' 
+                  ? 'linear-gradient(90deg, #800000, #d01010)' 
+                  : undefined
+              }}
+            >
               <span className="text-sm font-bold">Agency OS</span>
               <div className="flex gap-1">
                 <div className="flex h-4 w-4 items-center justify-center bg-[#c0c0c0] text-[10px] text-black shadow-[inset_-1px_-1px_#000000,inset_1px_1px_#ffffff,inset_-2px_-2px_#808080,inset_2px_2px_#dfdfdf] active:shadow-[inset_1px_1px_#000000,inset_-1px_-1px_#ffffff,inset_2px_2px_#808080,inset_-2px_-2px_#dfdfdf]">

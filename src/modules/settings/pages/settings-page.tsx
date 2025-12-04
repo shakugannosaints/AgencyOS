@@ -10,6 +10,8 @@ export function SettingsPage() {
   const { t, i18n } = useTranslation()
   const themeMode = useThemeStore((state) => state.mode)
   const setThemeMode = useThemeStore((state) => state.setMode)
+  const win98TitleBarColor = useThemeStore((state) => state.win98TitleBarColor)
+  const setWin98TitleBarColor = useThemeStore((state) => state.setWin98TitleBarColor)
   const notesAllowHtml = useCampaignStore((state) => state.notesAllowHtml)
   const setNotesAllowHtml = useCampaignStore((state) => state.setNotesAllowHtml)
   const dashboardReadOnlyStyle = useCampaignStore((state) => state.dashboardReadOnlyStyle)
@@ -198,6 +200,40 @@ export function SettingsPage() {
             <span className="text-sm font-medium">{t('settings.theme.fluent')}</span>
           </button>
         </div>
+
+        {isWin98 && (
+          <div className="mt-4 border-t border-agency-border/40 pt-4">
+            <h3 className="mb-3 text-sm font-medium text-agency-muted">{t('settings.theme.win98TitleBarColor')}</h3>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setWin98TitleBarColor('blue')}
+                className={cn(
+                  "flex items-center gap-2 border px-4 py-2 transition-all hover:border-agency-cyan hover:bg-agency-cyan/5",
+                  win98TitleBarColor === 'blue'
+                    ? "border-agency-cyan bg-agency-cyan/10 text-agency-cyan"
+                    : "border-agency-border text-agency-muted",
+                  "rounded-none"
+                )}
+              >
+                <div className="h-3 w-3 bg-[#000080]" />
+                <span className="text-sm">{t('settings.theme.colors.blue')}</span>
+              </button>
+              <button
+                onClick={() => setWin98TitleBarColor('red')}
+                className={cn(
+                  "flex items-center gap-2 border px-4 py-2 transition-all hover:border-agency-cyan hover:bg-agency-cyan/5",
+                  win98TitleBarColor === 'red'
+                    ? "border-agency-cyan bg-agency-cyan/10 text-agency-cyan"
+                    : "border-agency-border text-agency-muted",
+                  "rounded-none"
+                )}
+              >
+                <div className="h-3 w-3 bg-[#800000]" />
+                <span className="text-sm">{t('settings.theme.colors.red')}</span>
+              </button>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Notes Settings */}

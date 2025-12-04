@@ -336,7 +336,12 @@
       "day": "机构",
       "win98": "Win98",
       "retro": "复古",
-      "fluent": "现代"
+      "fluent": "现代",
+      "win98TitleBarColor": "Win98 标题栏颜色",
+      "colors": {
+        "blue": "经典蓝",
+        "red": "警报红"
+      }
     },
     "language": {
       "title": "语言设置"

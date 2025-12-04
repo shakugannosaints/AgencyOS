@@ -336,7 +336,12 @@
       "day": "Agency",
       "win98": "Win98",
       "retro": "Retro",
-      "fluent": "Modern"
+      "fluent": "Modern",
+      "win98TitleBarColor": "Win98 Title Bar Color",
+      "colors": {
+        "blue": "Classic Blue",
+        "red": "Alert Red"
+      }
     },
     "language": {
       "title": "Language"
