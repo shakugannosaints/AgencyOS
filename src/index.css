@@ -44,6 +44,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Application-level layout variables for the AppShell wrapper; this is the canonical place for these defaults */
+.app-shell {
+  /* Top padding used by .py-6 => 1.5rem */
+  --app-top-padding: 1.5rem;
+  /* Bottom padding used by pb-16 => 4rem */
+  --app-bottom-padding: 4rem;
+  --app-vertical-offset: calc(var(--app-top-padding) + var(--app-bottom-padding));
+}
+
 :root[data-theme='day'] {
   --agency-ink: 248 246 244;
   --agency-panel: 255 255 255;
@@ -199,7 +208,8 @@ body {
   html {
     background-color: rgb(var(--agency-ink) / 1);
     color: rgb(var(--agency-cyan) / 1);
-    overflow-y: scroll;
+    /* Remove the page-level scrollbar so we can render a local scrollbar on the app "desktop" area */
+    overflow: hidden;
   }
 
   body {

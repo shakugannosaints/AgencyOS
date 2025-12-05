@@ -199,8 +199,11 @@ export function AppShell() {
     return <LoginScreen onLogin={() => setIsLoggedIn(true)} />
   }
 
+  // Note: CSS vars are now provided by the `.app-shell` class in CSS; they can be overridden
+  // via CSS or by adding inline style on this wrapper if needed for special cases.
+
   return (
-    <div className="min-h-screen bg-agency-ink/95 px-4 py-6 text-agency-cyan pb-16">
+    <div className="app-shell min-h-screen overflow-hidden bg-agency-ink/95 px-4 py-6 text-agency-cyan pb-16">
       {/* Desktop Icons */}
       <div className="fixed left-4 top-4 z-0 flex flex-col gap-6">
         {DESKTOP_ITEMS.map((item) => {
@@ -361,9 +364,14 @@ export function AppShell() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr] relative z-10">
+      {/*
+        Set a fixed content area height and prevent grid items from stretching.
+        The page scrollbar is disabled; instead the right-side `main` will scroll internally.
+        We subtract the explicit top/bottom padding (24px top from py-6 and 64px bottom from pb-16 = 88px) as a simple approximation.
+      */}
+      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr] relative z-10 items-start" style={{ height: 'calc(100vh - var(--app-vertical-offset))' }}>
         <aside
-          className={`space-y-6 border border-agency-border bg-agency-panel/80 p-4 ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'} ${isWin98 ? 'win98-raised' : ''}`}
+          className={`self-start space-y-6 border border-agency-border bg-agency-panel/80 p-4 max-h-full overflow-y-auto ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'} ${isWin98 ? 'win98-raised' : ''}`}
         >
           {isWin98 && (
             <div 
@@ -486,18 +494,22 @@ export function AppShell() {
             ))}
           </div>
 
-          <div className="space-y-2 text-[0.65rem] text-agency-muted">
-            <p className="uppercase tracking-[0.5em]">{chaos}</p>
+          <div className="space-y-2 text-[1 rem] text-agency-muted">
+            <p className="uppercase tracking-[0.5em]">{current}</p>
             <div
-              className={`border border-agency-magenta/40 bg-gradient-to-r from-agency-magenta/20 to-transparent p-3 font-mono ${isSquare ? 'rounded-none' : 'rounded-2xl'}`}
+              className={`border border-agency-magenta/40 p-3 font-mono ${isSquare ? 'rounded-none' : 'rounded-2xl'}`}
             >
-              <p>{current}：{chaosValue}</p>
+              <p>{chaos}：{chaosValue}</p>
               <p>{looseEnds}：{looseEndsValue}</p>
             </div>
           </div>
         </aside>
 
-        <main className="min-w-0 space-y-6">
+        {/*
+          Make the right-hand content area take the remaining height and be scrollable.
+          `min-h-0` is important to enable the overflow-y-auto behavior inside flex/grid containers.
+        */}
+        <main className="min-w-0 min-h-0 h-full overflow-y-auto overscroll-contain space-y-6">
           <div className="grid gap-3 md:grid-cols-3">
             <CommandStrip label={session} value={campaign.divisionCode} />
             <CommandStrip label={nextBriefing} value={activeMission?.code ?? '—'} />

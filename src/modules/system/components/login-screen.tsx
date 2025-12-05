@@ -69,7 +69,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
       <div className={cn(
         "w-[400px] p-1",
         isWin98 
-          ? "bg-[#c0c0c0] border-2 border-t-[#ffffff] border-l-[#ffffff] border-r-[#404040] border-b-[#404040] shadow-xl" 
+          ? "win98-raised bg-[#c0c0c0] shadow-xl" 
           : "bg-agency-panel border border-agency-cyan/30 rounded-xl shadow-2xl backdrop-blur-md"
       )}>
         {/* Title Bar */}

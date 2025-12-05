@@ -363,7 +363,7 @@ export function SettingsPage() {
           rel="noopener noreferrer"
           className={cn(
             "inline-flex items-center gap-2 border border-agency-border px-4 py-2 text-sm text-agency-muted transition-colors hover:border-agency-cyan hover:text-agency-cyan",
-            isWin98 ? "rounded-none" : "rounded-lg"
+            isWin98 ? "win98-raised rounded-none" : "rounded-lg"
           )}
         >
           <Github className="h-4 w-4" />
