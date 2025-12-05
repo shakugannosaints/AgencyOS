@@ -475,8 +475,8 @@
     },
     "antivirusWarning": {
       "title": "Urgency Protocol Disabled",
-      "description": "The {{protocol}} Protocol is not enabled. To use Standard Antivirus's full functionality, enable {{protocol}} under Emergency Settings.",
-      "openSettings": "Open Emergency Settings"
+      "description": "This function is not enabled. To use Standard Antivirus's full functionality, enable {{protocol}} under Settings.",
+      "openSettings": "Open Settings"
     },
     "startMenu": {
       "agencyOS": "Agency OS 98",

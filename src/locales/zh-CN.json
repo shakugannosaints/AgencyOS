@@ -475,8 +475,8 @@
     },
     "antivirusWarning": {
       "title": "紧急事态协议未启用",
-      "description": "“{{protocol}}”目前未启用。要使常规杀毒软件发挥作用，请在紧急处理设置中启用“{{protocol}}”。",
-      "openSettings": "打开紧急处理设置"
+      "description": "此功能目前未启用。要使常规杀毒软件发挥作用，请在设置中启用“{{protocol}}”。",
+      "openSettings": "打开设置"
     },
     "startMenu": {
       "agencyOS": "Agency OS 98",
