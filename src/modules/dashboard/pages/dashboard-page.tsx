@@ -109,9 +109,7 @@ export function DashboardPage() {
               <p className="text-xs uppercase tracking-[0.4em] text-agency-muted">{t('dashboard.currentMission')}</p>
               <h2 className="text-2xl font-semibold text-white">{activeMission?.name ?? t('dashboard.noMission')}</h2>
             </div>
-            <span className="border border-agency-cyan/40 px-3 py-1 text-xs uppercase text-agency-cyan rounded-full win98:rounded-none win98-raised ">
-              {activeMission?.status ?? t('dashboard.standby')}
-            </span>
+            <span className="text-xs font-medium text-agency-cyan">{activeMission?.status ?? t('dashboard.standby')}</span>
           </header>
           <dl className="grid gap-3 text-sm text-agency-muted">
             <div className="flex justify-between border-b border-agency-border/30 pb-2">

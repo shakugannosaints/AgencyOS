@@ -142,10 +142,10 @@ export function MissionsPage() {
               <h2 className="text-2xl font-semibold text-white">{mission.name}</h2>
               <p className="text-sm text-agency-muted">{t(`missions.types.${missionTypeKey(mission.type)}`)} · {formatDate(mission.scheduledDate)}</p>
             </div>
-            <div className="flex gap-2 text-xs uppercase tracking-[0.3em] text-agency-muted">
-                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.chaos')}：{mission.chaos}</span>
-                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('app.common.looseEnds')}：{mission.looseEnds}</span>
-                <span className="border border-agency-border px-3 py-1 rounded-xl win98:rounded-none">{t('missions.realityRequestsFailedLabel')}：{mission.realityRequestsFailed ?? 0}</span>
+            <div className="flex gap-4 text-sm text-agency-muted items-center">
+              <span className="text-sm text-agency-muted">{t('app.common.chaos')}：{mission.chaos}</span>
+              <span className="text-sm text-agency-muted">{t('app.common.looseEnds')}：{mission.looseEnds}</span>
+              <span className="text-sm text-agency-muted">{t('missions.realityRequestsFailedLabel')}：{mission.realityRequestsFailed ?? 0}</span>
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
