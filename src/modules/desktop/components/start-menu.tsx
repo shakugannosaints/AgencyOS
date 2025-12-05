@@ -67,7 +67,7 @@ export function StartMenu({ isOpen, onClose, onOpenProgram }: StartMenuProps) {
       className={cn(
         "absolute bottom-12 left-2 w-64 flex z-[60]",
         isWin98 
-          ? "bg-[#c0c0c0] border-2 border-t-[#ffffff] border-l-[#ffffff] border-r-[#404040] border-b-[#404040] shadow-[2px_2px_5px_rgba(0,0,0,0.5)]" 
+          ? "win98-raised bg-[#c0c0c0] border-2 border-t-[#ffffff] border-l-[#ffffff] border-r-[#404040] border-b-[#404040] shadow-[2px_2px_5px_rgba(0,0,0,0.5)]" 
           : "bg-agency-panel border border-agency-cyan/30 backdrop-blur-md rounded-lg overflow-hidden shadow-panel"
       )}
     >

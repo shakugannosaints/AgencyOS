@@ -474,9 +474,9 @@ export function AppShell() {
         The page scrollbar is disabled; instead the right-side `main` will scroll internally.
         We subtract the explicit top/bottom padding (24px top from py-6 and 64px bottom from pb-16 = 88px) as a simple approximation.
       */}
-      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr] relative z-10 items-start" style={{ height: 'calc(100vh - var(--app-vertical-offset))' }}>
+      <div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[260px_1fr] relative z-10" style={{ height: 'calc(100vh - var(--app-vertical-offset))' }}>
         <aside
-          className={`self-start space-y-6 border border-agency-border bg-agency-panel/80 p-4 max-h-full overflow-y-auto ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'} ${isWin98 ? 'win98-raised' : ''}`}
+          className={`space-y-6 border border-agency-border bg-agency-panel/80 p-4 max-h-full overflow-y-auto ${isSquare ? 'rounded-none' : 'rounded-3xl shadow-panel'} ${isWin98 ? 'win98-raised' : ''}`}
         >
           {isWin98 && (
             <div 
