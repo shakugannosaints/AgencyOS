@@ -20,9 +20,10 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  // animation timing constants (ms)
-  const TRIANGLE_EXPAND_DURATION = 500 // duration for triangle expand / contract
-  const TRIANGLE_MASK_DURATION = 500 // duration for the reveal/shrink mask
+  // animation timing constants (ms) - increased to slow animations down
+  const TRIANGLE_EXPAND_DURATION = 800 // duration for triangle expand / contract
+  const TRIANGLE_MASK_DURATION = 800 // duration for the reveal/shrink mask
+  const TRIANGLE_FADE_DURATION = 200 // duration for triangle fade animations
 
   useEffect(() => {
     // Show login form after first part of logging-off animation (TRIANGLE_MASK_DURATION)
@@ -184,7 +185,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               fill="#dc2626"
               style={{
                 transformOrigin: '50px 50px',
-                animation: 'triangle-scale-in 0.5s ease-in forwards, triangle-fade-in 0.12s ease-in forwards',
+                animation: `triangle-scale-in ${TRIANGLE_EXPAND_DURATION}ms ease-in forwards, triangle-fade-in ${TRIANGLE_FADE_DURATION}ms ease-in forwards`,
                 transform: 'scale(0.001)',
                 opacity: 0
               }}
@@ -233,7 +234,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                   fill="black"
                   style={{
                     transformOrigin: '50px 50px',
-                      animation: `triangle-mask-shrink ${TRIANGLE_MASK_DURATION}ms ease-in forwards`,
+                        animation: `triangle-mask-shrink ${TRIANGLE_MASK_DURATION}ms ease-in forwards`,
                     transform: 'scale(1)'
                   }}
                 />
@@ -246,7 +247,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               mask="url(#shrink-mask)"
               style={{
                 transformOrigin: '50px 50px',
-                animation: `triangle-scale-out ${TRIANGLE_EXPAND_DURATION}ms ease-out ${TRIANGLE_MASK_DURATION}ms forwards, triangle-fade-out 120ms ease-out ${TRIANGLE_MASK_DURATION}ms forwards`,
+                animation: `triangle-scale-out ${TRIANGLE_EXPAND_DURATION}ms ease-out ${TRIANGLE_MASK_DURATION}ms forwards, triangle-fade-out ${TRIANGLE_FADE_DURATION}ms ease-out ${TRIANGLE_MASK_DURATION}ms forwards`,
                 transform: 'scale(1)'
               }}
             />
