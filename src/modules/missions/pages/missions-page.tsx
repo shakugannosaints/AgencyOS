@@ -268,7 +268,7 @@ export function MissionsPage() {
 
       <Panel className="overflow-x-auto p-0">
         <table className="min-w-full divide-y divide-agency-border/60 text-sm">
-          <thead className="bg-agency-ink/60 text-xs uppercase tracking-[0.3em] text-agency-muted">
+          <thead className="bg-agency-ink/60 text-xs uppercase tracking-[0.3em] text-agency-muted win98:bg-transparent">
             <tr>
               <th className="px-4 py-3 text-left">{t('missions.table.code')}</th>
               <th className="px-4 py-3 text-left">{t('missions.table.name')}</th>
