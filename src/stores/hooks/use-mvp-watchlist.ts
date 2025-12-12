@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTrans } from '@/lib/i18n-utils'
 import type { AgentSummary } from '@/lib/types'
 import { useCampaignStore } from '@/stores/campaign-store'
 
@@ -23,16 +24,21 @@ interface MvpWatchlistResult {
  */
 export function useMvpWatchlist(): MvpWatchlistResult {
   const agents = useCampaignStore((state) => state.agents)
+  const missions = useCampaignStore((state) => state.missions)
+  const t = useTrans()
 
   return useMemo(() => {
     const inService = agents.filter((agent) => agent.status === 'active')
-    
-    if (!inService.length) {
+
+    // 如果当前没有“进行中”任务，返回本地化提示（例如“无进行中任务”）
+    const hasActiveMission = missions.some((m) => m.status === 'active')
+    if (!hasActiveMission) {
+      const noActiveText = t('dashboard.noActiveMission') || t('dashboard.noMission') || '—'
       return {
         mvpAgents: [],
         watchlistAgents: [],
-        mvpLabel: '—',
-        watchlistLabel: '—',
+        mvpLabel: noActiveText,
+        watchlistLabel: noActiveText,
       }
     }
 
@@ -79,11 +85,11 @@ export function useMvpWatchlist(): MvpWatchlistResult {
 
     const mvpLabel = mvpCandidates.length
       ? mvpCandidates.map((a) => a.codename).join(' · ')
-      : '—'
+      : t('dashboard.none') || '—'
 
     const watchlistLabel = watchCandidates.length
       ? watchCandidates.map((a) => a.codename).join(' · ')
-      : '—'
+      : t('dashboard.none') || '—'
 
     return {
       mvpAgents: mvpCandidates,
