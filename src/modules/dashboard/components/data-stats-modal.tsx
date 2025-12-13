@@ -218,7 +218,7 @@ export const DataStatsModal: React.FC<Props> = ({ onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* 保留点击关闭区域，但移除暗色遮罩以去掉背后的阴影效果 */}
       <div className="absolute inset-0" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-5xl rounded-2xl border border-agency-border/60 shadow-panel bg-agency-panel/100 p-6">
+      <div className="relative z-10 w-full max-w-5xl rounded-2xl border border-agency-border/60 shadow-panel bg-agency-panel/100 p-6 win98-raised">
         <header className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">{t('dashboard.dataStats.title')}</h3>
           <div className="flex items-center gap-2">
