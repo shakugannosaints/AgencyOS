@@ -14,6 +14,7 @@ export function AgentsPage() {
   const createAgent = useCampaignStore((state) => state.createAgent)
   const updateAgent = useCampaignStore((state) => state.updateAgent)
   const deleteAgent = useCampaignStore((state) => state.deleteAgent)
+  const reorderAgents = useCampaignStore((state) => state.reorderAgents)
   const settleAgentDeltas = useCampaignStore((state) => state.settleAgentDeltas)
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null)
 
@@ -102,6 +103,7 @@ export function AgentsPage() {
         onEdit={startEdit} 
         onDelete={handleDelete} 
         onUpdateDelta={handleUpdateDelta}
+        onReorder={reorderAgents}
       />
     </div>
   )

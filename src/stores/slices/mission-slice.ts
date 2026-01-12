@@ -13,6 +13,7 @@ export interface MissionSlice {
   adjustMissionLooseEnds: (missionId: string, delta: number, note: string) => void
   adjustMissionRealityRequestsFailed: (missionId: string, delta: number, note: string) => void
   appendMissionLog: (missionId: string, detail: string) => void
+  reorderMissions: (missionIds: string[]) => void
 }
 
 export const createMissionSlice: StateCreator<
@@ -30,9 +31,10 @@ export const createMissionSlice: StateCreator<
       },
     })
     return {
-  createMission: (payload: Omit<MissionSummary, 'id'>) => crud.create(payload),
-  updateMission: (id: string, payload: Omit<MissionSummary, 'id'>) => crud.update(id, payload),
+      createMission: (payload: Omit<MissionSummary, 'id'>) => crud.create(payload),
+      updateMission: (id: string, payload: Omit<MissionSummary, 'id'>) => crud.update(id, payload),
       deleteMission: (id: string) => crud.remove(id),
+      reorderMissions: (ids: string[]) => crud.reorder(ids),
     }
   })(),
   adjustMissionChaos: (missionId, delta, note) =>

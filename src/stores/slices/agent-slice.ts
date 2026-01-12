@@ -7,6 +7,7 @@ export interface AgentSlice {
   createAgent: (payload: Omit<AgentSummary, 'id'>) => void
   updateAgent: (id: string, payload: Omit<AgentSummary, 'id'>) => void
   deleteAgent: (id: string) => void
+  reorderAgents: (ids: string[]) => void
   settleAgentDeltas: () => void
 }
 
@@ -18,11 +19,12 @@ export const createAgentSlice: StateCreator<
 > = (set, get) => ({
   agents: [],
   ...(() => {
-  const crud = makeCrud<AgentSummary>('agents', set, get)
+    const crud = makeCrud<AgentSummary>('agents', set, get)
     return {
-  createAgent: (payload: Omit<AgentSummary, 'id'>) => crud.create(payload),
-  updateAgent: (id: string, payload: Omit<AgentSummary, 'id'>) => crud.update(id, payload),
+      createAgent: (payload: Omit<AgentSummary, 'id'>) => crud.create(payload),
+      updateAgent: (id: string, payload: Omit<AgentSummary, 'id'>) => crud.update(id, payload),
       deleteAgent: (id: string) => crud.remove(id),
+      reorderAgents: (ids: string[]) => crud.reorder(ids),
     }
   })(),
   settleAgentDeltas: () =>

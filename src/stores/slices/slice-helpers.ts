@@ -56,7 +56,16 @@ export function makeCrud<T extends { id?: string }>(
     return create(payload as any)
   }
 
-  return { create, update, remove, upsert }
+  const reorder = (ids: string[]) => {
+    set((state: any) => {
+      const items = (state as any)[itemsKey]
+      const itemMap = new Map(items.map((it: any) => [it.id, it]))
+      const newItems = ids.map((id) => itemMap.get(id)).filter(Boolean)
+      return { [itemsKey]: newItems }
+    })
+  }
+
+  return { create, update, remove, upsert, reorder }
 }
 
 export default makeCrud

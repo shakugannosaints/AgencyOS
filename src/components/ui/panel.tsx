@@ -1,13 +1,18 @@
-import type { HTMLAttributes } from 'react'
+import { type HTMLAttributes, forwardRef } from 'react'
 import { usePanelClassnames } from '@/lib/theme-utils'
 
-export function Panel({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  const baseClass = usePanelClassnames()
+export const Panel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => {
+    const baseClass = usePanelClassnames()
 
-  return (
-    <div
-      className={`${baseClass} ${className || ''}`}
-      {...props}
-    />
-  )
-}
+    return (
+      <div
+        ref={ref}
+        className={`${baseClass} ${className || ''}`}
+        {...props}
+      />
+    )
+  }
+)
+
+Panel.displayName = 'Panel'

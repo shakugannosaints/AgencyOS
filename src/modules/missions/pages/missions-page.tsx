@@ -7,6 +7,24 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCommonTranslations, useTrans } from '@/lib/i18n-utils'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { GripVertical } from 'lucide-react'
 
 const missionSchema = z.object({
   code: z.string().min(1),
@@ -26,6 +44,100 @@ type MissionFormValues = z.infer<typeof missionSchema>
 
 const generateMissionCode = () => 'MSN-' + String(Math.floor(Math.random() * 900 + 100))
 
+function SortableMissionRow({
+  item,
+  selectedMissionId,
+  setSelectedMissionId,
+  editingMissionId,
+  startEditMission,
+  handleDeleteMission,
+  deleteText,
+  formatDate,
+  missionTypeKey,
+  t,
+}: {
+  item: any
+  selectedMissionId: string | undefined
+  setSelectedMissionId: (id: string) => void
+  editingMissionId: string | null
+  startEditMission: (id: string) => void
+  handleDeleteMission: (id: string) => void
+  deleteText: string
+  formatDate: any
+  missionTypeKey: any
+  t: any
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : 0,
+    position: 'relative' as const,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      className={`cursor-pointer hover:bg-agency-ink/40 ${selectedMissionId === item.id ? 'bg-agency-ink/40' : ''}`}
+      onClick={() => setSelectedMissionId(item.id)}
+    >
+      <td className="px-4 py-3 font-mono text-agency-cyan flex items-center gap-2">
+        <button
+          type="button"
+          className="cursor-grab active:cursor-grabbing text-agency-muted hover:text-agency-cyan"
+          {...attributes}
+          {...listeners}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <GripVertical size={14} />
+        </button>
+        {item.code}
+      </td>
+      <td className="px-4 py-3">{item.name}</td>
+      <td className="px-4 py-3">{t(`missions.types.${missionTypeKey(item.type)}`)}</td>
+      <td className="px-4 py-3 uppercase tracking-[0.3em] text-xs">{item.status}</td>
+      <td className="px-4 py-3">{item.chaos}</td>
+      <td className="px-4 py-3">{item.looseEnds}</td>
+      <td className="px-4 py-3">{item.realityRequestsFailed ?? 0}</td>
+      <td className="px-4 py-3">{formatDate(item.scheduledDate)}</td>
+      <td className="px-4 py-3">
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="rounded-xl border border-agency-border px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-cyan hover:text-agency-cyan"
+            onClick={(event) => {
+              event.stopPropagation()
+              startEditMission(item.id)
+            }}
+          >
+            {editingMissionId === item.id ? t('app.common.editing') : t('app.common.edit')}
+          </button>
+          <button
+            type="button"
+            className="rounded-xl border border-agency-border/70 px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-magenta hover:text-agency-magenta"
+            onClick={(event) => {
+              event.stopPropagation()
+              handleDeleteMission(item.id)
+            }}
+          >
+            {deleteText}
+          </button>
+        </div>
+      </td>
+    </tr>
+  )
+}
+
 export function MissionsPage() {
   const t = useTrans()
   const { delete: deleteText } = useCommonTranslations()
@@ -38,10 +150,28 @@ export function MissionsPage() {
   const createMission = useCampaignStore((state) => state.createMission)
   const updateMission = useCampaignStore((state) => state.updateMission)
   const deleteMission = useCampaignStore((state) => state.deleteMission)
+  const reorderMissions = useCampaignStore((state) => state.reorderMissions)
   const [selectedMissionId, setSelectedMissionId] = useState<string | undefined>(missions[0]?.id)
   const [editingMissionId, setEditingMissionId] = useState<string | null>(null)
   const [note, setNote] = useState(t('missions.defaultNote'))
   const mission = useMemo(() => missions.find((item) => item.id === selectedMissionId) ?? missions[0], [missions, selectedMissionId])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (over && active.id !== over.id) {
+      const oldIndex = missions.findIndex((m) => m.id === active.id)
+      const newIndex = missions.findIndex((m) => m.id === over.id)
+      const newMissions = arrayMove(missions, oldIndex, newIndex)
+      reorderMissions(newMissions.map((m) => m.id))
+    }
+  }
 
   const createDefaultMissionValues = (): MissionFormValues => ({
     code: 'MSN-019',
@@ -267,63 +397,42 @@ export function MissionsPage() {
       </Panel>
 
       <Panel className="overflow-x-auto p-0">
-        <table className="min-w-full divide-y divide-agency-border/60 text-sm">
-          <thead className="bg-agency-ink/60 text-xs uppercase tracking-[0.3em] text-agency-muted win98:bg-transparent">
-            <tr>
-              <th className="px-4 py-3 text-left">{t('missions.table.code')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.table.name')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.table.type')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.table.status')}</th>
-              <th className="px-4 py-3 text-left">{t('app.common.chaos')}</th>
-              <th className="px-4 py-3 text-left">{t('app.common.looseEnds')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.realityRequestsFailedLabel')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.table.date')}</th>
-              <th className="px-4 py-3 text-left">{t('missions.table.actions')}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-agency-border/40">
-            {missions.map((item) => (
-              <tr
-                key={item.id}
-                className={`cursor-pointer hover:bg-agency-ink/40 ${selectedMissionId === item.id ? 'bg-agency-ink/40' : ''}`}
-                onClick={() => setSelectedMissionId(item.id)}
-              >
-                <td className="px-4 py-3 font-mono text-agency-cyan">{item.code}</td>
-                <td className="px-4 py-3">{item.name}</td>
-                <td className="px-4 py-3">{t(`missions.types.${missionTypeKey(item.type)}`)}</td>
-                <td className="px-4 py-3 uppercase tracking-[0.3em] text-xs">{item.status}</td>
-                <td className="px-4 py-3">{item.chaos}</td>
-                <td className="px-4 py-3">{item.looseEnds}</td>
-                <td className="px-4 py-3">{item.realityRequestsFailed ?? 0}</td>
-                <td className="px-4 py-3">{formatDate(item.scheduledDate)}</td>
-                <td className="px-4 py-3">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      className="rounded-xl border border-agency-border px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-cyan hover:text-agency-cyan"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        startEditMission(item.id)
-                      }}
-                    >
-                      {editingMissionId === item.id ? t('app.common.editing') : t('app.common.edit')}
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded-xl border border-agency-border/70 px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-agency-muted hover:border-agency-magenta hover:text-agency-magenta"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleDeleteMission(item.id)
-                      }}
-                    >
-                      {deleteText}
-                    </button>
-                  </div>
-                </td>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <table className="min-w-full divide-y divide-agency-border/60 text-sm">
+            <thead className="bg-agency-ink/60 text-xs uppercase tracking-[0.3em] text-agency-muted win98:bg-transparent">
+              <tr>
+                <th className="px-4 py-3 text-left">{t('missions.table.code')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.table.name')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.table.type')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.table.status')}</th>
+                <th className="px-4 py-3 text-left">{t('app.common.chaos')}</th>
+                <th className="px-4 py-3 text-left">{t('app.common.looseEnds')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.realityRequestsFailedLabel')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.table.date')}</th>
+                <th className="px-4 py-3 text-left">{t('missions.table.actions')}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-agency-border/40">
+              <SortableContext items={missions.map((m) => m.id)} strategy={verticalListSortingStrategy}>
+                {missions.map((item) => (
+                  <SortableMissionRow
+                    key={item.id}
+                    item={item}
+                    selectedMissionId={selectedMissionId}
+                    setSelectedMissionId={setSelectedMissionId}
+                    editingMissionId={editingMissionId}
+                    startEditMission={startEditMission}
+                    handleDeleteMission={handleDeleteMission}
+                    deleteText={deleteText}
+                    formatDate={formatDate}
+                    missionTypeKey={missionTypeKey}
+                    t={t}
+                  />
+                ))}
+              </SortableContext>
+            </tbody>
+          </table>
+        </DndContext>
       </Panel>
     </div>
   )

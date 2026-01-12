@@ -24,6 +24,7 @@ interface TracksActions {
   updateTrackItemCount: (id: string, nextCount: number) => void
   updateTrackItem: (trackId: string, itemId: string, patch: Partial<TrackItem>) => void
   deleteTrack: (id: string) => void
+  reorderTracks: (ids: string[]) => void
 }
 
 type TracksStore = TracksState & TracksActions
@@ -111,4 +112,10 @@ export const useTracksStore = create<TracksStore>((set) => ({
     set((state) => ({
       tracks: state.tracks.filter((track) => track.id !== id),
     })),
+  reorderTracks: (ids) =>
+    set((state) => {
+      const itemMap = new Map(state.tracks.map((it) => [it.id, it]))
+      const newTracks = ids.map((id) => itemMap.get(id)).filter((item): item is CustomTrack => !!item)
+      return { tracks: newTracks }
+    }),
 }))

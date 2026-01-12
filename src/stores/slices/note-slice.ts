@@ -8,6 +8,7 @@ export interface NoteSlice {
   addNote?: (note: Note) => void
   updateNote: (id: string, patch: Partial<Note>) => void
   deleteNote: (id: string) => void
+  reorderNotes: (ids: string[]) => void
 }
 
 export const createNoteSlice: StateCreator<
@@ -23,9 +24,10 @@ export const createNoteSlice: StateCreator<
       onCreate: (item) => ({ ...item, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }),
     })
     return {
-  createNote: (payload: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => crud.create(payload),
-  updateNote: (id: string, patch: Partial<Note>) => crud.update(id, { ...(patch as Partial<Note>), updatedAt: new Date().toISOString() }),
+      createNote: (payload: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => crud.create(payload),
+      updateNote: (id: string, patch: Partial<Note>) => crud.update(id, { ...(patch as Partial<Note>), updatedAt: new Date().toISOString() }),
       deleteNote: (id: string) => crud.remove(id),
+      reorderNotes: (ids: string[]) => crud.reorder(ids),
     }
   })(),
 })

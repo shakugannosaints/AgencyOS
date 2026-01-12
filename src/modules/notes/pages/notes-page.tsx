@@ -13,6 +13,7 @@ export function NotesPage() {
   const createNote = useCampaignStore((state) => state.createNote)
   const updateNote = useCampaignStore((state) => state.updateNote)
   const deleteNote = useCampaignStore((state) => state.deleteNote)
+  const reorderNotes = useCampaignStore((state) => state.reorderNotes)
   const [localNotes, setLocalNotes] = useState<Note[]>(notes)
 
   useEffect(() => {
@@ -55,6 +56,14 @@ export function NotesPage() {
     setLocalNotes((prevNotes) => prevNotes.filter((note) => note.id !== id))
   }
 
+  const handleReorderNotes = (ids: string[]) => {
+    reorderNotes(ids)
+    // localNotes is synced via useEffect but we can also set it immediately for smoother UI
+    const itemMap = new Map(notes.map((it) => [it.id, it]))
+    const newNotes = ids.map((id) => itemMap.get(id)).filter((n): n is Note => !!n)
+    setLocalNotes(newNotes)
+  }
+
   return (
     <div className="h-full flex flex-col space-y-6 p-8 overflow-hidden">
       <div className="flex items-center justify-between shrink-0">
@@ -78,6 +87,7 @@ export function NotesPage() {
           notes={localNotes}
           onUpdate={handleUpdateNote}
           onDelete={handleDeleteNote}
+          onReorder={handleReorderNotes}
         />
       </div>
 
