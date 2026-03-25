@@ -358,6 +358,21 @@
         "red": "Agency Red"
       }
     },
+    "crt": {
+      "title": "CRT Scanlines",
+      "description": "Apply a cross-theme scanline overlay across the full interface.",
+      "enable": "Enable overlay",
+      "showAdvanced": "Advanced",
+      "hideAdvanced": "Collapse",
+      "reset": "Reset",
+      "dynamic": "Dynamic motion",
+      "thickness": "Line thickness",
+      "spacing": "Line spacing",
+      "speed": "Sweep speed",
+      "opacity": "Line opacity",
+      "modeStatic": "Static",
+      "modeAnimated": "Animated"
+    },
     "language": {
       "title": "Language"
     },

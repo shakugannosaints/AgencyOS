@@ -1,5 +1,5 @@
 import { useState, useRef, type ChangeEvent } from 'react'
-import { Github, Download, Upload, Monitor, Moon, Sun, Laptop, Languages, Layout, Eye } from 'lucide-react'
+import { Github, Download, Upload, Monitor, Moon, Sun, Laptop, Languages, Layout, Eye, ChevronDown, ChevronUp } from 'lucide-react'
 import { useThemeStore } from '@/stores/theme-store'
 import { useCampaignStore } from '@/stores/campaign-store'
 import { cn } from '@/lib/utils'
@@ -14,6 +14,9 @@ export function SettingsPage() {
   const setWin98TitleBarColor = useThemeStore((state) => state.setWin98TitleBarColor)
   const dayFlatStyle = useThemeStore((state) => state.dayFlatStyle)
   const setDayFlatStyle = useThemeStore((state) => state.setDayFlatStyle)
+  const crtEffect = useThemeStore((state) => state.crtEffect)
+  const updateCrtEffect = useThemeStore((state) => state.updateCrtEffect)
+  const resetCrtEffect = useThemeStore((state) => state.resetCrtEffect)
   const notesAllowHtml = useCampaignStore((state) => state.notesAllowHtml)
   const setNotesAllowHtml = useCampaignStore((state) => state.setNotesAllowHtml)
   const dashboardReadOnlyStyle = useCampaignStore((state) => state.dashboardReadOnlyStyle)
@@ -22,6 +25,7 @@ export function SettingsPage() {
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [importMessage, setImportMessage] = useState<string | null>(null)
+  const [crtSettingsExpanded, setCrtSettingsExpanded] = useState(false)
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
@@ -30,6 +34,11 @@ export function SettingsPage() {
   const handleExportSettings = () => {
     const settings = {
       theme: themeMode,
+      appearance: {
+        win98TitleBarColor,
+        dayFlatStyle,
+        crtEffect,
+      },
       settings: {
         notesAllowHtml,
         dashboardReadOnlyStyle,
@@ -62,6 +71,23 @@ export function SettingsPage() {
         
         if (settings.theme) {
           setThemeMode(settings.theme)
+        }
+        if (settings?.appearance?.win98TitleBarColor) {
+          setWin98TitleBarColor(settings.appearance.win98TitleBarColor)
+        }
+        if (settings?.appearance?.dayFlatStyle !== undefined) {
+          setDayFlatStyle(Boolean(settings.appearance.dayFlatStyle))
+        }
+        if (settings?.appearance?.crtEffect) {
+          const importedCrtEffect = settings.appearance.crtEffect as Record<string, unknown>
+          updateCrtEffect({
+            enabled: Boolean(importedCrtEffect.enabled),
+            animated: Boolean(importedCrtEffect.animated),
+            thickness: Number(importedCrtEffect.thickness) || 2,
+            gap: Number(importedCrtEffect.gap) || 4,
+            speed: Number(importedCrtEffect.speed) || 8,
+            opacity: Number(importedCrtEffect.opacity) || 0.18,
+          })
         }
         if (settings?.settings?.notesAllowHtml !== undefined) {
           setNotesAllowHtml(Boolean(settings.settings.notesAllowHtml))
@@ -263,6 +289,149 @@ export function SettingsPage() {
             </label>
           </div>
         )}
+
+        <div className="mt-4 border-t border-agency-border/40 pt-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="space-y-1">
+              <h3 className="text-sm font-medium text-agency-cyan">{t('settings.crt.title')}</h3>
+              <p className="text-sm text-agency-muted">{t('settings.crt.description')}</p>
+            </div>
+            <label className="flex cursor-pointer items-center gap-3 text-sm text-agency-muted">
+              <input
+                type="checkbox"
+                checked={crtEffect.enabled}
+                onChange={(e) => {
+                  const enabled = e.target.checked
+                  updateCrtEffect({ enabled })
+                  if (enabled) {
+                    setCrtSettingsExpanded(true)
+                  }
+                }}
+                className="h-4 w-4 rounded border-agency-border accent-agency-cyan"
+              />
+              <span>{t('settings.crt.enable')}</span>
+            </label>
+          </div>
+
+          {crtEffect.enabled && (
+            <div className="mt-4 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-[0.24em] text-agency-muted">
+                  {crtEffect.animated ? t('settings.crt.modeAnimated') : t('settings.crt.modeStatic')}
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setCrtSettingsExpanded((prev) => !prev)}
+                    className={cn(
+                      "inline-flex items-center gap-2 border border-agency-border px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-agency-muted transition-colors hover:border-agency-cyan hover:text-agency-cyan",
+                      isWin98 ? "rounded-none" : "rounded-lg"
+                    )}
+                  >
+                    {crtSettingsExpanded ? t('settings.crt.hideAdvanced') : t('settings.crt.showAdvanced')}
+                    {crtSettingsExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetCrtEffect()
+                      updateCrtEffect({ enabled: true })
+                    }}
+                    className={cn(
+                      "border border-agency-border px-3 py-1.5 text-xs uppercase tracking-[0.2em] text-agency-muted transition-colors hover:border-agency-cyan hover:text-agency-cyan",
+                      isWin98 ? "rounded-none" : "rounded-lg"
+                    )}
+                  >
+                    {t('settings.crt.reset')}
+                  </button>
+                </div>
+              </div>
+
+              {crtSettingsExpanded && (
+                <div className="grid gap-4 border border-agency-border/40 p-4 sm:grid-cols-2">
+                  <label className="space-y-2 text-sm text-agency-muted">
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{t('settings.crt.dynamic')}</span>
+                      <span className="text-agency-cyan">
+                        {crtEffect.animated ? t('settings.crt.modeAnimated') : t('settings.crt.modeStatic')}
+                      </span>
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={crtEffect.animated}
+                      onChange={(e) => updateCrtEffect({ animated: e.target.checked })}
+                      className="h-4 w-4 rounded border-agency-border accent-agency-cyan"
+                    />
+                  </label>
+
+                  <label className="space-y-2 text-sm text-agency-muted">
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{t('settings.crt.thickness')}</span>
+                      <span className="text-agency-cyan">{crtEffect.thickness}px</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="1"
+                      max="6"
+                      step="1"
+                      value={crtEffect.thickness}
+                      onChange={(e) => updateCrtEffect({ thickness: Number(e.target.value) })}
+                      className="w-full accent-agency-cyan"
+                    />
+                  </label>
+
+                  <label className="space-y-2 text-sm text-agency-muted">
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{t('settings.crt.spacing')}</span>
+                      <span className="text-agency-cyan">{crtEffect.gap}px</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="2"
+                      max="16"
+                      step="1"
+                      value={crtEffect.gap}
+                      onChange={(e) => updateCrtEffect({ gap: Number(e.target.value) })}
+                      className="w-full accent-agency-cyan"
+                    />
+                  </label>
+
+                  <label className="space-y-2 text-sm text-agency-muted">
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{t('settings.crt.speed')}</span>
+                      <span className="text-agency-cyan">{crtEffect.speed.toFixed(0)}s</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="2"
+                      max="24"
+                      step="1"
+                      value={crtEffect.speed}
+                      onChange={(e) => updateCrtEffect({ speed: Number(e.target.value) })}
+                      className="w-full accent-agency-cyan"
+                    />
+                  </label>
+
+                  <label className="space-y-2 text-sm text-agency-muted sm:col-span-2">
+                    <span className="flex items-center justify-between gap-4">
+                      <span>{t('settings.crt.opacity')}</span>
+                      <span className="text-agency-cyan">{Math.round(crtEffect.opacity * 100)}%</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="0.06"
+                      max="0.42"
+                      step="0.01"
+                      value={crtEffect.opacity}
+                      onChange={(e) => updateCrtEffect({ opacity: Number(e.target.value) })}
+                      className="w-full accent-agency-cyan"
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Notes Settings */}

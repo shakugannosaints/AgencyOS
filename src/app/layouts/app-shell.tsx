@@ -72,6 +72,7 @@ export function AppShell() {
   const themeMode = useThemeStore((state) => state.mode)
   const win98TitleBarColor = useThemeStore((state) => state.win98TitleBarColor)
   const dayFlatStyle = useThemeStore((state) => state.dayFlatStyle)
+  const crtEffect = useThemeStore((state) => state.crtEffect)
   const isWin98 = themeMode === 'win98'
   const isRetro = themeMode === 'retro'
   const isSquare = isWin98 || isRetro
@@ -155,6 +156,18 @@ export function AppShell() {
       delete document.documentElement.dataset.dayFlat
     }
   }, [themeMode, dayFlatStyle])
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    const root = document.documentElement
+
+    root.dataset.crt = crtEffect.enabled ? 'true' : 'false'
+    root.dataset.crtAnimated = crtEffect.enabled && crtEffect.animated ? 'true' : 'false'
+    root.style.setProperty('--crt-line-thickness', `${crtEffect.thickness}px`)
+    root.style.setProperty('--crt-line-gap', `${crtEffect.gap}px`)
+    root.style.setProperty('--crt-animation-duration', `${crtEffect.speed}s`)
+    root.style.setProperty('--crt-opacity', `${crtEffect.opacity}`)
+  }, [crtEffect])
 
   const handleExportSnapshot = () => {
     const snapshot = getAgencySnapshot()
@@ -352,9 +365,15 @@ export function AppShell() {
   // via CSS or by adding inline style on this wrapper if needed for special cases.
 
   return (
-    <div className="app-shell min-h-screen overflow-hidden bg-agency-ink/95 px-4 py-6 text-agency-cyan pb-16">
+    <div
+      className={cn(
+        "app-shell min-h-screen overflow-hidden bg-agency-ink/95 px-4 py-6 pb-16 text-agency-cyan",
+        crtEffect.enabled && 'crt-enabled'
+      )}
+    >
       {/* Login animation overlay */}
       {loginAnimationOverlay}
+      {crtEffect.enabled ? <div aria-hidden="true" className="crt-overlay" /> : null}
       
       {/* Desktop Icons */}
       <div className="fixed left-4 top-4 z-0 flex flex-col gap-6" onClick={() => setSelectedDesktopItem(null)}>

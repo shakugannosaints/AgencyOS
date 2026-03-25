@@ -358,6 +358,21 @@
         "red": "机构红"
       }
     },
+    "crt": {
+      "title": "CRT 扫描线",
+      "description": "为整个界面叠加跨主题的 CRT 扫描线效果。",
+      "enable": "启用效果",
+      "showAdvanced": "高级设置",
+      "hideAdvanced": "收起",
+      "reset": "恢复默认",
+      "dynamic": "动态扫描",
+      "thickness": "线条粗细",
+      "spacing": "线条间距",
+      "speed": "扫描速率",
+      "opacity": "线条透明度",
+      "modeStatic": "静态",
+      "modeAnimated": "动态"
+    },
     "language": {
       "title": "语言设置"
     },
