@@ -16,8 +16,15 @@ import {
 import { useTracksStore } from '@/stores/tracks-store'
 import { useAuthStore } from '@/stores/auth-store'
 import type { AgencySnapshot } from '@/lib/types'
+import { supabase } from '@/services/supabase/client'
 
 const CLOUD_SAVE_DELAY = 1200
+interface RealtimeCampaignRow {
+  id: string
+  snapshot: AgencySnapshot
+  revision: number
+  updated_at: string
+}
 
 export function useCloudCampaignSync() {
   const userId = useAuthStore((state) => state.user?.id)
@@ -39,6 +46,9 @@ export function useCloudCampaignSync() {
 
     let unsubscribeCampaign: (() => void) | undefined
     let unsubscribeTracks: (() => void) | undefined
+    let realtimeChannel:
+    | ReturnType<typeof supabase.channel>
+    | null = null
 
     const applyCloudSnapshot = async (
       snapshot: AgencySnapshot,
@@ -140,6 +150,46 @@ export function useCloudCampaignSync() {
       }, CLOUD_SAVE_DELAY)
     }
 
+    const handleRealtimeUpdate = async (
+      row: RealtimeCampaignRow,
+    ) => {
+      if (
+        cancelled ||
+        !ready ||
+        !cloudCampaignId ||
+        row.id !== cloudCampaignId ||
+        row.revision <= cloudRevision
+      ) {
+        return
+      }
+    
+      // 如果远程设备已提交更新，取消当前尚未上传的旧快照。
+      if (saveTimer !== undefined) {
+        window.clearTimeout(saveTimer)
+        saveTimer = undefined
+      }
+    
+      pendingSnapshot = null
+      cloudRevision = row.revision
+    
+      try {
+        await applyCloudSnapshot(row.snapshot)
+      
+        console.info(
+          '[AgencyOS] 已接收云端实时更新',
+          {
+            campaignId: row.id,
+            revision: row.revision,
+          },
+        )
+      } catch (error) {
+        console.error(
+          '[AgencyOS] 应用实时更新失败',
+          error,
+        )
+      }
+    }
+
     const bootstrap = async () => {
       try {
         const localSnapshot =
@@ -196,6 +246,43 @@ export function useCloudCampaignSync() {
             )
           })
 
+          realtimeChannel = supabase
+            .channel(`campaign:${cloudCampaignId}`)
+            .on(
+              'postgres_changes',
+              {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'campaigns',
+                filter: `id=eq.${cloudCampaignId}`,
+              },
+              (payload) => {
+                void handleRealtimeUpdate(
+                  payload.new as RealtimeCampaignRow,
+                )
+              },
+            )
+            .subscribe((status) => {
+              if (status === 'SUBSCRIBED') {
+                console.info(
+                  '[AgencyOS] Realtime 已连接',
+                  {
+                    campaignId: cloudCampaignId,
+                  },
+                )
+              }
+            
+              if (
+                status === 'CHANNEL_ERROR' ||
+                status === 'TIMED_OUT'
+              ) {
+                console.error(
+                  '[AgencyOS] Realtime 连接异常',
+                  status,
+                )
+              }
+            })
+
         console.info(
           '[AgencyOS] 云端战役同步已启动',
           {
@@ -223,6 +310,10 @@ export function useCloudCampaignSync() {
 
       unsubscribeCampaign?.()
       unsubscribeTracks?.()
+
+      if (realtimeChannel) {
+        void supabase.removeChannel(realtimeChannel)
+      }
     }
   }, [userId])
 }
