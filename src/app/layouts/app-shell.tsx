@@ -6,6 +6,7 @@ import { CommandStrip } from '@/components/ui/command-strip'
 import { cn } from '@/lib/utils'
 import { getAgencySnapshot, useCampaignStore } from '@/stores/campaign-store'
 import { useCampaignPersistence } from '@/stores/hooks/use-campaign-persistence'
+import { useCloudCampaignSync } from '@/stores/hooks/use-cloud-campaign-sync'
 import { createSnapshotEnvelope, parseSnapshotFile } from '@/services/db/repository'
 import { useThemeStore } from '@/stores/theme-store'
 import { getWeatherRuleForCount } from '@/lib/weather-utils'
@@ -46,6 +47,7 @@ const DESKTOP_ITEMS: DesktopItem[] = [
 
 export function AppShell() {
   useCampaignPersistence()
+  useCloudCampaignSync()
   const t = useTrans()
   const { dashboard, agents, missions: navMissions, anomalies, reports, notes, tracks, settings, rules } = useNavTranslations()
   const { edit, divisionName, divisionCode, status, tags, cancel, save, current, chaos, looseEnds, session, nextBriefing, weather, snapshot, export: exportText, import: importText, importing: importingText, importError } = useCommonTranslations()
